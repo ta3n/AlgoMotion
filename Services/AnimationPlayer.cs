@@ -14,129 +14,155 @@ namespace AlgoMotion.Services;
 /// </summary>
 public sealed class AnimationPlayer : IDisposable
 {
-    private CancellationTokenSource? _cts;
-    private List<SortStep> _steps = [];
+  private CancellationTokenSource? _cts;
+  private List<SortStep> _steps = [];
 
-    public PlaybackState State { get; } = new();
+  public PlaybackState State { get; } = new();
 
-    /// <summary>Raised whenever the current step index (or play state) changes.</summary>
-    public event Action? Changed;
+  /// <summary>Raised whenever the current step index (or play state) changes.</summary>
+  public event Action? Changed;
 
-    public IReadOnlyList<SortStep> Steps => _steps;
+  public IReadOnlyList<SortStep> Steps => _steps;
 
-    public SortStep? Current =>
-        State.CurrentIndex >= 0 && State.CurrentIndex < _steps.Count
-            ? _steps[State.CurrentIndex]
-            : null;
+  public SortStep? Current =>
+    State.CurrentIndex >= 0 && State.CurrentIndex < _steps.Count
+      ? _steps[State.CurrentIndex]
+      : null;
 
-    public bool IsAtEnd => State.CurrentIndex >= _steps.Count - 1;
+  public bool IsAtEnd => State.CurrentIndex >= _steps.Count - 1;
 
-    public void Load(List<SortStep> steps)
+  public void Load(
+    List<SortStep> steps
+  )
+  {
+    Pause();
+    _steps = steps;
+    State.CurrentIndex = -1;
+    Changed?.Invoke();
+  }
+
+  public void Reset()
+  {
+    Pause();
+    State.CurrentIndex = -1;
+    Changed?.Invoke();
+  }
+
+  public void Replay()
+  {
+    Pause();
+    State.CurrentIndex = -1;
+    Play();
+  }
+
+  public void SetSpeed(
+    double speed
+  )
+  {
+    State.Speed = Math.Clamp(speed, PlaybackSpeeds.Min, PlaybackSpeeds.Max);
+    Changed?.Invoke();
+  }
+
+  public void StepForward()
+  {
+    if (_steps.Count == 0)
     {
-        Pause();
-        _steps = steps;
-        State.CurrentIndex = -1;
+      return;
+    }
+
+    if (State.CurrentIndex < _steps.Count - 1)
+    {
+      State.CurrentIndex++;
+      Changed?.Invoke();
+    }
+  }
+
+  public void Play()
+  {
+    if (State.IsPlaying || _steps.Count == 0)
+    {
+      return;
+    }
+
+    if (IsAtEnd)
+    {
+      State.CurrentIndex = -1;
+    }
+
+    State.IsPlaying = true;
+    _cts = new CancellationTokenSource();
+    _ = RunAsync(_cts.Token);
+    Changed?.Invoke();
+  }
+
+  public void Pause()
+  {
+    if (!State.IsPlaying)
+    {
+      return;
+    }
+
+    State.IsPlaying = false;
+    _cts?.Cancel();
+    _cts = null;
+    Changed?.Invoke();
+  }
+
+  private async Task RunAsync(
+    CancellationToken token
+  )
+  {
+    try
+    {
+      while (!token.IsCancellationRequested && State.CurrentIndex < _steps.Count - 1)
+      {
+        State.CurrentIndex++;
         Changed?.Invoke();
+
+        var dwellMs = BaseDwellMs(_steps[State.CurrentIndex].Type) / State.Speed;
+        await Task.Delay(TimeSpan.FromMilliseconds(dwellMs), token);
+      }
     }
-
-    public void Reset()
+    catch (TaskCanceledException)
     {
-        Pause();
-        State.CurrentIndex = -1;
-        Changed?.Invoke();
+      // Pause() cancelled us — expected, nothing to do.
     }
-
-    public void Replay()
+    finally
     {
-        Pause();
-        State.CurrentIndex = -1;
-        Play();
-    }
-
-    public void SetSpeed(double speed)
-    {
-        State.Speed = Math.Clamp(speed, PlaybackSpeeds.Min, PlaybackSpeeds.Max);
-        Changed?.Invoke();
-    }
-
-    public void StepForward()
-    {
-        if (_steps.Count == 0) return;
-        if (State.CurrentIndex < _steps.Count - 1)
-        {
-            State.CurrentIndex++;
-            Changed?.Invoke();
-        }
-    }
-
-    public void Play()
-    {
-        if (State.IsPlaying || _steps.Count == 0) return;
-        if (IsAtEnd) State.CurrentIndex = -1;
-
-        State.IsPlaying = true;
-        _cts = new CancellationTokenSource();
-        _ = RunAsync(_cts.Token);
-        Changed?.Invoke();
-    }
-
-    public void Pause()
-    {
-        if (!State.IsPlaying) return;
+      if (!token.IsCancellationRequested)
+      {
         State.IsPlaying = false;
-        _cts?.Cancel();
-        _cts = null;
         Changed?.Invoke();
+      }
     }
+  }
 
-    private async Task RunAsync(CancellationToken token)
+  private static double BaseDwellMs(
+    StepType type
+  )
+  {
+    return type switch
     {
-        try
-        {
-            while (!token.IsCancellationRequested && State.CurrentIndex < _steps.Count - 1)
-            {
-                State.CurrentIndex++;
-                Changed?.Invoke();
-
-                var dwellMs = BaseDwellMs(_steps[State.CurrentIndex].Type) / State.Speed;
-                await Task.Delay(TimeSpan.FromMilliseconds(dwellMs), token);
-            }
-        }
-        catch (TaskCanceledException)
-        {
-            // Pause() cancelled us — expected, nothing to do.
-        }
-        finally
-        {
-            if (!token.IsCancellationRequested)
-            {
-                State.IsPlaying = false;
-                Changed?.Invoke();
-            }
-        }
-    }
-
-    private static double BaseDwellMs(StepType type) => type switch
-    {
-        StepType.StartPass => 550,
-        StepType.Compare => 550,
-        StepType.Swap => 700,
-        StepType.NoSwap => 380,
-        StepType.MarkSorted => 480,
-        StepType.EndPass => 350,
-        StepType.Completed => 900,
-        StepType.NewCandidate => 450,
-        StepType.SetPivot => 600,
-        StepType.RangeDone => 500,
-        StepType.SplitRange => 500,
-        StepType.MergeCompare => 500,
-        StepType.MergeWrite => 450,
-        _ => 400
+      StepType.StartPass => 550,
+      StepType.Compare => 550,
+      StepType.Swap => 700,
+      StepType.NoSwap => 380,
+      StepType.MarkSorted => 480,
+      StepType.EndPass => 350,
+      StepType.Completed => 900,
+      StepType.NewCandidate => 450,
+      StepType.SetPivot => 600,
+      StepType.RangeDone => 500,
+      StepType.SplitRange => 500,
+      StepType.MergeCompare => 500,
+      StepType.MergeWrite => 450,
+      _ => 400
     };
+  }
 
-    public void Dispose()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
-    }
+  public void Dispose()
+  {
+    _cts?.Cancel();
+    _cts?.Dispose();
+  }
 }

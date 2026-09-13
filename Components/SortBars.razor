@@ -1,27 +1,34 @@
 @using AlgoMotion.Models
 
-<div class="bars-track @(ChartLayout.IsCompact(Bars.Count) ? "is-compact" : "") @(ChartLayout.IsUltraCompact(Bars.Count) ? "is-ultra-compact" : "")"
-     style="height:@(ChartLayout.BarAreaHeight)px;">
-    @{
-        var n = Bars.Count;
-        var fontSize = ChartLayout.Num(ChartLayout.BarFontSizePx(n));
-        var showValue = ChartLayout.ShowValueText(n);
-    }
-    @foreach (var bar in Bars)
-    {
-        <div @key="bar.Value"
-             class="bar @(bar.IsActive ? "bar-active" : "") @(bar.IsSwapping ? "bar-swapping" : "") @(bar.IsSorted ? "bar-sorted" : "") @(bar.IsPivot ? "bar-pivot" : "") @(bar.IsDimmed ? "bar-dimmed" : "")"
-             style="left:@(ChartLayout.Pct(ChartLayout.LeftPercent(bar.SlotIndex, n))); width:@(ChartLayout.Pct(ChartLayout.BarWidthPercent(n))); height:@(ChartLayout.BarHeight(bar.Value, MaxValue))px; font-size:@(fontSize)px;"
-             title="@bar.Value">
-            @if (showValue)
-            {
-                <span class="bar-value">@bar.Value</span>
-            }
-        </div>
-    }
+<div
+  class="bars-track @(ChartLayout.IsCompact(Bars.Count) ? "is-compact" : "") @(ChartLayout.IsUltraCompact(Bars.Count) ? "is-ultra-compact" : "")"
+  style="height:@(ChartLayout.BarAreaHeight)px;">
+  @{
+    var n = Bars.Count;
+    var fontSize = ChartLayout.Num(ChartLayout.BarFontSizePx(n));
+    var showValue = ChartLayout.ShowValueText(n);
+  }
+  @foreach (var bar in Bars)
+  {
+    <div @key="bar.Value"
+         class="bar @(bar.IsActive ? "bar-active" : "") @(bar.IsSwapping ? "bar-swapping" : "") @(bar.IsSorted ? "bar-sorted" : "") @(bar.IsPivot ? "bar-pivot" : "") @(bar.IsDimmed ? "bar-dimmed" : "")"
+         style="left:@(ChartLayout.Pct(ChartLayout.LeftPercent(bar.SlotIndex, n))); width:@(ChartLayout.Pct(ChartLayout.BarWidthPercent(n))); height:@(ChartLayout.BarHeight(bar.Value, MaxValue))px; font-size:@(fontSize)px;"
+         title="@bar.Value">
+      @if (showValue)
+      {
+        <span class="bar-value">@bar.Value</span>
+      }
+    </div>
+  }
 </div>
 
 @code {
-    [Parameter, EditorRequired] public List<BarItem> Bars { get; set; } = [];
-    [Parameter] public int MaxValue { get; set; } = 1;
+
+  [Parameter]
+  [EditorRequired]
+  public List<BarItem> Bars { get; set; } = [];
+
+  [Parameter]
+  public int MaxValue { get; set; } = 1;
+
 }

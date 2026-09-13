@@ -1,56 +1,66 @@
 @using AlgoMotion.Models
 
 @{
-    var hasTarget = LeftIndex is not null && RightIndex is not null;
-    var leftX = ChartLayout.CenterPercent(LeftIndex ?? 0, Count);
-    var rightX = ChartLayout.CenterPercent(RightIndex ?? 1, Count);
-    var midX = (leftX + rightX) / 2;
-    string stateClass;
-    if (IsSwapping) stateClass = "state-swap";
-    else if (IsComparing) stateClass = "state-compare";
-    else stateClass = "";
-    var scaleVar = $"--crane-scale:{ChartLayout.Num(ChartLayout.CraneScale(Count))};";
+  var hasTarget = LeftIndex is not null && RightIndex is not null;
+  var leftX = ChartLayout.CenterPercent(LeftIndex ?? 0, Count);
+  var rightX = ChartLayout.CenterPercent(RightIndex ?? 1, Count);
+  var midX = (leftX + rightX) / 2;
+  string stateClass;
+  if (IsSwapping) stateClass = "state-swap";
+  else if (IsComparing) stateClass = "state-compare";
+  else stateClass = "";
+  var scaleVar = $"--crane-scale:{ChartLayout.Num(ChartLayout.CraneScale(Count))};";
 
-    // While swapping, the two arms hand the pair off to each other: the arm that
-    // was on the left carries its item over to the right slot and vice versa,
-    // instead of both staying parked while only the bars glide underneath.
-    var armAX = IsSwapping ? rightX : leftX;
-    var armBX = IsSwapping ? leftX : rightX;
+  // While swapping, the two arms hand the pair off to each other: the arm that
+  // was on the left carries its item over to the right slot and vice versa,
+  // instead of both staying parked while only the bars glide underneath.
+  var armAX = IsSwapping ? rightX : leftX;
+  var armBX = IsSwapping ? leftX : rightX;
 }
 
 <div class="crane-zone @(hasTarget ? "is-visible" : "")">
-    <div class="crane-beam" style="left:@(ChartLayout.Pct(leftX)); width:@(ChartLayout.Pct(rightX - leftX));"></div>
+  <div class="crane-beam" style="left:@(ChartLayout.Pct(leftX)); width:@(ChartLayout.Pct(rightX - leftX));"></div>
 
-    <div class="crane-head @stateClass" style="left:@(ChartLayout.Pct(midX)); @scaleVar">
-        <span class="crane-antenna"></span>
-        <span class="crane-visor"><span class="crane-eye"></span></span>
-    </div>
+  <div class="crane-head @stateClass" style="left:@(ChartLayout.Pct(midX)); @scaleVar">
+    <span class="crane-antenna"></span>
+    <span class="crane-visor"><span class="crane-eye"></span></span>
+  </div>
 
-    <div class="crane-arm arm-a @stateClass" style="left:@(ChartLayout.Pct(armAX)); @scaleVar">
-        <span class="crane-cable"></span>
-        <svg class="claw-svg" viewBox="0 0 44 26">
-            <path class="claw-finger" d="M22,2 C12,2 7,10 9,21" />
-            <path class="claw-finger" d="M22,2 C32,2 37,10 35,21" />
-            <line class="claw-knuckle" x1="16" y1="2" x2="28" y2="2" />
-        </svg>
-    </div>
+  <div class="crane-arm arm-a @stateClass" style="left:@(ChartLayout.Pct(armAX)); @scaleVar">
+    <span class="crane-cable"></span>
+    <svg class="claw-svg" viewBox="0 0 44 26">
+      <path class="claw-finger" d="M22,2 C12,2 7,10 9,21"/>
+      <path class="claw-finger" d="M22,2 C32,2 37,10 35,21"/>
+      <line class="claw-knuckle" x1="16" y1="2" x2="28" y2="2"/>
+    </svg>
+  </div>
 
-    <div class="crane-arm arm-b @stateClass" style="left:@(ChartLayout.Pct(armBX)); @scaleVar">
-        <span class="crane-cable"></span>
-        <svg class="claw-svg" viewBox="0 0 44 26">
-            <path class="claw-finger" d="M22,2 C12,2 7,10 9,21" />
-            <path class="claw-finger" d="M22,2 C32,2 37,10 35,21" />
-            <line class="claw-knuckle" x1="16" y1="2" x2="28" y2="2" />
-        </svg>
-    </div>
+  <div class="crane-arm arm-b @stateClass" style="left:@(ChartLayout.Pct(armBX)); @scaleVar">
+    <span class="crane-cable"></span>
+    <svg class="claw-svg" viewBox="0 0 44 26">
+      <path class="claw-finger" d="M22,2 C12,2 7,10 9,21"/>
+      <path class="claw-finger" d="M22,2 C32,2 37,10 35,21"/>
+      <line class="claw-knuckle" x1="16" y1="2" x2="28" y2="2"/>
+    </svg>
+  </div>
 </div>
 
 @code {
-    [Parameter] public int? LeftIndex { get; set; }
-    [Parameter] public int? RightIndex { get; set; }
-    [Parameter] public bool IsComparing { get; set; }
-    [Parameter] public bool IsSwapping { get; set; }
 
-    /// <summary>Total number of bars — needed to convert an index into the same percentage grid the bars use.</summary>
-    [Parameter] public int Count { get; set; } = 1;
+  [Parameter]
+  public int? LeftIndex { get; set; }
+
+  [Parameter]
+  public int? RightIndex { get; set; }
+
+  [Parameter]
+  public bool IsComparing { get; set; }
+
+  [Parameter]
+  public bool IsSwapping { get; set; }
+
+  /// <summary>Total number of bars — needed to convert an index into the same percentage grid the bars use.</summary>
+  [Parameter]
+  public int Count { get; set; } = 1;
+
 }

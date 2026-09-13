@@ -36,200 +36,226 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class QuickSortSimulator
 {
-    public static readonly string[] CodeLines =
-    [
-        "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">quick_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi)",
-        "{",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i], &amp;a[j]);",
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
-        "&nbsp;&nbsp;&nbsp;&nbsp;}",
-        "&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i + 1], &amp;a[hi]);",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, lo, p - 1);",
-        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, p + 1, hi);",
-        "}"
-    ];
+  public static readonly string[] CodeLines =
+  [
+    "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">quick_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi)",
+    "{",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i], &amp;a[j]);",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i + 1], &amp;a[hi]);",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, lo, p - 1);",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, p + 1, hi);",
+    "}"
+  ];
 
-    public static List<SortStep> Record(IReadOnlyList<int> input)
+  public static List<SortStep> Record(
+    IReadOnlyList<int> input
+  )
+  {
+    var a = input.ToArray();
+    var n = a.Length;
+    var steps = new List<SortStep>();
+    var sorted = new SortedSet<int>();
+
+    var compareCount = 0;
+    var swapCount = 0;
+
+    var stack = new Stack<(int lo, int hi)>();
+    if (n > 0)
     {
-        var a = input.ToArray();
-        var n = a.Length;
-        var steps = new List<SortStep>();
-        var sorted = new SortedSet<int>();
+      stack.Push((0, n - 1));
+    }
 
-        var compareCount = 0;
-        var swapCount = 0;
+    while (stack.Count > 0)
+    {
+      var (lo, hi) = stack.Pop();
 
-        var stack = new Stack<(int lo, int hi)>();
-        if (n > 0) stack.Push((0, n - 1));
-
-        while (stack.Count > 0)
+      if (lo >= hi)
+      {
+        if (lo == hi)
         {
-            var (lo, hi) = stack.Pop();
+          sorted.Add(lo);
+        }
 
-            if (lo >= hi)
-            {
-                if (lo == hi) sorted.Add(lo);
-                continue;
-            }
+        continue;
+      }
 
-            var pivotValue = a[hi];
+      var pivotValue = a[hi];
 
-            steps.Add(new SortStep
-            {
-                Type = StepType.SetPivot,
-                Snapshot = [.. a],
-                I = lo,
-                J = hi,
-                CompareCount = compareCount,
-                SwapCount = swapCount,
-                PivotIndex = hi,
-                RangeStart = lo,
-                RangeEnd = hi,
-                ActiveCodeLines = [3, 4, 5],
-                SortedIndices = [.. sorted],
-                Caption = $"Vùng [{lo}..{hi}]: chọn pivot = a[{hi}] = {pivotValue}."
-            });
+      steps.Add(
+        new SortStep
+        {
+          Type = StepType.SetPivot,
+          Snapshot = [.. a],
+          I = lo,
+          J = hi,
+          CompareCount = compareCount,
+          SwapCount = swapCount,
+          PivotIndex = hi,
+          RangeStart = lo,
+          RangeEnd = hi,
+          ActiveCodeLines = [3, 4, 5],
+          SortedIndices = [.. sorted],
+          Caption = $"Vùng [{lo}..{hi}]: chọn pivot = a[{hi}] = {pivotValue}."
+        }
+      );
 
-            var i = lo - 1;
+      var i = lo - 1;
 
-            for (var j = lo; j < hi; j++)
-            {
-                compareCount++;
-                var smaller = a[j] < pivotValue;
+      for (var j = lo; j < hi; j++)
+      {
+        compareCount++;
+        var smaller = a[j] < pivotValue;
 
-                steps.Add(new SortStep
-                {
-                    Type = StepType.Compare,
-                    Snapshot = [.. a],
-                    I = lo,
-                    J = j,
-                    CompareCount = compareCount,
-                    SwapCount = swapCount,
-                    LeftIndex = j,
-                    RightIndex = hi,
-                    PivotIndex = hi,
-                    RangeStart = lo,
-                    RangeEnd = hi,
-                    ActiveCodeLines = [6, 7],
-                    SortedIndices = [.. sorted],
-                    Caption = $"So sánh a[{j}] = {a[j]} với pivot = {pivotValue}" +
-                              (smaller ? "  →  nhỏ hơn" : "  →  không nhỏ hơn")
-                });
+        steps.Add(
+          new SortStep
+          {
+            Type = StepType.Compare,
+            Snapshot = [.. a],
+            I = lo,
+            J = j,
+            CompareCount = compareCount,
+            SwapCount = swapCount,
+            LeftIndex = j,
+            RightIndex = hi,
+            PivotIndex = hi,
+            RangeStart = lo,
+            RangeEnd = hi,
+            ActiveCodeLines = [6, 7],
+            SortedIndices = [.. sorted],
+            Caption = $"So sánh a[{j}] = {a[j]} với pivot = {pivotValue}"
+              + (smaller ? "  →  nhỏ hơn" : "  →  không nhỏ hơn")
+          }
+        );
 
-                if (smaller)
-                {
-                    i++;
-                    if (i != j)
-                    {
-                        (a[i], a[j]) = (a[j], a[i]);
-                        swapCount++;
-
-                        steps.Add(new SortStep
-                        {
-                            Type = StepType.Swap,
-                            Snapshot = [.. a],
-                            I = lo,
-                            J = j,
-                            CompareCount = compareCount,
-                            SwapCount = swapCount,
-                            LeftIndex = i,
-                            RightIndex = j,
-                            PivotIndex = hi,
-                            RangeStart = lo,
-                            RangeEnd = hi,
-                            ActiveCodeLines = [8, 9],
-                            SortedIndices = [.. sorted],
-                            Caption = $"Đưa a[{j}] về vùng nhỏ hơn pivot: đổi chỗ a[{i}] ↔ a[{j}]."
-                        });
-                    }
-                    else
-                    {
-                        steps.Add(new SortStep
-                        {
-                            Type = StepType.NoSwap,
-                            Snapshot = [.. a],
-                            I = lo,
-                            J = j,
-                            CompareCount = compareCount,
-                            SwapCount = swapCount,
-                            LeftIndex = i,
-                            RightIndex = j,
-                            PivotIndex = hi,
-                            RangeStart = lo,
-                            RangeEnd = hi,
-                            ActiveCodeLines = [8, 9],
-                            SortedIndices = [.. sorted],
-                            Caption = $"a[{j}] đã đúng vùng, không cần đổi chỗ."
-                        });
-                    }
-                }
-            }
-
-            (a[i + 1], a[hi]) = (a[hi], a[i + 1]);
+        if (smaller)
+        {
+          i++;
+          if (i != j)
+          {
+            (a[i], a[j]) = (a[j], a[i]);
             swapCount++;
-            var p = i + 1;
 
-            steps.Add(new SortStep
-            {
+            steps.Add(
+              new SortStep
+              {
                 Type = StepType.Swap,
                 Snapshot = [.. a],
                 I = lo,
-                J = hi,
+                J = j,
                 CompareCount = compareCount,
                 SwapCount = swapCount,
-                LeftIndex = p,
-                RightIndex = hi,
-                PivotIndex = p,
+                LeftIndex = i,
+                RightIndex = j,
+                PivotIndex = hi,
                 RangeStart = lo,
                 RangeEnd = hi,
-                ActiveCodeLines = [12, 13],
+                ActiveCodeLines = [8, 9],
                 SortedIndices = [.. sorted],
-                Caption = $"Đặt pivot vào đúng vị trí: đổi chỗ a[{p}] ↔ a[{hi}]."
-            });
-
-            sorted.Add(p);
-
-            steps.Add(new SortStep
-            {
-                Type = StepType.RangeDone,
+                Caption = $"Đưa a[{j}] về vùng nhỏ hơn pivot: đổi chỗ a[{i}] ↔ a[{j}]."
+              }
+            );
+          }
+          else
+          {
+            steps.Add(
+              new SortStep
+              {
+                Type = StepType.NoSwap,
                 Snapshot = [.. a],
                 I = lo,
-                J = hi,
+                J = j,
                 CompareCount = compareCount,
                 SwapCount = swapCount,
-                PivotIndex = p,
+                LeftIndex = i,
+                RightIndex = j,
+                PivotIndex = hi,
                 RangeStart = lo,
                 RangeEnd = hi,
-                ActiveCodeLines = [14, 15],
+                ActiveCodeLines = [8, 9],
                 SortedIndices = [.. sorted],
-                Caption = $"a[{p}] cố định — chia thành vùng [{lo}..{p - 1}] và [{p + 1}..{hi}]."
-            });
-
-            // Push right first so the left sub-range is processed first (matches recursive call order).
-            stack.Push((p + 1, hi));
-            stack.Push((lo, p - 1));
+                Caption = $"a[{j}] đã đúng vùng, không cần đổi chỗ."
+              }
+            );
+          }
         }
+      }
 
-        for (var k = 0; k < n; k++) sorted.Add(k);
+      (a[i + 1], a[hi]) = (a[hi], a[i + 1]);
+      swapCount++;
+      var p = i + 1;
 
-        steps.Add(new SortStep
+      steps.Add(
+        new SortStep
         {
-            Type = StepType.Completed,
-            Snapshot = [.. a],
-            CompareCount = compareCount,
-            SwapCount = swapCount,
-            ActiveCodeLines = [1, 2],
-            SortedIndices = [.. sorted],
-            Caption = "Hoàn tất! Dãy đã được sắp xếp."
-        });
+          Type = StepType.Swap,
+          Snapshot = [.. a],
+          I = lo,
+          J = hi,
+          CompareCount = compareCount,
+          SwapCount = swapCount,
+          LeftIndex = p,
+          RightIndex = hi,
+          PivotIndex = p,
+          RangeStart = lo,
+          RangeEnd = hi,
+          ActiveCodeLines = [12, 13],
+          SortedIndices = [.. sorted],
+          Caption = $"Đặt pivot vào đúng vị trí: đổi chỗ a[{p}] ↔ a[{hi}]."
+        }
+      );
 
-        return steps;
+      sorted.Add(p);
+
+      steps.Add(
+        new SortStep
+        {
+          Type = StepType.RangeDone,
+          Snapshot = [.. a],
+          I = lo,
+          J = hi,
+          CompareCount = compareCount,
+          SwapCount = swapCount,
+          PivotIndex = p,
+          RangeStart = lo,
+          RangeEnd = hi,
+          ActiveCodeLines = [14, 15],
+          SortedIndices = [.. sorted],
+          Caption = $"a[{p}] cố định — chia thành vùng [{lo}..{p - 1}] và [{p + 1}..{hi}]."
+        }
+      );
+
+      // Push right first so the left sub-range is processed first (matches recursive call order).
+      stack.Push((p + 1, hi));
+      stack.Push((lo, p - 1));
     }
+
+    for (var k = 0; k < n; k++)
+    {
+      sorted.Add(k);
+    }
+
+    steps.Add(
+      new SortStep
+      {
+        Type = StepType.Completed,
+        Snapshot = [.. a],
+        CompareCount = compareCount,
+        SwapCount = swapCount,
+        ActiveCodeLines = [1, 2],
+        SortedIndices = [.. sorted],
+        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+      }
+    );
+
+    return steps;
+  }
 }

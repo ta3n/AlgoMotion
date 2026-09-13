@@ -1,25 +1,33 @@
 <div class="code-panel">
-    <div class="code-titlebar">
-        <span class="dot dot-red"></span>
-        <span class="dot dot-yellow"></span>
-        <span class="dot dot-green"></span>
-        <span class="code-filename">@FileName</span>
-    </div>
-    <div class="code-body">
-        @for (var i = 0; i < Lines.Length; i++)
-        {
-            var lineNumber = i + 1;
-            var isActive = ActiveLines.Contains(lineNumber);
-            <div class="code-line @(isActive ? "code-line-active" : "")">
-                <span class="code-line-number">@lineNumber</span>
-                <span class="code-line-text">@((MarkupString)Lines[i])</span>
-            </div>
-        }
-    </div>
+  <div class="code-titlebar">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+    <span class="code-filename">@FileName</span>
+  </div>
+  <div class="code-body">
+    @for (var i = 0; i < Lines.Length; i++)
+    {
+      var lineNumber = i + 1;
+      var isActive = ActiveLines.Contains(lineNumber);
+      <div class="code-line @(isActive ? "code-line-active" : "")">
+        <span class="code-line-number">@lineNumber</span>
+        <span class="code-line-text">@((MarkupString)Lines[i])</span>
+      </div>
+    }
+  </div>
 </div>
 
 @code {
-    [Parameter] public int[] ActiveLines { get; set; } = [];
-    [Parameter, EditorRequired] public string[] Lines { get; set; } = [];
-    [Parameter] public string FileName { get; set; } = "sort.c";
+
+  [Parameter]
+  public int[] ActiveLines { get; set; } = [];
+
+  [Parameter]
+  [EditorRequired]
+  public string[] Lines { get; set; } = [];
+
+  [Parameter]
+  public string FileName { get; set; } = "sort.c";
+
 }

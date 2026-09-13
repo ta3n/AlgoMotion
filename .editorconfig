@@ -17,8 +17,8 @@ insert_final_newline = true
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 # Indentation and spacing
-indent_size = 4
-tab_width = 4
+indent_size = 2
+tab_width = 2
 
 # New line preferences
 end_of_line = crlf

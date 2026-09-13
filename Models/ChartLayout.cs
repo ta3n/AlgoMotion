@@ -22,70 +22,142 @@ namespace AlgoMotion.Models;
 /// </summary>
 public static class ChartLayout
 {
-    public const int BarAreaHeight = 200;
-    public const int BarMinHeight = 24;
+  public const int BarAreaHeight = 200;
+  public const int BarMinHeight = 24;
 
-    /// <summary>Above this many items the UI switches to its compact visual treatment (smaller glows, tighter rounding).</summary>
-    public const int CompactThreshold = 20;
+  /// <summary>Above this many items the UI switches to its compact visual treatment (smaller glows, tighter rounding).</summary>
+  public const int CompactThreshold = 20;
 
-    /// <summary>Above this many items, a bar is too narrow for its number or a crane claw to land on
-    /// legibly: value labels and the crane are dropped, and glows/rounding shrink further.</summary>
-    public const int UltraCompactThreshold = 60;
+  /// <summary>Above this many items, a bar is too narrow for its number or a crane claw to land on
+  /// legibly: value labels and the crane are dropped, and glows/rounding shrink further.</summary>
+  public const int UltraCompactThreshold = 60;
 
-    public static double SlotPercent(int count) => count <= 0 ? 100.0 : 100.0 / count;
+  public static double SlotPercent(
+    int count
+  )
+  {
+    return count <= 0 ? 100.0 : 100.0 / count;
+  }
 
-    public static double LeftPercent(int index, int count) => index * SlotPercent(count);
+  public static double LeftPercent(
+    int index,
+    int count
+  )
+  {
+    return index * SlotPercent(count);
+  }
 
-    /// <summary>Fraction of each equal-width slot filled by the bar body. Grows as items shrink, so
-    /// there's still enough pixel width left for the value label instead of wasting it on gaps.</summary>
-    public static double BarFillRatio(int count) => count switch
+  /// <summary>Fraction of each equal-width slot filled by the bar body. Grows as items shrink, so
+  /// there's still enough pixel width left for the value label instead of wasting it on gaps.</summary>
+  public static double BarFillRatio(
+    int count
+  )
+  {
+    return count switch
     {
-        <= 20 => 0.70,
-        <= 35 => 0.80,
-        <= 60 => 0.88,
-        <= 120 => 0.92,
-        _ => 0.95
+      <= 20 => 0.70,
+      <= 35 => 0.80,
+      <= 60 => 0.88,
+      <= 120 => 0.92,
+      _ => 0.95
     };
+  }
 
-    public static double BarWidthPercent(int count) => SlotPercent(count) * BarFillRatio(count);
+  public static double BarWidthPercent(
+    int count
+  )
+  {
+    return SlotPercent(count) * BarFillRatio(count);
+  }
 
-    public static double CenterPercent(int index, int count) => LeftPercent(index, count) + BarWidthPercent(count) / 2;
+  public static double CenterPercent(
+    int index,
+    int count
+  )
+  {
+    return LeftPercent(index, count) + (BarWidthPercent(count) / 2);
+  }
 
-    public static int BarHeight(int value, int maxValue) =>
-        maxValue <= 0
-            ? BarMinHeight
-            : BarMinHeight + (int)Math.Round((BarAreaHeight - BarMinHeight) * (value / (double)maxValue));
+  public static int BarHeight(
+    int value,
+    int maxValue
+  )
+  {
+    return maxValue <= 0
+      ? BarMinHeight
+      : BarMinHeight + (int)Math.Round((BarAreaHeight - BarMinHeight) * (value / (double)maxValue));
+  }
 
-    /// <summary>Value-label font size in px — shrinks as bars get narrower so text never overflows a bar.
-    /// Irrelevant once <see cref="ShowValueText"/> turns the label off entirely.</summary>
-    public static double BarFontSizePx(int count) => count switch
+  /// <summary>Value-label font size in px — shrinks as bars get narrower so text never overflows a bar.
+  /// Irrelevant once <see cref="ShowValueText"/> turns the label off entirely.</summary>
+  public static double BarFontSizePx(
+    int count
+  )
+  {
+    return count switch
     {
-        <= 10 => 16,
-        <= 16 => 14,
-        <= 22 => 12,
-        <= 30 => 10,
-        <= 40 => 9,
-        _ => 8
+      <= 10 => 16,
+      <= 16 => 14,
+      <= 22 => 12,
+      <= 30 => 10,
+      <= 40 => 9,
+      _ => 8
     };
+  }
 
-    /// <summary>Uniform scale factor for the crane (head + claws) so it never grows wider than the
-    /// slot it's pointing at once the array gets crowded. Irrelevant once <see cref="ShowCrane"/> hides it.</summary>
-    public static double CraneScale(int count) => Math.Clamp(16.0 / Math.Max(count, 1), 0.32, 1.0);
+  /// <summary>Uniform scale factor for the crane (head + claws) so it never grows wider than the
+  /// slot it's pointing at once the array gets crowded. Irrelevant once <see cref="ShowCrane"/> hides it.</summary>
+  public static double CraneScale(
+    int count
+  )
+  {
+    return Math.Clamp(16.0 / Math.Max(count, 1), 0.32, 1.0);
+  }
 
-    public static bool IsCompact(int count) => count > CompactThreshold;
+  public static bool IsCompact(
+    int count
+  )
+  {
+    return count > CompactThreshold;
+  }
 
-    public static bool IsUltraCompact(int count) => count > UltraCompactThreshold;
+  public static bool IsUltraCompact(
+    int count
+  )
+  {
+    return count > UltraCompactThreshold;
+  }
 
-    /// <summary>Below the ultra-compact threshold there's room to print the number inside each bar.</summary>
-    public static bool ShowValueText(int count) => count <= UltraCompactThreshold;
+  /// <summary>Below the ultra-compact threshold there's room to print the number inside each bar.</summary>
+  public static bool ShowValueText(
+    int count
+  )
+  {
+    return count <= UltraCompactThreshold;
+  }
 
-    /// <summary>A claw only reads as "pointing at this bar" while a bar is still wider than the claw
-    /// graphic itself; past the threshold the crane is dropped in favor of the bars' own highlight glow.</summary>
-    public static bool ShowCrane(int count) => count <= UltraCompactThreshold;
+  /// <summary>A claw only reads as "pointing at this bar" while a bar is still wider than the claw
+  /// graphic itself; past the threshold the crane is dropped in favor of the bars' own highlight glow.</summary>
+  public static bool ShowCrane(
+    int count
+  )
+  {
+    return count <= UltraCompactThreshold;
+  }
 
-    /// <summary>Formats a percentage value as a culture-invariant CSS length, e.g. "12.5%".</summary>
-    public static string Pct(double value) => value.ToString("0.####", CultureInfo.InvariantCulture) + "%";
+  /// <summary>Formats a percentage value as a culture-invariant CSS length, e.g. "12.5%".</summary>
+  public static string Pct(
+    double value
+  )
+  {
+    return value.ToString("0.####", CultureInfo.InvariantCulture) + "%";
+  }
 
-    /// <summary>Formats a plain number as a culture-invariant CSS value, e.g. for px/scale.</summary>
-    public static string Num(double value) => value.ToString("0.###", CultureInfo.InvariantCulture);
+  /// <summary>Formats a plain number as a culture-invariant CSS value, e.g. for px/scale.</summary>
+  public static string Num(
+    double value
+  )
+  {
+    return value.ToString("0.###", CultureInfo.InvariantCulture);
+  }
 }
