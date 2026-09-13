@@ -1,0 +1,9 @@
+<div class="stat-counter">
+    <span class="stat-label">@Label</span>
+    <span class="stat-value" @key="Value">@Value</span>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public int Value { get; set; }
+}

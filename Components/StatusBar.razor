@@ -1,0 +1,35 @@
+@using AlgoMotion.Models
+
+<div class="status-bar">
+    <div class="status-chip"><span class="status-key">n</span><span class="status-eq">=</span><span class="status-val">@N</span></div>
+    <div class="status-chip"><span class="status-key">i</span><span class="status-eq">=</span><span class="status-val">@(I >= 0 ? I.ToString() : "-")</span></div>
+    <div class="status-chip"><span class="status-key">j</span><span class="status-eq">=</span><span class="status-val">@(J >= 0 ? J.ToString() : "-")</span></div>
+    <div class="status-chip"><span class="status-key">swapped</span><span class="status-eq">=</span><span class="status-val status-bool-@Swapped.ToString().ToLowerInvariant()">@Swapped.ToString().ToLowerInvariant()</span></div>
+</div>
+
+<div class="status-now">
+    <span class="status-section-label">HIỆN TẠI</span>
+    <p class="status-caption">@Caption</p>
+</div>
+
+<div class="status-history-wrap">
+    <span class="status-section-label">LỊCH SỬ (@History.Count)</span>
+    <div class="status-history">
+        @foreach (var entry in History)
+        {
+            <div class="status-history-row">
+                <span class="status-history-time">@entry.Time.ToString("HH:mm:ss.fff")</span>
+                <span class="status-history-text">@entry.Caption</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int N { get; set; }
+    [Parameter] public int I { get; set; } = -1;
+    [Parameter] public int J { get; set; } = -1;
+    [Parameter] public bool Swapped { get; set; }
+    [Parameter] public string Caption { get; set; } = "";
+    [Parameter] public IReadOnlyList<CaptionLogEntry> History { get; set; } = [];
+}

@@ -1,0 +1,42 @@
+<div class="code-panel">
+    <div class="code-titlebar">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="code-filename">bubble_sort.c</span>
+    </div>
+    <div class="code-body">
+        @for (var i = 0; i < Lines.Length; i++)
+        {
+            var lineNumber = i + 1;
+            var isActive = ActiveLines.Contains(lineNumber);
+            <div class="code-line @(isActive ? "code-line-active" : "")">
+                <span class="code-line-number">@lineNumber</span>
+                <span class="code-line-text">@((MarkupString)Lines[i])</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int[] ActiveLines { get; set; } = [];
+
+    private static readonly string[] Lines =
+    [
+        "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">bubble_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> i = 0; i + 1 &lt; n; i++) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">bool</span> swapped = <span class=\"tok-kw\">false</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> j = 0; j + 1 &lt; n - i; j++) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &gt; a[j + 1]) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[j];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j] = a[j + 1];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j + 1] = tmp;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swapped = <span class=\"tok-kw\">true</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (!swapped) <span class=\"tok-kw\">break</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+    ];
+}

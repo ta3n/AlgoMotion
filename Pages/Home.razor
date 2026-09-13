@@ -1,0 +1,195 @@
+@page "/"
+@using System.Globalization
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@using AlgoMotion.Components
+@implements IDisposable
+
+<PageTitle>Bubble Sort Visualizer</PageTitle>
+
+<div class="stage" style="--speed-scale:@(SpeedScale);">
+
+    <header class="app-header">
+        <div class="title-block">
+            <h1 class="app-title">BUBBLE SORT</h1>
+            <p class="app-subtitle">ORDENACIÓN POR INTERCAMBIO</p>
+        </div>
+        <div class="counters">
+            <StatCounter Label="COMPARA" Value="@Step.CompareCount" />
+            <StatCounter Label="CAMBIA" Value="@Step.SwapCount" />
+        </div>
+    </header>
+
+    <section class="chart-area">
+        <RobotArm LeftIndex="@Step.LeftIndex"
+                  RightIndex="@Step.RightIndex"
+                  IsComparing="@(Step.Type == StepType.Compare)"
+                  IsSwapping="@(Step.Type == StepType.Swap)"
+                  Count="@_initial.Length" />
+
+        <SortBars Bars="@Bars" MaxValue="@_maxValue" />
+    </section>
+
+    <section class="lower-area">
+        <CodeViewer ActiveLines="@Step.ActiveCodeLines" />
+
+        <div class="controls">
+            <button class="btn btn-play" @onclick="TogglePlay">
+                @(_player.State.IsPlaying ? "⏸ Pause" : "▶ Play")
+            </button>
+            <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">⏭ Step</button>
+            <button class="btn" @onclick="() => _player.Reset()">⟲ Reset</button>
+            <button class="btn" @onclick="() => _player.Replay()">↻ Replay</button>
+
+            <div class="n-control">
+                <label for="n-input">n</label>
+                <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
+                       value="@_n" @onchange="OnNChanged" />
+            </div>
+            <button class="btn" @onclick="() => NewArray()" title="Tạo mảng ngẫu nhiên mới cùng kích thước">🔀 Mảng mới</button>
+
+            <div class="speed-control">
+                <label for="speed-input">Tốc độ</label>
+                <input id="speed-input" type="range"
+                       min="@PlaybackSpeeds.Min.ToString(CultureInfo.InvariantCulture)"
+                       max="@PlaybackSpeeds.Max.ToString(CultureInfo.InvariantCulture)"
+                       step="@PlaybackSpeeds.Step.ToString(CultureInfo.InvariantCulture)"
+                       value="@_player.State.Speed.ToString(CultureInfo.InvariantCulture)"
+                       @oninput="OnSpeedInput" />
+                <span class="speed-readout">@PlaybackSpeeds.Format(_player.State.Speed)</span>
+            </div>
+        </div>
+
+        <p class="hint-caption">SOLO COMPARA VECINOS, DE DOS EN DOS</p>
+    </section>
+
+    <StatusBar N="@_initial.Length" I="@Step.I" J="@Step.J" Swapped="@Step.Swapped"
+               Caption="@Step.Caption" History="@_history" />
+
+</div>
+
+@code {
+    private const int MinN = 4;
+    private const int MaxN = 50;
+
+    private readonly AnimationPlayer _player = new();
+    private readonly Random _rng = new();
+    private readonly List<CaptionLogEntry> _history = [];
+
+    private int _n = 8;
+    private int[] _initial = [];
+    private int _maxValue;
+    private int _lastLoggedIndex = -1;
+    private SortStep _initialStep = new();
+
+    private SortStep Step => _player.Current ?? _initialStep;
+
+    private List<BarItem> Bars => BuildBars(Step);
+
+    /// <summary>
+    /// Exposed as the CSS custom property --speed-scale so every transition/animation
+    /// duration in app.css can be written as calc(BASEms * var(--speed-scale)) — that
+    /// keeps the crane, bars and code highlight in lockstep with the playback speed
+    /// instead of animating at a fixed real-time speed no matter how fast steps advance.
+    /// </summary>
+    private string SpeedScale => (1.0 / _player.State.Speed).ToString("0.####", CultureInfo.InvariantCulture);
+
+    protected override void OnInitialized()
+    {
+        // Subscribe first so the very first Load() below already flows through
+        // OnPlayerChanged and seeds the history log — one code path for every reset.
+        _player.Changed += OnPlayerChanged;
+        NewArray();
+    }
+
+    /// <summary>Generates a fresh random permutation of 1..n and reloads the simulation.</summary>
+    private void NewArray()
+    {
+        _initial = Enumerable.Range(1, _n).OrderBy(_ => _rng.Next()).ToArray();
+        _maxValue = _initial.Max();
+        _initialStep = new SortStep
+        {
+            Type = StepType.StartPass,
+            Snapshot = _initial.ToArray(),
+            I = -1,
+            J = -1,
+            ActiveCodeLines = [1, 2],
+            Caption = "Dãy ban đầu. Nhấn Play để bắt đầu sắp xếp."
+        };
+
+        _player.Load(BubbleSortSimulator.Record(_initial));
+    }
+
+    /// <summary>
+    /// Single funnel for every player event: advances the caption history log in
+    /// lockstep with playback (one entry per step actually reached, newest first)
+    /// and resets it whenever the run restarts (index back to -1).
+    /// </summary>
+    private void OnPlayerChanged()
+    {
+        var index = _player.State.CurrentIndex;
+        if (index == -1)
+        {
+            _history.Clear();
+            _lastLoggedIndex = -1;
+            _history.Insert(0, new CaptionLogEntry(DateTime.Now, -1, _initialStep.Caption));
+        }
+        else if (index != _lastLoggedIndex)
+        {
+            _lastLoggedIndex = index;
+            _history.Insert(0, new CaptionLogEntry(DateTime.Now, index, _player.Steps[index].Caption));
+            const int maxEntries = 200;
+            if (_history.Count > maxEntries) _history.RemoveRange(maxEntries, _history.Count - maxEntries);
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void TogglePlay()
+    {
+        if (_player.State.IsPlaying) _player.Pause();
+        else _player.Play();
+    }
+
+    private void OnSpeedInput(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var speed))
+        {
+            _player.SetSpeed(speed);
+        }
+    }
+
+    private void OnNChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var n))
+        {
+            _n = Math.Clamp(n, MinN, MaxN);
+            NewArray();
+        }
+    }
+
+    private static List<BarItem> BuildBars(SortStep step)
+    {
+        var sortedSet = step.SortedIndices.ToHashSet();
+        var list = new List<BarItem>(step.Snapshot.Length);
+        for (var i = 0; i < step.Snapshot.Length; i++)
+        {
+            var isActive = i == step.LeftIndex || i == step.RightIndex;
+            list.Add(new BarItem
+            {
+                Value = step.Snapshot[i],
+                SlotIndex = i,
+                IsActive = isActive,
+                IsSwapping = isActive && step.Type == StepType.Swap,
+                IsSorted = sortedSet.Contains(i)
+            });
+        }
+        return list;
+    }
+
+    public void Dispose()
+    {
+        _player.Changed -= OnPlayerChanged;
+        _player.Dispose();
+    }
+}
