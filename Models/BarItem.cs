@@ -20,4 +20,10 @@ public sealed class BarItem
     public bool IsSwapping { get; init; }
 
     public bool IsSorted { get; init; }
+
+    /// <summary>Selection Sort's running minimum, or Quick Sort's pivot — marked with a gold ring.</summary>
+    public bool IsPivot { get; init; }
+
+    /// <summary>Outside the sub-range Quick/Merge Sort is currently working on — faded to keep focus on the active range.</summary>
+    public bool IsDimmed { get; init; }
 }

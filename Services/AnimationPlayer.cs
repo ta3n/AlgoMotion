@@ -125,6 +125,12 @@ public sealed class AnimationPlayer : IDisposable
         StepType.MarkSorted => 480,
         StepType.EndPass => 350,
         StepType.Completed => 900,
+        StepType.NewCandidate => 450,
+        StepType.SetPivot => 600,
+        StepType.RangeDone => 500,
+        StepType.SplitRange => 500,
+        StepType.MergeCompare => 500,
+        StepType.MergeWrite => 450,
         _ => 400
     };
 

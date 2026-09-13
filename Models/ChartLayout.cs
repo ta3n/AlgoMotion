@@ -15,7 +15,10 @@ namespace AlgoMotion.Models;
 /// Everything below is a continuous function of <c>count</c> (the array
 /// size), not a hardcoded look for 8 items: font size, crane size and even
 /// how much of each slot the bar body fills all shrink smoothly as the array
-/// grows, so the layout stays readable from a handful of items up to 50.
+/// grows, so the layout stays readable from a handful of items up to 200.
+/// Past a point a bar is just too narrow for a number or a claw to land on
+/// legibly — <see cref="ShowValueText"/> and <see cref="ShowCrane"/> mark
+/// where the UI drops those details rather than rendering them unreadably.
 /// </summary>
 public static class ChartLayout
 {
@@ -24,6 +27,10 @@ public static class ChartLayout
 
     /// <summary>Above this many items the UI switches to its compact visual treatment (smaller glows, tighter rounding).</summary>
     public const int CompactThreshold = 20;
+
+    /// <summary>Above this many items, a bar is too narrow for its number or a crane claw to land on
+    /// legibly: value labels and the crane are dropped, and glows/rounding shrink further.</summary>
+    public const int UltraCompactThreshold = 60;
 
     public static double SlotPercent(int count) => count <= 0 ? 100.0 : 100.0 / count;
 
@@ -35,7 +42,9 @@ public static class ChartLayout
     {
         <= 20 => 0.70,
         <= 35 => 0.80,
-        _ => 0.88
+        <= 60 => 0.88,
+        <= 120 => 0.92,
+        _ => 0.95
     };
 
     public static double BarWidthPercent(int count) => SlotPercent(count) * BarFillRatio(count);
@@ -47,7 +56,8 @@ public static class ChartLayout
             ? BarMinHeight
             : BarMinHeight + (int)Math.Round((BarAreaHeight - BarMinHeight) * (value / (double)maxValue));
 
-    /// <summary>Value-label font size in px — shrinks as bars get narrower so text never overflows a bar.</summary>
+    /// <summary>Value-label font size in px — shrinks as bars get narrower so text never overflows a bar.
+    /// Irrelevant once <see cref="ShowValueText"/> turns the label off entirely.</summary>
     public static double BarFontSizePx(int count) => count switch
     {
         <= 10 => 16,
@@ -59,10 +69,19 @@ public static class ChartLayout
     };
 
     /// <summary>Uniform scale factor for the crane (head + claws) so it never grows wider than the
-    /// slot it's pointing at once the array gets crowded.</summary>
+    /// slot it's pointing at once the array gets crowded. Irrelevant once <see cref="ShowCrane"/> hides it.</summary>
     public static double CraneScale(int count) => Math.Clamp(16.0 / Math.Max(count, 1), 0.32, 1.0);
 
     public static bool IsCompact(int count) => count > CompactThreshold;
+
+    public static bool IsUltraCompact(int count) => count > UltraCompactThreshold;
+
+    /// <summary>Below the ultra-compact threshold there's room to print the number inside each bar.</summary>
+    public static bool ShowValueText(int count) => count <= UltraCompactThreshold;
+
+    /// <summary>A claw only reads as "pointing at this bar" while a bar is still wider than the claw
+    /// graphic itself; past the threshold the crane is dropped in favor of the bars' own highlight glow.</summary>
+    public static bool ShowCrane(int count) => count <= UltraCompactThreshold;
 
     /// <summary>Formats a percentage value as a culture-invariant CSS length, e.g. "12.5%".</summary>
     public static string Pct(double value) => value.ToString("0.####", CultureInfo.InvariantCulture) + "%";

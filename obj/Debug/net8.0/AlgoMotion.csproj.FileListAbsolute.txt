@@ -1,3 +1,11 @@
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.csproj.AssemblyReference.cache
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/rpswa.dswa.cache.json
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.GeneratedMSBuildEditorConfig.editorconfig
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.AssemblyInfoInputs.cache
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.AssemblyInfo.cs
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.csproj.CoreCompileInputs.cache
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.MvcApplicationPartsAssemblyInfo.cache
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.sourcelink.json
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/blazor.webassembly.js
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/Microsoft.AspNetCore.Authorization.wasm
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/Microsoft.AspNetCore.Components.wasm
@@ -408,6 +416,7 @@
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/AlgoMotion.wasm.gz
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/AlgoMotion.pdb.gz
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/wwwroot/_framework/blazor.boot.json.gz
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/nuget.config
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/AlgoMotion.staticwebassets.runtime.json
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/AlgoMotion.staticwebassets.endpoints.json
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/AlgoMotion.dll
@@ -613,13 +622,6 @@
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/icudt_EFIGS.dat
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/icudt_no_CJK.dat
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/bin/Debug/net8.0/emcc-props.json
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.csproj.AssemblyReference.cache
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/rpswa.dswa.cache.json
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.GeneratedMSBuildEditorConfig.editorconfig
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.AssemblyInfoInputs.cache
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.AssemblyInfo.cs
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.csproj.CoreCompileInputs.cache
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.MvcApplicationPartsAssemblyInfo.cache
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/webcil/Microsoft.AspNetCore.Authorization.wasm
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/webcil/Microsoft.AspNetCore.Components.wasm
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/webcil/Microsoft.AspNetCore.Components.Forms.wasm
@@ -1030,6 +1032,6 @@
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/refint/AlgoMotion.dll
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/AlgoMotion.pdb
 /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/ref/AlgoMotion.dll
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/wmf8jcgm77-{0}-t6g7k9txen-t6g7k9txen.gz
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/9ldemwc3af-{0}-he74zheh0m-he74zheh0m.gz
-/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/fq256pu91k-{0}-00p26gcusk-00p26gcusk.gz
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/wmf8jcgm77-{0}-82zzpodtv4-82zzpodtv4.gz
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/9ldemwc3af-{0}-g459pgswnk-g459pgswnk.gz
+/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/Debug/net8.0/compressed/fq256pu91k-{0}-d3q4ytpywy-d3q4ytpywy.gz

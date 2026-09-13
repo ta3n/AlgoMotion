@@ -5,7 +5,10 @@
     var leftX = ChartLayout.CenterPercent(LeftIndex ?? 0, Count);
     var rightX = ChartLayout.CenterPercent(RightIndex ?? 1, Count);
     var midX = (leftX + rightX) / 2;
-    var stateClass = IsSwapping ? "state-swap" : IsComparing ? "state-compare" : "";
+    string stateClass;
+    if (IsSwapping) stateClass = "state-swap";
+    else if (IsComparing) stateClass = "state-compare";
+    else stateClass = "";
     var scaleVar = $"--crane-scale:{ChartLayout.Num(ChartLayout.CraneScale(Count))};";
 
     // While swapping, the two arms hand the pair off to each other: the arm that

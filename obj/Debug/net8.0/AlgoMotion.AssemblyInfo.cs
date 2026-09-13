@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AlgoMotion")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88e7342917c2645505e92359eb62451aaa6c9896")]
 [assembly: System.Reflection.AssemblyProductAttribute("AlgoMotion")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AlgoMotion")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "AlgoMotion",
   "resources": {
-    "hash": "sha256-DljOdEFEjTRF1k4zelrRiJcG7I5EDWDeX4fT0na/67s=",
+    "hash": "sha256-l9SArw5BLGtYu0OA6wRMrZQUp+gqB2kHW59P76xo7iI=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-A16ka545FHaB+QXjyJ4exXh7XpBAAIFnX8YkC4xAng8="
     },
@@ -209,10 +209,10 @@
       "mscorlib.wasm": "sha256-ovgR6YJeXMcsAhvGJVdyjhD5pU34EEAc0BGQYTUAyNk=",
       "netstandard.wasm": "sha256-90+pPOP/3NxK0buBFJlcvDw0r6Nk/i3+oM9dt2x+LPM=",
       "System.Private.CoreLib.wasm": "sha256-IXKG8p3ppN4zPjJOxht5wSXCcbFNPH6InVm7fsThBPI=",
-      "AlgoMotion.wasm": "sha256-S0plRs0hpfa5Z4xthOGqPWtwKOCEUh6gXiIhUaoqPJo="
+      "AlgoMotion.wasm": "sha256-wDomZD7DZdTr2ecp0eetDRz/P2usMhwp17dNTObUAxM="
     },
     "pdb": {
-      "AlgoMotion.pdb": "sha256-eQWWvD5PmOFbriSND/RDUTSc/P6yAIrjPbkeMblfLSo="
+      "AlgoMotion.pdb": "sha256-0MR5Q520aXm3l6CpdO7xTLBIsSAmJohECA0Hahvlaws="
     }
   },
   "cacheBootResources": true,

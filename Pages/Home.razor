@@ -5,35 +5,62 @@
 @using AlgoMotion.Components
 @implements IDisposable
 
-<PageTitle>Bubble Sort Visualizer</PageTitle>
+<PageTitle>Sorting Visualizer</PageTitle>
 
 <div class="stage" style="--speed-scale:@(SpeedScale);">
 
     <header class="app-header">
         <div class="title-block">
-            <h1 class="app-title">BUBBLE SORT</h1>
-            <p class="app-subtitle">ORDENACIÓN POR INTERCAMBIO</p>
+            <h1 class="app-title">@_algorithm.Name</h1>
+            <p class="app-subtitle">@_algorithm.Subtitle</p>
         </div>
         <div class="counters">
-            <StatCounter Label="COMPARA" Value="@Step.CompareCount" />
-            <StatCounter Label="CAMBIA" Value="@Step.SwapCount" />
+            <StatCounter Label="@_algorithm.CompareLabel" Value="@Step.CompareCount" />
+            <StatCounter Label="@_algorithm.ActionLabel" Value="@Step.SwapCount" />
         </div>
     </header>
 
     <section class="chart-area">
-        <RobotArm LeftIndex="@Step.LeftIndex"
-                  RightIndex="@Step.RightIndex"
-                  IsComparing="@(Step.Type == StepType.Compare)"
-                  IsSwapping="@(Step.Type == StepType.Swap)"
-                  Count="@_initial.Length" />
+        @if (_algorithm.ShowCrane && ChartLayout.ShowCrane(_initial.Length))
+        {
+            <RobotArm LeftIndex="@Step.LeftIndex"
+                      RightIndex="@Step.RightIndex"
+                      IsComparing="@(Step.Type == StepType.Compare)"
+                      IsSwapping="@(Step.Type == StepType.Swap)"
+                      Count="@_initial.Length" />
+        }
 
         <SortBars Bars="@Bars" MaxValue="@_maxValue" />
     </section>
 
     <section class="lower-area">
-        <CodeViewer ActiveLines="@Step.ActiveCodeLines" />
+        <CodeViewer ActiveLines="@Step.ActiveCodeLines" Lines="@_algorithm.CodeLines" FileName="@_algorithm.FileName" />
 
         <div class="controls">
+            <div class="algo-control @(_algoMenuOpen ? "is-open" : "")">
+                <label id="algo-label">Thuật toán</label>
+                <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_algoMenuOpen"
+                        aria-labelledby="algo-label" @onclick="ToggleAlgoMenu">
+                    <span>@_algorithm.Name</span>
+                    <span class="algo-caret">▾</span>
+                </button>
+
+                @if (_algoMenuOpen)
+                {
+                    <div class="menu-scrim" @onclick="CloseAlgoMenu"></div>
+                    <ul class="algo-menu" role="listbox">
+                        @foreach (var algo in SortAlgorithms.All)
+                        {
+                            <li role="option" aria-selected="@(algo.Kind == _algorithm.Kind)"
+                                class="algo-menu-item @(algo.Kind == _algorithm.Kind ? "is-selected" : "")"
+                                @onclick="() => SelectAlgorithm(algo.Kind)">
+                                @algo.Name
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
             <button class="btn btn-play" @onclick="TogglePlay">
                 @(_player.State.IsPlaying ? "⏸ Pause" : "▶ Play")
             </button>
@@ -46,7 +73,7 @@
                 <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
                        value="@_n" @onchange="OnNChanged" />
             </div>
-            <button class="btn" @onclick="() => NewArray()" title="Tạo mảng ngẫu nhiên mới cùng kích thước">🔀 Mảng mới</button>
+            <button class="btn" @onclick="NewArray" title="Tạo mảng ngẫu nhiên mới cùng kích thước">🔀 Mảng mới</button>
 
             <div class="speed-control">
                 <label for="speed-input">Tốc độ</label>
@@ -60,7 +87,7 @@
             </div>
         </div>
 
-        <p class="hint-caption">SOLO COMPARA VECINOS, DE DOS EN DOS</p>
+        <p class="hint-caption">@_algorithm.HintCaption</p>
     </section>
 
     <StatusBar N="@_initial.Length" I="@Step.I" J="@Step.J" Swapped="@Step.Swapped"
@@ -70,12 +97,14 @@
 
 @code {
     private const int MinN = 4;
-    private const int MaxN = 50;
+    private const int MaxN = 200;
 
     private readonly AnimationPlayer _player = new();
     private readonly Random _rng = new();
     private readonly List<CaptionLogEntry> _history = [];
 
+    private SortAlgorithmInfo _algorithm = SortAlgorithms.Get(SortAlgorithmKind.Bubble);
+    private bool _algoMenuOpen;
     private int _n = 8;
     private int[] _initial = [];
     private int _maxValue;
@@ -105,19 +134,26 @@
     /// <summary>Generates a fresh random permutation of 1..n and reloads the simulation.</summary>
     private void NewArray()
     {
-        _initial = Enumerable.Range(1, _n).OrderBy(_ => _rng.Next()).ToArray();
-        _maxValue = _initial.Max();
+        _initial = [.. Enumerable.Range(1, _n).OrderBy(_ => _rng.Next())];
+        LoadCurrentArray();
+    }
+
+    /// <summary>Re-records the *same* array under the current algorithm — used when only
+    /// the algorithm changes, so switching keeps the exact input for a fair comparison.</summary>
+    private void LoadCurrentArray()
+    {
+        _maxValue = _initial.Length > 0 ? _initial.Max() : 1;
         _initialStep = new SortStep
         {
             Type = StepType.StartPass,
-            Snapshot = _initial.ToArray(),
+            Snapshot = [.. _initial],
             I = -1,
             J = -1,
             ActiveCodeLines = [1, 2],
             Caption = "Dãy ban đầu. Nhấn Play để bắt đầu sắp xếp."
         };
 
-        _player.Load(BubbleSortSimulator.Record(_initial));
+        _player.Load(_algorithm.Record(_initial));
     }
 
     /// <summary>
@@ -168,6 +204,19 @@
         }
     }
 
+    private void ToggleAlgoMenu() => _algoMenuOpen = !_algoMenuOpen;
+
+    private void CloseAlgoMenu() => _algoMenuOpen = false;
+
+    private void SelectAlgorithm(SortAlgorithmKind kind)
+    {
+        _algoMenuOpen = false;
+        if (kind == _algorithm.Kind) return;
+
+        _algorithm = SortAlgorithms.Get(kind);
+        LoadCurrentArray();
+    }
+
     private static List<BarItem> BuildBars(SortStep step)
     {
         var sortedSet = step.SortedIndices.ToHashSet();
@@ -175,13 +224,16 @@
         for (var i = 0; i < step.Snapshot.Length; i++)
         {
             var isActive = i == step.LeftIndex || i == step.RightIndex;
+            var isDimmed = step is { RangeStart: { } lo, RangeEnd: { } hi } && (i < lo || i > hi);
             list.Add(new BarItem
             {
                 Value = step.Snapshot[i],
                 SlotIndex = i,
                 IsActive = isActive,
-                IsSwapping = isActive && step.Type == StepType.Swap,
-                IsSorted = sortedSet.Contains(i)
+                IsSwapping = isActive && step.Type is StepType.Swap or StepType.MergeWrite,
+                IsSorted = sortedSet.Contains(i),
+                IsPivot = step.PivotIndex == i,
+                IsDimmed = isDimmed
             });
         }
         return list;

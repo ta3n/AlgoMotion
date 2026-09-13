@@ -434,6 +434,9 @@
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
         }
       },
+      "SonarAnalyzer.CSharp/10.34.0.3385": {
+        "type": "package"
+      },
       "System.IO.Pipelines/8.0.0": {
         "type": "package",
         "compile": {
@@ -883,6 +886,9 @@
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
         }
+      },
+      "SonarAnalyzer.CSharp/10.34.0.3385": {
+        "type": "package"
       },
       "System.IO.Pipelines/8.0.0": {
         "type": "package",
@@ -1805,6 +1811,25 @@
         "tools/net472/Microsoft.NET.WebAssembly.Webcil.dll"
       ]
     },
+    "SonarAnalyzer.CSharp/10.34.0.3385": {
+      "sha512": "FfjaQa9G9xdEyh14AYWeG6vLQ+2PZWkooI/w3cH5aGBGGeWmhjeWS+/luYoJDYgrXMI2ciBj42y6buhJJHO2ow==",
+      "type": "package",
+      "path": "sonaranalyzer.csharp/10.34.0.3385",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/SonarAnalyzer.CSharp.dll",
+        "images/sonarsource_64.png",
+        "licenses/LICENSE.txt",
+        "licenses/THIRD_PARTY_LICENSES/Google.Protobuf-LICENSE.txt",
+        "licenses/THIRD_PARTY_LICENSES/Roslyn-LICENSE.txt",
+        "sonaranalyzer.csharp.10.34.0.3385.nupkg.sha512",
+        "sonaranalyzer.csharp.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
     "System.IO.Pipelines/8.0.0": {
       "sha512": "FHNOatmUq0sqJOkTx+UF/9YK1f180cnW5FVqnQMvYUN0elp6wFzbtPSiqbo1/ru8ICp43JM1i7kKkk6GsNGHlA==",
       "type": "package",
@@ -1840,7 +1865,8 @@
       "Microsoft.AspNetCore.Components.WebAssembly >= 8.0.25",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 8.0.25",
       "Microsoft.NET.ILLink.Tasks >= 8.0.25",
-      "Microsoft.NET.Sdk.WebAssembly.Pack >= 10.0.5"
+      "Microsoft.NET.Sdk.WebAssembly.Pack >= 10.0.5",
+      "SonarAnalyzer.CSharp >= *"
     ]
   },
   "packageFolders": {
@@ -1856,6 +1882,7 @@
       "outputPath": "/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
+        "/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/nuget.config",
         "/home/tanguyen/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
@@ -1872,6 +1899,11 @@
         }
       },
       "warningProperties": {
+        "allWarningsAsErrors": true,
+        "noWarn": [
+          "NU1903",
+          "NU1904"
+        ],
         "warnAsError": [
           "NU1605"
         ]
@@ -1908,6 +1940,12 @@
             "target": "Package",
             "version": "[10.0.5, )",
             "autoReferenced": true
+          },
+          "SonarAnalyzer.CSharp": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[*, )"
           }
         },
         "imports": [

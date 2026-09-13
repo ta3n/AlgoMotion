@@ -23,7 +23,7 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = /home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion
 build_property._RazorSourceGeneratorDebug = 
-build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
 [/home/tanguyen/Documents/Workspaces/Psnl/SourceCodes/AlgoMotion/App.razor]

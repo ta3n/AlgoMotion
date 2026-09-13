@@ -179,7 +179,9 @@ html, body {
         transform calc(250ms * var(--speed-scale, 1)) ease,
         border-color calc(250ms * var(--speed-scale, 1)) ease,
         box-shadow calc(250ms * var(--speed-scale, 1)) ease,
-        background calc(300ms * var(--speed-scale, 1)) ease;
+        background calc(300ms * var(--speed-scale, 1)) ease,
+        opacity calc(300ms * var(--speed-scale, 1)) ease,
+        filter calc(300ms * var(--speed-scale, 1)) ease;
 }
 
 .bar-value {
@@ -203,6 +205,24 @@ html, body {
     border-color: var(--neon-green);
     background: linear-gradient(180deg, rgba(61, 242, 164, 0.3), rgba(20, 110, 80, 0.5));
     box-shadow: 0 0 14px var(--neon-green-soft);
+}
+
+/* Selection Sort's running minimum / Quick Sort's pivot — a persistent gold
+   ring, independent of (and layered under) the pink active-pair highlight. */
+.bar-pivot {
+    border-color: var(--neon-amber);
+    box-shadow: 0 0 10px rgba(255, 198, 90, 0.45);
+}
+
+.bar-pivot.bar-active {
+    /* keep the pivot's gold border visible even while it's also the active pair */
+    box-shadow: 0 0 10px rgba(255, 198, 90, 0.45), 0 0 18px var(--neon-pink-soft), 0 0 42px var(--neon-pink-soft);
+}
+
+/* Outside the sub-range Quick/Merge Sort is currently working on. */
+.bar-dimmed {
+    opacity: 0.32;
+    filter: saturate(0.6);
 }
 
 @keyframes barHop {
@@ -239,6 +259,43 @@ html, body {
     35% { transform: scale(1.05) translateY(-14px); }
     65% { transform: scale(1.05) translateY(-14px); }
     100% { transform: scale(1.02) translateY(0); }
+}
+
+/* ---------- ultra-compact mode (60+ items): bars are only a few px wide —
+   a 10px rounded corner or an 18px glow blur would visually swallow several
+   neighbors, so radius/border/glow all shrink to match, and there's no room
+   left for a value label (SortBars stops rendering it) or a crane claw
+   (Home.razor stops rendering the whole RobotArm). ---------- */
+
+.bars-track.is-ultra-compact .bar {
+    border-width: 1px;
+    border-radius: 1px;
+    padding-top: 0;
+    /* A slide across a 3-4px-wide bar isn't visible as motion anyway, and at this
+       item count there are many steps per second — skipping the transition avoids
+       paying for an animation nobody can actually see. */
+    transition: none;
+}
+
+.bars-track.is-ultra-compact .bar-active {
+    transform: none;
+    box-shadow: 0 0 3px var(--neon-pink-soft);
+}
+
+.bars-track.is-ultra-compact .bar-swapping {
+    box-shadow: 0 0 5px var(--neon-pink);
+}
+
+.bars-track.is-ultra-compact .bar-sorted {
+    box-shadow: none;
+}
+
+.bars-track.is-ultra-compact .bar-pivot {
+    box-shadow: 0 0 4px rgba(255, 198, 90, 0.55);
+}
+
+.bars-track.is-ultra-compact .bar-pivot.bar-active {
+    box-shadow: 0 0 4px rgba(255, 198, 90, 0.55), 0 0 4px var(--neon-pink-soft);
 }
 
 /* ---------- crane / grabber ---------- */
@@ -569,6 +626,112 @@ html, body {
 .btn-play {
     border-color: var(--neon-cyan);
     color: var(--neon-cyan);
+}
+
+.algo-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 4px 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-panel-2);
+}
+
+.algo-control.is-open {
+    border-color: var(--neon-cyan);
+}
+
+.algo-control label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--neon-cyan);
+}
+
+/* Custom dropdown trigger — a native <select>'s popup can't be restyled to
+   match the dark theme (it renders with the OS/browser's own white list),
+   so the whole thing (trigger + panel) is hand-built instead. */
+.algo-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 132px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 9px 10px 9px 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-bright);
+    cursor: pointer;
+}
+
+.algo-trigger span:first-child {
+    flex: 1;
+    text-align: left;
+}
+
+.algo-caret {
+    color: var(--neon-cyan);
+    font-size: 11px;
+    transition: transform calc(150ms * var(--speed-scale, 1)) ease;
+}
+
+.algo-control.is-open .algo-caret {
+    transform: rotate(180deg);
+}
+
+/* Full-viewport, invisible — sits under the panel purely to catch outside
+   clicks and close the menu (a plain CSS-only alternative to a JS listener). */
+.menu-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: transparent;
+}
+
+.algo-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 41;
+    min-width: 180px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 18px var(--neon-cyan-soft);
+    animation: menuPop calc(150ms * var(--speed-scale, 1)) ease;
+}
+
+.algo-menu-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: background calc(120ms * var(--speed-scale, 1)) ease, color calc(120ms * var(--speed-scale, 1)) ease;
+}
+
+.algo-menu-item:hover {
+    background: rgba(74, 217, 255, 0.12);
+    color: var(--text-bright);
+}
+
+.algo-menu-item.is-selected {
+    color: var(--neon-cyan);
+    background: rgba(74, 217, 255, 0.16);
+    font-weight: 600;
+}
+
+@keyframes menuPop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .n-control {

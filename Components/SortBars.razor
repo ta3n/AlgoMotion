@@ -1,17 +1,22 @@
 @using AlgoMotion.Models
 
-<div class="bars-track @(ChartLayout.IsCompact(Bars.Count) ? "is-compact" : "")" style="height:@(ChartLayout.BarAreaHeight)px;">
+<div class="bars-track @(ChartLayout.IsCompact(Bars.Count) ? "is-compact" : "") @(ChartLayout.IsUltraCompact(Bars.Count) ? "is-ultra-compact" : "")"
+     style="height:@(ChartLayout.BarAreaHeight)px;">
     @{
         var n = Bars.Count;
         var fontSize = ChartLayout.Num(ChartLayout.BarFontSizePx(n));
+        var showValue = ChartLayout.ShowValueText(n);
     }
     @foreach (var bar in Bars)
     {
         <div @key="bar.Value"
-             class="bar @(bar.IsActive ? "bar-active" : "") @(bar.IsSwapping ? "bar-swapping" : "") @(bar.IsSorted ? "bar-sorted" : "")"
+             class="bar @(bar.IsActive ? "bar-active" : "") @(bar.IsSwapping ? "bar-swapping" : "") @(bar.IsSorted ? "bar-sorted" : "") @(bar.IsPivot ? "bar-pivot" : "") @(bar.IsDimmed ? "bar-dimmed" : "")"
              style="left:@(ChartLayout.Pct(ChartLayout.LeftPercent(bar.SlotIndex, n))); width:@(ChartLayout.Pct(ChartLayout.BarWidthPercent(n))); height:@(ChartLayout.BarHeight(bar.Value, MaxValue))px; font-size:@(fontSize)px;"
              title="@bar.Value">
-            <span class="bar-value">@bar.Value</span>
+            @if (showValue)
+            {
+                <span class="bar-value">@bar.Value</span>
+            }
         </div>
     }
 </div>

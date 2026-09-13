@@ -32,43 +32,62 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class BubbleSortSimulator
 {
+    public static readonly string[] CodeLines =
+    [
+        "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">bubble_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> i = 0; i + 1 &lt; n; i++) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">bool</span> swapped = <span class=\"tok-kw\">false</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> j = 0; j + 1 &lt; n - i; j++) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &gt; a[j + 1]) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[j];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j] = a[j + 1];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j + 1] = tmp;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swapped = <span class=\"tok-kw\">true</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (!swapped) <span class=\"tok-kw\">break</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+    ];
+
     public static List<SortStep> Record(IReadOnlyList<int> input)
     {
         var a = input.ToArray();
-        int n = a.Length;
+        var n = a.Length;
         var steps = new List<SortStep>();
         var sorted = new SortedSet<int>();
 
-        int compareCount = 0;
-        int swapCount = 0;
+        var compareCount = 0;
+        var swapCount = 0;
 
-        for (int i = 0; i + 1 < n; i++)
+        for (var i = 0; i + 1 < n; i++)
         {
-            bool swapped = false;
+            var swapped = false;
 
             steps.Add(new SortStep
             {
                 Type = StepType.StartPass,
-                Snapshot = a.ToArray(),
+                Snapshot = [.. a],
                 I = i,
                 J = -1,
                 CompareCount = compareCount,
                 SwapCount = swapCount,
                 Swapped = false,
                 ActiveCodeLines = [3, 4],
-                SortedIndices = sorted.ToArray(),
+                SortedIndices = [.. sorted],
                 Caption = $"Lượt {i + 1}: quét từ đầu dãy, so sánh từng cặp liền kề."
             });
 
-            for (int j = 0; j + 1 < n - i; j++)
+            for (var j = 0; j + 1 < n - i; j++)
             {
                 compareCount++;
-                bool willSwap = a[j] > a[j + 1];
+                var willSwap = a[j] > a[j + 1];
 
                 steps.Add(new SortStep
                 {
                     Type = StepType.Compare,
-                    Snapshot = a.ToArray(),
+                    Snapshot = [.. a],
                     I = i,
                     J = j,
                     CompareCount = compareCount,
@@ -77,7 +96,7 @@ public static class BubbleSortSimulator
                     LeftIndex = j,
                     RightIndex = j + 1,
                     ActiveCodeLines = [5, 6],
-                    SortedIndices = sorted.ToArray(),
+                    SortedIndices = [.. sorted],
                     Caption = $"So sánh a[{j}] = {a[j]} và a[{j + 1}] = {a[j + 1]}" +
                               (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
                 });
@@ -91,7 +110,7 @@ public static class BubbleSortSimulator
                     steps.Add(new SortStep
                     {
                         Type = StepType.Swap,
-                        Snapshot = a.ToArray(),
+                        Snapshot = [.. a],
                         I = i,
                         J = j,
                         CompareCount = compareCount,
@@ -100,7 +119,7 @@ public static class BubbleSortSimulator
                         LeftIndex = j,
                         RightIndex = j + 1,
                         ActiveCodeLines = [7, 8, 9, 10],
-                        SortedIndices = sorted.ToArray(),
+                        SortedIndices = [.. sorted],
                         Caption = $"Đổi chỗ: a[{j}] ↔ a[{j + 1}]"
                     });
                 }
@@ -109,7 +128,7 @@ public static class BubbleSortSimulator
                     steps.Add(new SortStep
                     {
                         Type = StepType.NoSwap,
-                        Snapshot = a.ToArray(),
+                        Snapshot = [.. a],
                         I = i,
                         J = j,
                         CompareCount = compareCount,
@@ -118,19 +137,19 @@ public static class BubbleSortSimulator
                         LeftIndex = j,
                         RightIndex = j + 1,
                         ActiveCodeLines = [6],
-                        SortedIndices = sorted.ToArray(),
+                        SortedIndices = [.. sorted],
                         Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
                     });
                 }
             }
 
-            int settledIndex = n - 1 - i;
+            var settledIndex = n - 1 - i;
             sorted.Add(settledIndex);
 
             steps.Add(new SortStep
             {
                 Type = StepType.MarkSorted,
-                Snapshot = a.ToArray(),
+                Snapshot = [.. a],
                 I = i,
                 J = settledIndex,
                 CompareCount = compareCount,
@@ -138,25 +157,25 @@ public static class BubbleSortSimulator
                 Swapped = swapped,
                 RightIndex = settledIndex,
                 ActiveCodeLines = [12, 13],
-                SortedIndices = sorted.ToArray(),
+                SortedIndices = [.. sorted],
                 Caption = $"Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{settledIndex}]."
             });
 
             if (!swapped)
             {
-                for (int k = 0; k < settledIndex; k++) sorted.Add(k);
+                for (var k = 0; k < settledIndex; k++) sorted.Add(k);
 
                 steps.Add(new SortStep
                 {
                     Type = StepType.Completed,
-                    Snapshot = a.ToArray(),
+                    Snapshot = [.. a],
                     I = i,
                     J = -1,
                     CompareCount = compareCount,
                     SwapCount = swapCount,
                     Swapped = false,
                     ActiveCodeLines = [13, 15],
-                    SortedIndices = sorted.ToArray(),
+                    SortedIndices = [.. sorted],
                     Caption = "Không có đổi chỗ nào trong lượt này — dừng sớm, dãy đã được sắp xếp!"
                 });
                 return steps;
@@ -165,31 +184,31 @@ public static class BubbleSortSimulator
             steps.Add(new SortStep
             {
                 Type = StepType.EndPass,
-                Snapshot = a.ToArray(),
+                Snapshot = [.. a],
                 I = i,
                 J = -1,
                 CompareCount = compareCount,
                 SwapCount = swapCount,
                 Swapped = swapped,
                 ActiveCodeLines = [14],
-                SortedIndices = sorted.ToArray(),
+                SortedIndices = [.. sorted],
                 Caption = $"Kết thúc lượt {i + 1}."
             });
         }
 
-        for (int k = 0; k < n; k++) sorted.Add(k);
+        for (var k = 0; k < n; k++) sorted.Add(k);
 
         steps.Add(new SortStep
         {
             Type = StepType.Completed,
-            Snapshot = a.ToArray(),
+            Snapshot = [.. a],
             I = n - 1,
             J = -1,
             CompareCount = compareCount,
             SwapCount = swapCount,
             Swapped = false,
             ActiveCodeLines = [15],
-            SortedIndices = sorted.ToArray(),
+            SortedIndices = [.. sorted],
             Caption = "Hoàn tất! Dãy đã được sắp xếp."
         });
 
