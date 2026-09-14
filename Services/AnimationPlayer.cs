@@ -125,7 +125,7 @@ public sealed class AnimationPlayer : IDisposable
     }
     catch (TaskCanceledException)
     {
-      // Pause() cancelled us — expected, nothing to do.
+      // Pause() canceled us — expected, nothing to do.
     }
     finally
     {

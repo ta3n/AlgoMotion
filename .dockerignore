@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.idea/
+**/.git/
+**/.remember/
+**/node_modules/
+Dockerfile
+.dockerignore
+*.md
+.DS_Store

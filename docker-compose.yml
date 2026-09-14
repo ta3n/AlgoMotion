@@ -1,0 +1,10 @@
+services:
+  algomotion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: algomotion:latest
+    container_name: algomotion
+    ports:
+      - "8080:80"
+    restart: unless-stopped
