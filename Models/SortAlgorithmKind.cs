@@ -10,5 +10,9 @@ public enum SortAlgorithmKind
   Heap,
   Shell,
   CocktailShaker,
-  Counting
+  Counting,
+  Radix,
+  Gnome,
+  Cycle,
+  Pancake
 }

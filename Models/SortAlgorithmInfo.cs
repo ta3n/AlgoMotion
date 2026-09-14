@@ -142,6 +142,49 @@ public static class SortAlgorithms
       CodeLines = CountingSortSimulator.CodeLines,
       Record = CountingSortSimulator.Record,
       ShowCrane = false
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Radix,
+      Name = "RADIX SORT",
+      Subtitle = "ORDENACIÓN POR RADIX",
+      FileName = "radix_sort.c",
+      HintCaption = "ORDENA DÍGITO POR DÍGITO, DE MENOR A MAYOR PESO",
+      CompareLabel = "CUENTA",
+      ActionLabel = "ESCRIBE",
+      CodeLines = RadixSortSimulator.CodeLines,
+      Record = RadixSortSimulator.Record,
+      ShowCrane = false
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Gnome,
+      Name = "GNOME SORT",
+      Subtitle = "ORDENACIÓN DEL GNOMO",
+      FileName = "gnome_sort.c",
+      HintCaption = "AVANZA O RETROCEDE UN PASO SEGÚN LA COMPARACIÓN",
+      CodeLines = GnomeSortSimulator.CodeLines,
+      Record = GnomeSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Cycle,
+      Name = "CYCLE SORT",
+      Subtitle = "ORDENACIÓN CÍCLICA",
+      FileName = "cycle_sort.c",
+      HintCaption = "SIGUE CADA CICLO: EL MÍNIMO DE INTERCAMBIOS POSIBLE",
+      CodeLines = CycleSortSimulator.CodeLines,
+      Record = CycleSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Pancake,
+      Name = "PANCAKE SORT",
+      Subtitle = "ORDENACIÓN DE PANQUEQUES",
+      FileName = "pancake_sort.c",
+      HintCaption = "VOLTEA UN SEGMENTO INICIAL COMO UNA PILA DE PANQUEQUES",
+      CodeLines = PancakeSortSimulator.CodeLines,
+      Record = PancakeSortSimulator.Record
     }
   ];
 
