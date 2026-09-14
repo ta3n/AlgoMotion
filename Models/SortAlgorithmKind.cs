@@ -6,5 +6,9 @@ public enum SortAlgorithmKind
   Selection,
   Insertion,
   Quick,
-  Merge
+  Merge,
+  Heap,
+  Shell,
+  CocktailShaker,
+  Counting
 }

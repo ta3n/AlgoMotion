@@ -1,0 +1,355 @@
+using AlgoMotion.Models;
+
+namespace AlgoMotion.Services;
+
+/// <summary>
+/// Records Cocktail Shaker Sort — bidirectional Bubble Sort. Each round makes
+/// a forward pass (bubbling the largest remaining element to the top of the
+/// range) followed by a backward pass (bubbling the smallest remaining
+/// element to the bottom), shrinking the active [lo, hi] window from both
+/// ends every round instead of only from the top like plain Bubble Sort.
+///
+/// Reuses <see cref="BubbleSortSimulator"/>'s exact step vocabulary
+/// (StartPass/Compare/Swap/NoSwap/MarkSorted/Completed) for both passes —
+/// only the direction and which end gets marked sorted differ.
+///
+/// <code>
+///  1  void cocktail_sort(int a[], size_t n)
+///  2  {
+///  3      size_t lo = 0, hi = n - 1;
+///  4      while (lo &lt; hi) {
+///  5          bool swapped = false;
+///  6          for (size_t j = lo; j &lt; hi; j++) {
+///  7              if (a[j] &gt; a[j + 1]) {
+///  8                  int tmp = a[j];
+///  9                  a[j] = a[j + 1];
+/// 10                  a[j + 1] = tmp;
+/// 11                  swapped = true;
+/// 12              }
+/// 13          }
+/// 14          hi--;
+/// 15          for (size_t j = hi; j &gt; lo; j--) {
+/// 16              if (a[j - 1] &gt; a[j]) {
+/// 17                  int tmp = a[j - 1];
+/// 18                  a[j - 1] = a[j];
+/// 19                  a[j] = tmp;
+/// 20                  swapped = true;
+/// 21              }
+/// 22          }
+/// 23          lo++;
+/// 24          if (!swapped) break;
+/// 25      }
+/// 26  }
+/// </code>
+/// </summary>
+public static class CocktailShakerSortSimulator
+{
+  public static readonly string[] CodeLines =
+  [
+    "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">cocktail_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
+    "{",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">size_t</span> lo = 0, hi = n - 1;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (lo &lt; hi) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">bool</span> swapped = <span class=\"tok-kw\">false</span>;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> j = lo; j &lt; hi; j++) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &gt; a[j + 1]) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[j];",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j] = a[j + 1];",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j + 1] = tmp;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swapped = <span class=\"tok-kw\">true</span>;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hi--;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> j = hi; j &gt; lo; j--) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j - 1] &gt; a[j]) {",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[j - 1];",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j - 1] = a[j];",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[j] = tmp;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swapped = <span class=\"tok-kw\">true</span>;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lo++;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (!swapped) <span class=\"tok-kw\">break</span>;",
+    "&nbsp;&nbsp;&nbsp;&nbsp;}",
+    "}"
+  ];
+
+  public static List<SortStep> Record(
+    IReadOnlyList<int> input
+  )
+  {
+    var a = input.ToArray();
+    var n = a.Length;
+    var steps = new List<SortStep>();
+    var sorted = new SortedSet<int>();
+
+    var compareCount = 0;
+    var swapCount = 0;
+
+    var lo = 0;
+    var hi = n - 1;
+
+    while (lo < hi)
+    {
+      var swapped = false;
+
+      steps.Add(
+        new SortStep
+        {
+          Type = StepType.StartPass,
+          Snapshot = [.. a],
+          I = lo,
+          J = hi,
+          CompareCount = compareCount,
+          SwapCount = swapCount,
+          ActiveCodeLines = [5, 6],
+          SortedIndices = [.. sorted],
+          Caption = $"Quét xuôi từ {lo} đến {hi}: đẩy phần tử lớn nhất về cuối đoạn."
+        }
+      );
+
+      for (var j = lo; j < hi; j++)
+      {
+        compareCount++;
+        var willSwap = a[j] > a[j + 1];
+
+        steps.Add(
+          new SortStep
+          {
+            Type = StepType.Compare,
+            Snapshot = [.. a],
+            I = lo,
+            J = j,
+            CompareCount = compareCount,
+            SwapCount = swapCount,
+            Swapped = swapped,
+            LeftIndex = j,
+            RightIndex = j + 1,
+            ActiveCodeLines = [7],
+            SortedIndices = [.. sorted],
+            Caption = $"So sánh a[{j}] = {a[j]} và a[{j + 1}] = {a[j + 1]}"
+              + (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
+          }
+        );
+
+        if (willSwap)
+        {
+          (a[j], a[j + 1]) = (a[j + 1], a[j]);
+          swapCount++;
+          swapped = true;
+
+          steps.Add(
+            new SortStep
+            {
+              Type = StepType.Swap,
+              Snapshot = [.. a],
+              I = lo,
+              J = j,
+              CompareCount = compareCount,
+              SwapCount = swapCount,
+              Swapped = true,
+              LeftIndex = j,
+              RightIndex = j + 1,
+              ActiveCodeLines = [8, 9, 10, 11],
+              SortedIndices = [.. sorted],
+              Caption = $"Đổi chỗ: a[{j}] ↔ a[{j + 1}]"
+            }
+          );
+        }
+        else
+        {
+          steps.Add(
+            new SortStep
+            {
+              Type = StepType.NoSwap,
+              Snapshot = [.. a],
+              I = lo,
+              J = j,
+              CompareCount = compareCount,
+              SwapCount = swapCount,
+              Swapped = swapped,
+              LeftIndex = j,
+              RightIndex = j + 1,
+              ActiveCodeLines = [7],
+              SortedIndices = [.. sorted],
+              Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
+            }
+          );
+        }
+      }
+
+      sorted.Add(hi);
+
+      steps.Add(
+        new SortStep
+        {
+          Type = StepType.MarkSorted,
+          Snapshot = [.. a],
+          I = lo,
+          J = hi,
+          CompareCount = compareCount,
+          SwapCount = swapCount,
+          Swapped = swapped,
+          RightIndex = hi,
+          ActiveCodeLines = [14],
+          SortedIndices = [.. sorted],
+          Caption = $"Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{hi}]."
+        }
+      );
+
+      hi--;
+
+      if (lo < hi)
+      {
+        steps.Add(
+          new SortStep
+          {
+            Type = StepType.StartPass,
+            Snapshot = [.. a],
+            I = lo,
+            J = hi,
+            CompareCount = compareCount,
+            SwapCount = swapCount,
+            ActiveCodeLines = [15],
+            SortedIndices = [.. sorted],
+            Caption = $"Quét ngược từ {hi} đến {lo}: đẩy phần tử nhỏ nhất về đầu đoạn."
+          }
+        );
+
+        for (var j = hi; j > lo; j--)
+        {
+          compareCount++;
+          var willSwap = a[j - 1] > a[j];
+
+          steps.Add(
+            new SortStep
+            {
+              Type = StepType.Compare,
+              Snapshot = [.. a],
+              I = lo,
+              J = j,
+              CompareCount = compareCount,
+              SwapCount = swapCount,
+              Swapped = swapped,
+              LeftIndex = j - 1,
+              RightIndex = j,
+              ActiveCodeLines = [16],
+              SortedIndices = [.. sorted],
+              Caption = $"So sánh a[{j - 1}] = {a[j - 1]} và a[{j}] = {a[j]}"
+                + (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
+            }
+          );
+
+          if (willSwap)
+          {
+            (a[j - 1], a[j]) = (a[j], a[j - 1]);
+            swapCount++;
+            swapped = true;
+
+            steps.Add(
+              new SortStep
+              {
+                Type = StepType.Swap,
+                Snapshot = [.. a],
+                I = lo,
+                J = j,
+                CompareCount = compareCount,
+                SwapCount = swapCount,
+                Swapped = true,
+                LeftIndex = j - 1,
+                RightIndex = j,
+                ActiveCodeLines = [17, 18, 19, 20],
+                SortedIndices = [.. sorted],
+                Caption = $"Đổi chỗ: a[{j - 1}] ↔ a[{j}]"
+              }
+            );
+          }
+          else
+          {
+            steps.Add(
+              new SortStep
+              {
+                Type = StepType.NoSwap,
+                Snapshot = [.. a],
+                I = lo,
+                J = j,
+                CompareCount = compareCount,
+                SwapCount = swapCount,
+                Swapped = swapped,
+                LeftIndex = j - 1,
+                RightIndex = j,
+                ActiveCodeLines = [16],
+                SortedIndices = [.. sorted],
+                Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
+              }
+            );
+          }
+        }
+
+        sorted.Add(lo);
+
+        steps.Add(
+          new SortStep
+          {
+            Type = StepType.MarkSorted,
+            Snapshot = [.. a],
+            I = lo,
+            J = hi,
+            CompareCount = compareCount,
+            SwapCount = swapCount,
+            Swapped = swapped,
+            LeftIndex = lo,
+            ActiveCodeLines = [23],
+            SortedIndices = [.. sorted],
+            Caption = $"Phần tử nhỏ nhất của đoạn còn lại đã về đúng vị trí a[{lo}]."
+          }
+        );
+
+        lo++;
+      }
+
+      if (!swapped)
+      {
+        for (var k = lo; k <= hi; k++)
+        {
+          sorted.Add(k);
+        }
+
+        steps.Add(
+          new SortStep
+          {
+            Type = StepType.Completed,
+            Snapshot = [.. a],
+            CompareCount = compareCount,
+            SwapCount = swapCount,
+            ActiveCodeLines = [24, 26],
+            SortedIndices = [.. sorted],
+            Caption = "Không có đổi chỗ nào trong lượt này — dừng sớm, dãy đã được sắp xếp!"
+          }
+        );
+
+        return steps;
+      }
+    }
+
+    for (var k = 0; k < n; k++)
+    {
+      sorted.Add(k);
+    }
+
+    steps.Add(
+      new SortStep
+      {
+        Type = StepType.Completed,
+        Snapshot = [.. a],
+        CompareCount = compareCount,
+        SwapCount = swapCount,
+        ActiveCodeLines = [26],
+        SortedIndices = [.. sorted],
+        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+      }
+    );
+
+    return steps;
+  }
+}

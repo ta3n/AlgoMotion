@@ -99,6 +99,49 @@ public static class SortAlgorithms
       CodeLines = MergeSortSimulator.CodeLines,
       Record = MergeSortSimulator.Record,
       ShowCrane = false
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Heap,
+      Name = "HEAP SORT",
+      Subtitle = "ORDENACIÓN POR MONTÍCULOS",
+      FileName = "heap_sort.c",
+      HintCaption = "CONSTRUYE UN MONTÍCULO Y EXTRAE EL MÁXIMO",
+      CodeLines = HeapSortSimulator.CodeLines,
+      Record = HeapSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Shell,
+      Name = "SHELL SORT",
+      Subtitle = "ORDENACIÓN SHELL",
+      FileName = "shell_sort.c",
+      HintCaption = "INSERCIÓN CON HUECOS QUE SE VAN REDUCIENDO",
+      CodeLines = ShellSortSimulator.CodeLines,
+      Record = ShellSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.CocktailShaker,
+      Name = "COCKTAIL SHAKER SORT",
+      Subtitle = "ORDENACIÓN COCTELERA",
+      FileName = "cocktail_sort.c",
+      HintCaption = "RECORRE EL ARREGLO EN AMBAS DIRECCIONES",
+      CodeLines = CocktailShakerSortSimulator.CodeLines,
+      Record = CocktailShakerSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Counting,
+      Name = "COUNTING SORT",
+      Subtitle = "ORDENACIÓN POR CONTEO",
+      FileName = "counting_sort.c",
+      HintCaption = "CUENTA FRECUENCIAS Y UBICA CADA VALOR",
+      CompareLabel = "CUENTA",
+      ActionLabel = "ESCRIBE",
+      CodeLines = CountingSortSimulator.CodeLines,
+      Record = CountingSortSimulator.Record,
+      ShowCrane = false
     }
   ];
 

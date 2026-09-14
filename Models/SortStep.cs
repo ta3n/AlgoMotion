@@ -36,7 +36,14 @@ public enum StepType
   MergeCompare,
 
   /// <summary>Merge Sort: the smaller front value is written into its merged slot.</summary>
-  MergeWrite
+  MergeWrite,
+
+  /// <summary>Counting Sort: reading a value to increment its bucket in the auxiliary count array.</summary>
+  CountTally,
+
+  /// <summary>Counting Sort: a value is written straight into its final sorted position, computed
+  /// from the cumulative count array — no comparisons involved.</summary>
+  CountPlace
 }
 
 /// <summary>
@@ -75,7 +82,8 @@ public sealed class SortStep
   /// <summary>Index of the right element of the pair being compared/swapped.</summary>
   public int? RightIndex { get; set; }
 
-  /// <summary>Selection Sort's running-minimum index, or Quick Sort's pivot index.</summary>
+  /// <summary>Selection Sort's running-minimum index, Quick Sort's pivot index, or Heap Sort's
+  /// subtree root currently being sifted down.</summary>
   public int? PivotIndex { get; set; }
 
   /// <summary>Quick/Merge Sort: start of the sub-array currently being worked on. Bars outside [Start,End] are dimmed.</summary>

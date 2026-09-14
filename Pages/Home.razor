@@ -245,7 +245,7 @@
           Value = step.Snapshot[i],
           SlotIndex = i,
           IsActive = isActive,
-          IsSwapping = isActive && step.Type is StepType.Swap or StepType.MergeWrite,
+          IsSwapping = isActive && step.Type is StepType.Swap or StepType.MergeWrite or StepType.CountPlace,
           IsSorted = sortedSet.Contains(i),
           IsPivot = step.PivotIndex == i,
           IsDimmed = isDimmed
