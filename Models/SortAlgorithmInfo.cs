@@ -185,6 +185,17 @@ public static class SortAlgorithms
       HintCaption = "VOLTEA UN SEGMENTO INICIAL COMO UNA PILA DE PANQUEQUES",
       CodeLines = PancakeSortSimulator.CodeLines,
       Record = PancakeSortSimulator.Record
+    },
+    new()
+    {
+      Kind = SortAlgorithmKind.Tree,
+      Name = "TREE SORT",
+      Subtitle = "ORDENACIÓN POR ÁRBOL BINARIO",
+      FileName = "tree_sort.c",
+      HintCaption = "CONSTRUYE UN ÁRBOL BST Y LO RECORRE EN ORDEN",
+      ActionLabel = "ESCRIBE",
+      CodeLines = TreeSortSimulator.CodeLines,
+      Record = TreeSortSimulator.Record
     }
   ];
 

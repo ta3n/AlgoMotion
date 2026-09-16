@@ -14,5 +14,6 @@ public enum SortAlgorithmKind
   Radix,
   Gnome,
   Cycle,
-  Pancake
+  Pancake,
+  Tree
 }
