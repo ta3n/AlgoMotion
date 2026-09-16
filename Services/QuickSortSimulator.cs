@@ -36,25 +36,117 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class QuickSortSimulator
 {
-  public static readonly string[] CodeLines =
-  [
-    "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">quick_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi)",
-    "{",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i], &amp;a[j]);",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
-    "&nbsp;&nbsp;&nbsp;&nbsp;}",
-    "&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i + 1], &amp;a[hi]);",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, lo, p - 1);",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, p + 1, hi);",
-    "}"
-  ];
+  public static readonly IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage = new Dictionary<CodeLanguage, string[]>
+  {
+    [CodeLanguage.C] =
+    [
+      "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">quick_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi)",
+      "{",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i], &amp;a[j]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[i + 1], &amp;a[hi]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, lo, p - 1);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, p + 1, hi);",
+      "}"
+    ],
+    [CodeLanguage.CSharp] =
+    [
+      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">QuickSort</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi)",
+      "{",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[i], a[j]) = (a[j], a[i]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;(a[i + 1], a[hi]) = (a[hi], a[i + 1]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">QuickSort</span>(a, lo, p - 1);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">QuickSort</span>(a, p + 1, hi);",
+      "}"
+    ],
+    [CodeLanguage.Java] =
+    [
+      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">quickSort</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> lo, <span class=\"tok-type\">int</span> hi) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> pivot = a[hi];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = lo - 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> j = lo; j &lt; hi; j++) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[i]; a[i] = a[j]; a[j] = tmp;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[i + 1]; a[i + 1] = a[hi]; a[hi] = tmp;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> p = i + 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, lo, p - 1);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, p + 1, hi);",
+      "}"
+    ],
+    [CodeLanguage.Python] =
+    [
+      "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">quick_sort</span>(a, lo, hi):",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> lo &gt;= hi:",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">return</span>",
+      "&nbsp;&nbsp;&nbsp;&nbsp;pivot = a[hi]",
+      "&nbsp;&nbsp;&nbsp;&nbsp;i = lo - 1",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> j <span class=\"tok-kw\">in</span> range(lo, hi):",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> a[j] &lt; pivot:",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i += 1",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i], a[j] = a[j], a[i]",
+      "&nbsp;&nbsp;&nbsp;&nbsp;a[i + 1], a[hi] = a[hi], a[i + 1]",
+      "&nbsp;&nbsp;&nbsp;&nbsp;p = i + 1",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, lo, p - 1)",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quick_sort</span>(a, p + 1, hi)"
+    ],
+    [CodeLanguage.TypeScript] =
+    [
+      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">quickSort</span>(a: <span class=\"tok-type\">number</span>[], lo: <span class=\"tok-type\">number</span>, hi: <span class=\"tok-type\">number</span>): <span class=\"tok-type\">void</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> pivot = a[hi];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> i = lo - 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> j = lo; j &lt; hi; j++) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[i], a[j]] = [a[j], a[i]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;[a[i + 1], a[hi]] = [a[hi], a[i + 1]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> p = i + 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, lo, p - 1);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, p + 1, hi);",
+      "}"
+    ],
+    [CodeLanguage.JavaScript] =
+    [
+      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">quickSort</span>(a, lo, hi) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (lo &gt;= hi) <span class=\"tok-kw\">return</span>;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> pivot = a[hi];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> i = lo - 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> j = lo; j &lt; hi; j++) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[j] &lt; pivot) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[i], a[j]] = [a[j], a[i]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;[a[i + 1], a[hi]] = [a[hi], a[i + 1]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> p = i + 1;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, lo, p - 1);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">quickSort</span>(a, p + 1, hi);",
+      "}"
+    ]
+  };
 
   public static List<SortStep> Record(
     IReadOnlyList<int> input

@@ -50,7 +50,8 @@
   </section>
 
   <section class="lower-area">
-    <CodeViewer ActiveLines="@Step.ActiveCodeLines" Lines="@_algorithm.CodeLines" FileName="@_algorithm.FileName"/>
+    <CodeViewer ActiveLines="@(_language == CodeLanguage.C ? Step.ActiveCodeLines : [])"
+                Lines="@_algorithm.GetCodeLines(_language)" FileName="@_algorithm.GetFileName(_language)"/>
 
     <div class="controls">
       <div class="algo-control @(_algoMenuOpen ? "is-open" : "")">
@@ -71,6 +72,30 @@
                   class="algo-menu-item @(algo.Kind == _algorithm.Kind ? "is-selected" : "")"
                   @onclick="() => SelectAlgorithm(algo.Kind)">
                 @algo.Name
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="algo-control @(_langMenuOpen ? "is-open" : "")">
+        <label id="lang-label">Ngôn ngữ</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_langMenuOpen"
+                aria-labelledby="lang-label" @onclick="ToggleLangMenu">
+          <span>@CodeLanguages.Label(_language)</span>
+          <span class="algo-caret">▾</span>
+        </button>
+
+        @if (_langMenuOpen)
+        {
+          <div class="menu-scrim" @onclick="CloseLangMenu"></div>
+          <ul class="algo-menu" role="listbox">
+            @foreach (var lang in CodeLanguages.All)
+            {
+              <li role="option" aria-selected="@(lang == _language)"
+                  class="algo-menu-item @(lang == _language ? "is-selected" : "")"
+                  @onclick="() => SelectLanguage(lang)">
+                @CodeLanguages.Label(lang)
               </li>
             }
           </ul>
@@ -161,6 +186,8 @@
 
   private TreeSearchAlgorithmInfo _algorithm = TreeSearchAlgorithms.Get(TreeSearchAlgorithmKind.Bst);
   private bool _algoMenuOpen;
+  private CodeLanguage _language = CodeLanguage.C;
+  private bool _langMenuOpen;
   private int _n = 15;
   private int _depth = 10;
   private int[] _values = [];
@@ -332,6 +359,24 @@
   private void CloseAlgoMenu()
   {
     _algoMenuOpen = false;
+  }
+
+  private void ToggleLangMenu()
+  {
+    _langMenuOpen = !_langMenuOpen;
+  }
+
+  private void CloseLangMenu()
+  {
+    _langMenuOpen = false;
+  }
+
+  private void SelectLanguage(
+    CodeLanguage language
+  )
+  {
+    _langMenuOpen = false;
+    _language = language;
   }
 
   private void SelectAlgorithm(

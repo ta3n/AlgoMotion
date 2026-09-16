@@ -33,24 +33,96 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class GnomeSortSimulator
 {
-  public static readonly string[] CodeLines =
-  [
-    "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">gnome_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
-    "{",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">size_t</span> i = 0;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; n) {",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i == 0 || a[i - 1] &lt;= a[i]) {",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[i - 1];",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i - 1] = a[i];",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i] = tmp;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
-    "&nbsp;&nbsp;&nbsp;&nbsp;}",
-    "}"
-  ];
-
+  public static readonly IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage = new Dictionary<CodeLanguage, string[]>
+  {
+    [CodeLanguage.C] =
+    [
+      "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">gnome_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
+      "{",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">size_t</span> i = 0;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; n) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i == 0 || a[i - 1] &lt;= a[i]) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[i - 1];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i - 1] = a[i];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i] = tmp;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "}"
+    ],
+    [CodeLanguage.CSharp] =
+    [
+      "<span class=\"tok-kw\">static</span> <span class=\"tok-type\">void</span> <span class=\"tok-fn\">GnomeSort</span>(<span class=\"tok-type\">int</span>[] a)",
+      "{",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = 0;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; a.Length) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i == 0 || a[i - 1] &lt;= a[i]) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[i - 1], a[i]) = (a[i], a[i - 1]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "}"
+    ],
+    [CodeLanguage.Java] =
+    [
+      "<span class=\"tok-kw\">static</span> <span class=\"tok-type\">void</span> <span class=\"tok-fn\">gnomeSort</span>(<span class=\"tok-type\">int</span>[] a) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> i = 0;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; a.length) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i == 0 || a[i - 1] &lt;= a[i]) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[i - 1];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i - 1] = a[i];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i] = tmp;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "}"
+    ],
+    [CodeLanguage.Python] =
+    [
+      "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">gnome_sort</span>(a):",
+      "&nbsp;&nbsp;&nbsp;&nbsp;i = 0",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> i &lt; <span class=\"tok-fn\">len</span>(a):",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> i == 0 <span class=\"tok-kw\">or</span> a[i - 1] &lt;= a[i]:",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i += 1",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">else</span>:",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i - 1], a[i] = a[i], a[i - 1]",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i -= 1"
+    ],
+    [CodeLanguage.TypeScript] =
+    [
+      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">gnomeSort</span>(a: <span class=\"tok-type\">number</span>[]): <span class=\"tok-type\">void</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> i = 0;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; a.length) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i === 0 || a[i - 1] &lt;= a[i]) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[i - 1], a[i]] = [a[i], a[i - 1]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "}"
+    ],
+    [CodeLanguage.JavaScript] =
+    [
+      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">gnomeSort</span>(a) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> i = 0;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (i &lt; a.length) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (i === 0 || a[i - 1] &lt;= a[i]) {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class=\"tok-kw\">else</span> {",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[i - 1], a[i]] = [a[i], a[i - 1]];",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "&nbsp;&nbsp;&nbsp;&nbsp;}",
+      "}"
+    ]
+  };
   public static List<SortStep> Record(
     IReadOnlyList<int> input
   )

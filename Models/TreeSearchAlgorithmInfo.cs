@@ -28,8 +28,9 @@ public sealed class TreeSearchAlgorithmInfo
   /// <summary>Spanish-style tagline under the title, matching the sorting page's convention.</summary>
   public required string Subtitle { get; init; }
 
-  /// <summary>File name shown in the code panel's title bar, e.g. "bst_search.c".</summary>
-  public required string FileName { get; init; }
+  /// <summary>File name shown in the code panel's title bar, without extension — e.g. "bst_search";
+  /// <see cref="GetFileName"/> appends the extension for whichever language is selected.</summary>
+  public required string BaseFileName { get; init; }
 
   /// <summary>Small caption under the code panel describing the core idea.</summary>
   public required string HintCaption { get; init; }
@@ -40,12 +41,28 @@ public sealed class TreeSearchAlgorithmInfo
   /// <summary>Label for the visit counter — "VISITA" for every algorithm here.</summary>
   public string ActionLabel { get; init; } = "VISITA";
 
-  /// <summary>Pre-tokenized HTML source lines shown in the code panel, one entry per line.</summary>
-  public required string[] CodeLines { get; init; }
+  /// <summary>Pre-tokenized HTML source lines per language shown in the code panel. See
+  /// <see cref="SortAlgorithmInfo.CodeByLanguage"/> for why only C's lines up with the recorded
+  /// steps' <c>ActiveCodeLines</c>.</summary>
+  public required IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage { get; init; }
 
   /// <summary>Builds a tree from the given values and records every step of searching it for
   /// <c>target</c>.</summary>
   public required Func<int[], int, TreeSearchResult> Record { get; init; }
+
+  public string[] GetCodeLines(
+    CodeLanguage language
+  )
+  {
+    return CodeByLanguage.TryGetValue(language, out var lines) ? lines : CodeByLanguage[CodeLanguage.C];
+  }
+
+  public string GetFileName(
+    CodeLanguage language
+  )
+  {
+    return $"{BaseFileName}.{CodeLanguages.Extension(language)}";
+  }
 }
 
 /// <summary>The full registry of tree-search algorithms offered in the picker, in display order.</summary>
@@ -58,9 +75,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.Bst,
       Name = "BST SEARCH",
       Subtitle = "BÚSQUEDA POR ÁRBOL BINARIO",
-      FileName = "bst_search.c",
+      BaseFileName = "bst_search",
       HintCaption = "USA EL ORDEN DEL ÁRBOL PARA IR DIRECTO AL OBJETIVO",
-      CodeLines = BstSearchSimulator.CodeLines,
+      CodeByLanguage = BstSearchSimulator.CodeByLanguage,
       Record = BstSearchSimulator.Record
     },
     new()
@@ -68,9 +85,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.DfsPreorder,
       Name = "DFS PREORDER SEARCH",
       Subtitle = "BÚSQUEDA EN PROFUNDIDAD (PREORDEN)",
-      FileName = "preorder_search.c",
+      BaseFileName = "preorder_search",
       HintCaption = "VISITA RAÍZ, LUEGO IZQUIERDA, LUEGO DERECHA",
-      CodeLines = DfsPreorderSearchSimulator.CodeLines,
+      CodeByLanguage = DfsPreorderSearchSimulator.CodeByLanguage,
       Record = DfsPreorderSearchSimulator.Record
     },
     new()
@@ -78,9 +95,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.DfsInorder,
       Name = "DFS INORDER SEARCH",
       Subtitle = "BÚSQUEDA EN PROFUNDIDAD (INORDEN)",
-      FileName = "inorder_search.c",
+      BaseFileName = "inorder_search",
       HintCaption = "VISITA IZQUIERDA, LUEGO RAÍZ, LUEGO DERECHA",
-      CodeLines = DfsInorderSearchSimulator.CodeLines,
+      CodeByLanguage = DfsInorderSearchSimulator.CodeByLanguage,
       Record = DfsInorderSearchSimulator.Record
     },
     new()
@@ -88,9 +105,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.DfsPostorder,
       Name = "DFS POSTORDER SEARCH",
       Subtitle = "BÚSQUEDA EN PROFUNDIDAD (POSTORDEN)",
-      FileName = "postorder_search.c",
+      BaseFileName = "postorder_search",
       HintCaption = "VISITA IZQUIERDA, LUEGO DERECHA, LUEGO RAÍZ",
-      CodeLines = DfsPostorderSearchSimulator.CodeLines,
+      CodeByLanguage = DfsPostorderSearchSimulator.CodeByLanguage,
       Record = DfsPostorderSearchSimulator.Record
     },
     new()
@@ -98,9 +115,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.Bfs,
       Name = "BFS SEARCH",
       Subtitle = "BÚSQUEDA EN ANCHURA",
-      FileName = "bfs_search.c",
+      BaseFileName = "bfs_search",
       HintCaption = "VISITA NIVEL POR NIVEL USANDO UNA COLA",
-      CodeLines = BfsSearchSimulator.CodeLines,
+      CodeByLanguage = BfsSearchSimulator.CodeByLanguage,
       Record = BfsSearchSimulator.Record
     },
     new()
@@ -108,9 +125,9 @@ public static class TreeSearchAlgorithms
       Kind = TreeSearchAlgorithmKind.Avl,
       Name = "AVL SEARCH",
       Subtitle = "BÚSQUEDA POR ÁRBOL AVL",
-      FileName = "avl_search.c",
+      BaseFileName = "avl_search",
       HintCaption = "ÁRBOL AUTOBALANCEADO: PROFUNDIDAD SIEMPRE O(LOG N)",
-      CodeLines = AvlSearchSimulator.CodeLines,
+      CodeByLanguage = AvlSearchSimulator.CodeByLanguage,
       Record = AvlSearchSimulator.Record
     }
   ];
