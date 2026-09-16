@@ -1,5 +1,11 @@
 @inherits LayoutComponentBase
 
 <main class="app-shell">
-  @Body
+  <div class="page-shell">
+    <nav class="top-nav">
+      <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">Sắp xếp</NavLink>
+      <NavLink href="/tree-search" class="top-nav-link">Tìm kiếm trên cây</NavLink>
+    </nav>
+    @Body
+  </div>
 </main>

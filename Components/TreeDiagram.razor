@@ -1,0 +1,69 @@
+@using AlgoMotion.Models
+
+<div class="tree-area" style="height:@(AreaHeightPx)px; @(RequiredWidthPx > 0 ? $"width:{RequiredWidthPx}px;" : "")">
+  <svg class="tree-edges" viewBox="0 0 1000 @AreaHeightPx" preserveAspectRatio="none">
+    @foreach (var node in Nodes)
+    {
+      @if (node.ParentId is { } parentId)
+      {
+        var parent = Nodes[parentId];
+        var x1 = TreeLayout.CenterPercent(parent.InorderIndex, Nodes.Count) * 10;
+        var y1 = TreeLayout.TopFor(parent.Depth) + (NodeRadius);
+        var x2 = TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count) * 10;
+        var y2 = TreeLayout.TopFor(node.Depth) + (NodeRadius);
+        <line @key="node.Id" class="tree-edge @(node.Id == CurrentNodeId ? "tree-edge-active" : "")"
+              x1="@(TreeLayout.Num(x1))" y1="@(TreeLayout.Num(y1))"
+              x2="@(TreeLayout.Num(x2))" y2="@(TreeLayout.Num(y2))"/>
+      }
+    }
+  </svg>
+
+  @foreach (var node in Nodes)
+  {
+    var isCurrent = node.Id == CurrentNodeId;
+    var isVisited = !isCurrent && VisitedSet.Contains(node.Id);
+    var isQueued = QueuedSet.Contains(node.Id);
+    var isFound = Found && isCurrent;
+    <div @key="node.Id"
+         class="tree-node @(isCurrent ? "tree-node-active" : "") @(isVisited ? "tree-node-visited" : "") @(isQueued ? "tree-node-queued" : "") @(isFound ? "tree-node-found" : "")"
+         style="left:@(TreeLayout.Pct(TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count))); top:@(TreeLayout.TopFor(node.Depth))px; width:@(NodeDiameter)px; height:@(NodeDiameter)px; font-size:@(FontSizePx)px;">
+      @node.Value
+    </div>
+  }
+</div>
+
+@code {
+
+  [Parameter]
+  [EditorRequired]
+  public IReadOnlyList<TreeNode> Nodes { get; set; } = [];
+
+  [Parameter]
+  public int? CurrentNodeId { get; set; }
+
+  [Parameter]
+  public int[] VisitedNodeIds { get; set; } = [];
+
+  [Parameter]
+  public int[] QueuedNodeIds { get; set; } = [];
+
+  [Parameter]
+  public bool Found { get; set; }
+
+  private HashSet<int> VisitedSet => [.. VisitedNodeIds];
+
+  private HashSet<int> QueuedSet => [.. QueuedNodeIds];
+
+  private int MaxDepth => Nodes.Count == 0 ? 0 : Nodes.Max(n => n.Depth);
+
+  private int AreaHeightPx => TreeLayout.AreaHeight(MaxDepth);
+
+  private int RequiredWidthPx => TreeLayout.RequiredWidthPx(Nodes.Count);
+
+  private int NodeDiameter => TreeLayout.NodeDiameter(Nodes.Count);
+
+  private double NodeRadius => NodeDiameter / 2.0;
+
+  private double FontSizePx => TreeLayout.NodeFontSizePx(Nodes.Count);
+
+}

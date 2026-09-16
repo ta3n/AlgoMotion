@@ -57,6 +57,46 @@ html, body {
   display: none;
 }
 
+/* ---------- page shell (nav + whichever page is active) ---------- */
+
+.page-shell {
+  width: min(980px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-nav {
+  display: flex;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.top-nav-link {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.top-nav-link:hover {
+  color: var(--text-bright);
+}
+
+.top-nav-link.active {
+  color: var(--neon-cyan);
+  border-color: var(--border-soft);
+  border-bottom-color: transparent;
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+  box-shadow: 0 0 16px var(--neon-cyan-soft);
+}
+
 /* ---------- stage ---------- */
 
 .stage {
@@ -951,6 +991,93 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ---------- tree diagram ---------- */
+
+.tree-chart-area {
+  padding: 20px 20px 4px;
+  /* Past TreeLayout.CompactThreshold nodes, .tree-area grows wider than this
+     container instead of shrinking nodes below a readable size — scroll
+     horizontally to see the rest rather than letting it overflow the page. */
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.tree-area {
+  position: relative;
+  width: 100%;
+}
+
+.tree-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.tree-edge {
+  stroke: rgba(120, 180, 255, 0.35);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  transition: stroke calc(250ms * var(--speed-scale, 1)) ease;
+}
+
+.tree-edge-active {
+  stroke: var(--neon-pink);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 4px var(--neon-pink-soft));
+}
+
+.tree-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, 0);
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(70, 140, 220, 0.35), rgba(30, 70, 130, 0.55));
+  border: 1.5px solid rgba(150, 200, 255, 0.45);
+  color: var(--text-bright);
+  font-weight: 600;
+  z-index: 1;
+  transition: left calc(450ms * var(--speed-scale, 1)) ease,
+  top calc(450ms * var(--speed-scale, 1)) ease,
+  transform calc(250ms * var(--speed-scale, 1)) ease,
+  border-color calc(250ms * var(--speed-scale, 1)) ease,
+  box-shadow calc(250ms * var(--speed-scale, 1)) ease,
+  background calc(300ms * var(--speed-scale, 1)) ease,
+  opacity calc(300ms * var(--speed-scale, 1)) ease;
+}
+
+/* Nodes already checked this run — dimmed so the eye follows the frontier of
+   the search instead of everything visited so far. */
+.tree-node-visited {
+  opacity: 0.5;
+  border-color: var(--text-faint);
+}
+
+/* BFS only: waiting in the queue, not checked yet. */
+.tree-node-queued {
+  border-color: var(--neon-amber);
+  box-shadow: 0 0 10px rgba(255, 198, 90, 0.4);
+}
+
+.tree-node-active {
+  transform: translate(-50%, 0) scale(1.18);
+  border-color: var(--neon-pink);
+  background: linear-gradient(180deg, rgba(255, 77, 141, 0.4), rgba(180, 30, 90, 0.55));
+  box-shadow: 0 0 18px var(--neon-pink-soft), 0 0 42px var(--neon-pink-soft);
+  opacity: 1;
+  z-index: 3;
+}
+
+.tree-node-found {
+  border-color: var(--neon-green);
+  background: linear-gradient(180deg, rgba(61, 242, 164, 0.4), rgba(20, 110, 80, 0.6));
+  box-shadow: 0 0 20px var(--neon-green-soft), 0 0 46px var(--neon-green-soft);
+  animation: statFlash calc(600ms * var(--speed-scale, 1)) ease-out;
 }
 
 /* ---------- responsive ---------- */
