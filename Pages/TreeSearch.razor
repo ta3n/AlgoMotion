@@ -21,11 +21,32 @@
   </header>
 
   <section class="chart-area tree-chart-area">
+    <div class="tree-toolbar">
+      <div class="tree-legend">
+        <span class="tree-legend-item"><span class="tree-swatch"></span>Chưa ghé</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-active"></span>Đang xét</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-visited"></span>Đã ghé</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-queued"></span>Trong hàng đợi</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-found"></span>Tìm thấy</span>
+      </div>
+      <div class="zoom-control">
+        <button class="btn btn-zoom" @onclick="ZoomOut" title="Thu nhỏ">−</button>
+        <input type="range" min="@(TreeLayout.MinZoom.ToString(CultureInfo.InvariantCulture))"
+               max="@(TreeLayout.MaxZoom.ToString(CultureInfo.InvariantCulture))"
+               step="@(TreeLayout.ZoomStep.ToString(CultureInfo.InvariantCulture))"
+               value="@(_zoom.ToString(CultureInfo.InvariantCulture))" @oninput="OnZoomInput"/>
+        <button class="btn btn-zoom" @onclick="ZoomIn" title="Phóng to">+</button>
+        <span class="zoom-readout">@((_zoom * 100).ToString("0")) %</span>
+        <button class="btn" @onclick="FitZoom" title="Chỉnh zoom để nhìn toàn bộ cây">⛶ Vừa khung</button>
+      </div>
+    </div>
+
     <TreeDiagram Nodes="@_nodes"
                  CurrentNodeId="@Step.CurrentNodeId"
                  VisitedNodeIds="@Step.VisitedNodeIds"
                  QueuedNodeIds="@Step.QueuedNodeIds"
-                 Found="@(Step.Type == TreeSearchStepType.Found)"/>
+                 Found="@(Step.Type == TreeSearchStepType.Found)"
+                 Zoom="@_zoom"/>
   </section>
 
   <section class="lower-area">
@@ -145,6 +166,7 @@
   private int[] _values = [];
   private int _target;
   private List<TreeNode> _nodes = [];
+  private double _zoom = TreeLayout.DefaultZoom;
   private int _lastLoggedIndex = -1;
   private TreeSearchStep _initialStep = new();
 
@@ -163,12 +185,16 @@
 
   /// <summary>Builds a fresh insertion order guaranteed to reach at least <see cref="_depth"/> levels
   /// deep (see <see cref="TreeInputGenerator"/>), picks a new search target, and records a brand new
-  /// tree + search animation.</summary>
+  /// tree + search animation. Also resets zoom to whatever roughly fits the new tree, so a big change
+  /// in size (n or depth) doesn't leave the view zoomed to a stale scale.</summary>
   private void NewTree()
   {
     _values = TreeInputGenerator.GenerateInsertionOrder(_n, _depth, _rng);
     _target = PickRandomTarget();
     LoadCurrentTree();
+
+    var maxDepth = _nodes.Count == 0 ? 0 : _nodes.Max(node => node.Depth);
+    _zoom = TreeLayout.SuggestedZoom(TreeLayout.DiagramWidthPx(_nodes.Count), TreeLayout.AreaHeight(maxDepth));
   }
 
   /// <summary>Most runs search for a value that's actually in the tree so playback usually ends in
@@ -234,6 +260,35 @@
     {
       _player.SetSpeed(speed);
     }
+  }
+
+  private void OnZoomInput(
+    ChangeEventArgs e
+  )
+  {
+    if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var zoom))
+    {
+      _zoom = Math.Clamp(zoom, TreeLayout.MinZoom, TreeLayout.MaxZoom);
+    }
+  }
+
+  private void ZoomIn()
+  {
+    _zoom = Math.Clamp(_zoom + TreeLayout.ZoomStep, TreeLayout.MinZoom, TreeLayout.MaxZoom);
+  }
+
+  private void ZoomOut()
+  {
+    _zoom = Math.Clamp(_zoom - TreeLayout.ZoomStep, TreeLayout.MinZoom, TreeLayout.MaxZoom);
+  }
+
+  /// <summary>Re-applies the same "roughly fits the panel" heuristic <see cref="NewTree"/> uses for a
+  /// freshly generated tree — handy after manually zooming in to inspect a spot, to snap back to an
+  /// overview without needing a fresh tree.</summary>
+  private void FitZoom()
+  {
+    var maxDepth = _nodes.Count == 0 ? 0 : _nodes.Max(node => node.Depth);
+    _zoom = TreeLayout.SuggestedZoom(TreeLayout.DiagramWidthPx(_nodes.Count), TreeLayout.AreaHeight(maxDepth));
   }
 
   private void OnDepthChanged(

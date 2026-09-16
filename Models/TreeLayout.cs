@@ -13,14 +13,21 @@ namespace AlgoMotion.Models;
 /// in-order traversal is exactly its left-to-right visual order. Vertical
 /// placement is a fixed row height per <see cref="TreeNode.Depth"/>.
 ///
-/// Up to <see cref="CompactThreshold"/> nodes, the diagram fills 100% of its
-/// container and node size tapers down to stay legible (same idea as
-/// <see cref="ChartLayout.BarFillRatio"/>). Past that, shrinking further
+/// <see cref="DiagramWidthPx"/> always returns a concrete pixel width (never
+/// "100%") — <see cref="TreeDiagram"/> needs a real number to compute the
+/// zoomed footprint its scroll container should reserve (see
+/// <see cref="ScaledWidthPx"/>/<see cref="ScaledHeightPx"/>; a percentage-
+/// sized element combined with a CSS <c>transform: scale()</c> would leave
+/// the scrollable area sized to the *unscaled* box, wasting scroll space
+/// instead of shrinking it — that's also why the diagram is scaled through
+/// an explicitly-sized wrapper rather than the element the percentages
+/// resolve against). Up to <see cref="CompactThreshold"/> nodes it's a fixed
+/// baseline width with node size tapering down to stay legible (same idea as
+/// <see cref="ChartLayout.BarFillRatio"/>); past that, shrinking further
 /// would make 1-3 digit values illegible, so node size instead freezes at a
-/// fixed, comfortable size and <see cref="RequiredWidthPx"/> grows the
-/// diagram wider than its container — the containing element scrolls
-/// horizontally (see <c>.tree-chart-area</c> in app.css) rather than the
-/// nodes ever shrinking below a readable size, all the way up to 200 nodes.
+/// fixed, comfortable size and the required width grows instead, all the way
+/// up to 200 nodes — the zoom control is what keeps a wide or deep tree
+/// like that viewable as a whole despite never shrinking below readable.
 /// </summary>
 public static class TreeLayout
 {
@@ -29,12 +36,17 @@ public static class TreeLayout
   public const int BottomPad = 20;
 
   /// <summary>Above this many nodes, the diagram stops shrinking nodes to fit and starts growing
-  /// wider than its container instead (see <see cref="RequiredWidthPx"/>).</summary>
+  /// wider than <see cref="BaseDiagramWidthPx"/> instead (see <see cref="DiagramWidthPx"/>).</summary>
   public const int CompactThreshold = 31;
+
+  /// <summary>Baseline diagram width at/below <see cref="CompactThreshold"/> nodes — roughly the
+  /// visible width of the tree panel on a typical desktop viewport (comfortably narrower than it so
+  /// small trees never need to scroll there; the zoom control covers narrower viewports).</summary>
+  private const int BaseDiagramWidthPx = 900;
 
   /// <summary>Center-to-center spacing once nodes stop shrinking — comfortably wider than
   /// <see cref="NodeDiameter"/>'s frozen size so nodes never crowd each other no matter how many
-  /// there are, since going wider (with a scrollbar) is always an option past this point.</summary>
+  /// there are, since a wider diagram (zoom out to compensate) is always an option past this point.</summary>
   private const int LargeSlotWidthPx = 34;
 
   public static double SlotPercent(
@@ -82,17 +94,24 @@ public static class TreeLayout
     };
   }
 
-  /// <summary>How wide the diagram itself needs to be once nodes have frozen at their smallest
-  /// comfortable size — 0 below <see cref="CompactThreshold"/>, meaning "just use 100%, the
-  /// tapering above already keeps everything non-overlapping within the container".</summary>
-  public static int RequiredWidthPx(
+  /// <summary>How wide the diagram itself needs to be — <see cref="BaseDiagramWidthPx"/> up to
+  /// <see cref="CompactThreshold"/> nodes (tapering node size already keeps everything
+  /// non-overlapping within that), <c>count * LargeSlotWidthPx</c> beyond it.</summary>
+  public static int DiagramWidthPx(
     int count
   )
   {
-    return count <= CompactThreshold ? 0 : count * LargeSlotWidthPx;
+    return count <= CompactThreshold ? BaseDiagramWidthPx : count * LargeSlotWidthPx;
   }
 
-  public const double MinZoom = 0.15;
+  /// <summary>Floor for the zoom slider. Deliberately not low enough to ever fully fit a 200-node,
+  /// 100-deep tree — nodes are already frozen at their smallest *readable* size (see
+  /// <see cref="NodeDiameter"/>), and scaling those down further would make an "overview" that
+  /// shows nothing legible, which defeats the point. Past a certain size, "see the whole tree" and
+  /// "read every value" are simply in tension — like any zoomable canvas, the honest answer is
+  /// "zoom out for shape, zoom in to read", not a magic zoom level that satisfies both.</summary>
+  public const double MinZoom = 0.4;
+
   public const double MaxZoom = 1.5;
   public const double ZoomStep = 0.05;
   public const double DefaultZoom = 1.0;
@@ -107,13 +126,13 @@ public static class TreeLayout
 
   /// <summary>Picks a starting zoom so a new tree opens roughly fitted to the panel instead of
   /// always at 100% — a wide (many nodes) or deep (large min-depth) tree starts zoomed out; a small
-  /// one starts at 100% since it already fits.</summary>
+  /// one starts at (or near) 100% since it already fits.</summary>
   public static double SuggestedZoom(
-    int requiredWidthPx,
+    int diagramWidthPx,
     int areaHeightPx
   )
   {
-    var byWidth = requiredWidthPx <= 0 ? 1.0 : AssumedViewportWidth / requiredWidthPx;
+    var byWidth = diagramWidthPx <= 0 ? 1.0 : AssumedViewportWidth / diagramWidthPx;
     var byHeight = areaHeightPx <= 0 ? 1.0 : AssumedViewportHeight / areaHeightPx;
     return Math.Clamp(Math.Min(1.0, Math.Min(byWidth, byHeight)), MinZoom, MaxZoom);
   }

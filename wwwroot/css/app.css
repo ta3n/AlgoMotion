@@ -996,17 +996,133 @@ html, body {
 /* ---------- tree diagram ---------- */
 
 .tree-chart-area {
-  padding: 20px 20px 4px;
-  /* Past TreeLayout.CompactThreshold nodes, .tree-area grows wider than this
-     container instead of shrinking nodes below a readable size — scroll
-     horizontally to see the rest rather than letting it overflow the page. */
-  overflow-x: auto;
-  overflow-y: visible;
+  padding: 14px 20px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Bounding both axes is what makes zoom worth having: a tree past
+     TreeLayout.CompactThreshold nodes (wider) or past a few screens of depth
+     (taller) always fits *some* scrollable viewport here — zooming out
+     shrinks how much of that viewport you need to pan around, rather than
+     the panel itself ever growing to the tree's full, potentially huge, size. */
+  max-height: 70vh;
+  overflow: auto;
+}
+
+/* ---------- toolbar: legend + zoom ---------- */
+
+.tree-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 8px;
+  background: rgba(8, 19, 40, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+}
+
+.tree-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tree-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tree-swatch {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(70, 140, 220, 0.35), rgba(30, 70, 130, 0.55));
+  border: 1.5px solid rgba(150, 200, 255, 0.45);
+}
+
+.tree-swatch-visited {
+  opacity: 0.5;
+  border-color: var(--text-faint);
+}
+
+.tree-swatch-queued {
+  border-color: var(--neon-amber);
+  box-shadow: 0 0 6px rgba(255, 198, 90, 0.5);
+}
+
+.tree-swatch-active {
+  border-color: var(--neon-pink);
+  background: linear-gradient(180deg, rgba(255, 77, 141, 0.4), rgba(180, 30, 90, 0.55));
+  box-shadow: 0 0 6px var(--neon-pink-soft);
+}
+
+.tree-swatch-found {
+  border-color: var(--neon-green);
+  background: linear-gradient(180deg, rgba(61, 242, 164, 0.4), rgba(20, 110, 80, 0.6));
+  box-shadow: 0 0 6px var(--neon-green-soft);
+}
+
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-zoom {
+  padding: 5px 11px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.zoom-control input[type="range"] {
+  width: 100px;
+  accent-color: var(--neon-cyan);
+}
+
+.zoom-readout {
+  min-width: 42px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-bright);
+  text-align: right;
+}
+
+/* ---------- the canvas itself ---------- */
+
+/* Sized in C# to the diagram's zoomed footprint (DiagramWidthPx/AreaHeightPx
+   times Zoom) so .tree-chart-area's scrollable area actually shrinks when
+   zooming out, instead of reserving the .tree-area's full unscaled box —
+   transform: scale() alone repaints an element smaller without changing the
+   layout size an ancestor scrolls for. */
+.tree-zoom-sizer {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .tree-area {
   position: relative;
-  width: 100%;
+  flex-shrink: 0;
+  /* A fine dot grid, independent of the app-shell's larger blueprint grid —
+     it scales together with the tree (both live inside the same transform),
+     which reads as canvas graph paper you're zooming a camera over rather
+     than a flat backdrop the content floats past. */
+  background-image: radial-gradient(circle, rgba(120, 180, 255, 0.16) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  transition: transform calc(300ms * var(--speed-scale, 1)) ease;
 }
 
 .tree-edges {
@@ -1039,6 +1155,7 @@ html, body {
   border-radius: 50%;
   background: linear-gradient(180deg, rgba(70, 140, 220, 0.35), rgba(30, 70, 130, 0.55));
   border: 1.5px solid rgba(150, 200, 255, 0.45);
+  box-shadow: 0 0 8px rgba(20, 60, 120, 0.35);
   color: var(--text-bright);
   font-weight: 600;
   z-index: 1;

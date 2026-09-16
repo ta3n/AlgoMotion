@@ -1,35 +1,37 @@
 @using AlgoMotion.Models
 
-<div class="tree-area" style="height:@(AreaHeightPx)px; @(RequiredWidthPx > 0 ? $"width:{RequiredWidthPx}px;" : "")">
-  <svg class="tree-edges" viewBox="0 0 1000 @AreaHeightPx" preserveAspectRatio="none">
+<div class="tree-zoom-sizer" style="width:@(ScaledWidthPx)px; height:@(ScaledHeightPx)px;">
+  <div class="tree-area" style="width:@(DiagramWidthPx)px; height:@(AreaHeightPx)px; transform:scale(@(TreeLayout.Num(Zoom))); transform-origin:top left;">
+    <svg class="tree-edges" viewBox="0 0 1000 @AreaHeightPx" preserveAspectRatio="none">
+      @foreach (var node in Nodes)
+      {
+        @if (node.ParentId is { } parentId)
+        {
+          var parent = Nodes[parentId];
+          var x1 = TreeLayout.CenterPercent(parent.InorderIndex, Nodes.Count) * 10;
+          var y1 = TreeLayout.TopFor(parent.Depth) + (NodeRadius);
+          var x2 = TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count) * 10;
+          var y2 = TreeLayout.TopFor(node.Depth) + (NodeRadius);
+          <line @key="node.Id" class="tree-edge @(node.Id == CurrentNodeId ? "tree-edge-active" : "")"
+                x1="@(TreeLayout.Num(x1))" y1="@(TreeLayout.Num(y1))"
+                x2="@(TreeLayout.Num(x2))" y2="@(TreeLayout.Num(y2))"/>
+        }
+      }
+    </svg>
+
     @foreach (var node in Nodes)
     {
-      @if (node.ParentId is { } parentId)
-      {
-        var parent = Nodes[parentId];
-        var x1 = TreeLayout.CenterPercent(parent.InorderIndex, Nodes.Count) * 10;
-        var y1 = TreeLayout.TopFor(parent.Depth) + (NodeRadius);
-        var x2 = TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count) * 10;
-        var y2 = TreeLayout.TopFor(node.Depth) + (NodeRadius);
-        <line @key="node.Id" class="tree-edge @(node.Id == CurrentNodeId ? "tree-edge-active" : "")"
-              x1="@(TreeLayout.Num(x1))" y1="@(TreeLayout.Num(y1))"
-              x2="@(TreeLayout.Num(x2))" y2="@(TreeLayout.Num(y2))"/>
-      }
+      var isCurrent = node.Id == CurrentNodeId;
+      var isVisited = !isCurrent && VisitedSet.Contains(node.Id);
+      var isQueued = QueuedSet.Contains(node.Id);
+      var isFound = Found && isCurrent;
+      <div @key="node.Id"
+           class="tree-node @(isCurrent ? "tree-node-active" : "") @(isVisited ? "tree-node-visited" : "") @(isQueued ? "tree-node-queued" : "") @(isFound ? "tree-node-found" : "")"
+           style="left:@(TreeLayout.Pct(TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count))); top:@(TreeLayout.TopFor(node.Depth))px; width:@(NodeDiameter)px; height:@(NodeDiameter)px; font-size:@(FontSizePx)px;">
+        @node.Value
+      </div>
     }
-  </svg>
-
-  @foreach (var node in Nodes)
-  {
-    var isCurrent = node.Id == CurrentNodeId;
-    var isVisited = !isCurrent && VisitedSet.Contains(node.Id);
-    var isQueued = QueuedSet.Contains(node.Id);
-    var isFound = Found && isCurrent;
-    <div @key="node.Id"
-         class="tree-node @(isCurrent ? "tree-node-active" : "") @(isVisited ? "tree-node-visited" : "") @(isQueued ? "tree-node-queued" : "") @(isFound ? "tree-node-found" : "")"
-         style="left:@(TreeLayout.Pct(TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count))); top:@(TreeLayout.TopFor(node.Depth))px; width:@(NodeDiameter)px; height:@(NodeDiameter)px; font-size:@(FontSizePx)px;">
-      @node.Value
-    </div>
-  }
+  </div>
 </div>
 
 @code {
@@ -50,6 +52,9 @@
   [Parameter]
   public bool Found { get; set; }
 
+  [Parameter]
+  public double Zoom { get; set; } = TreeLayout.DefaultZoom;
+
   private HashSet<int> VisitedSet => [.. VisitedNodeIds];
 
   private HashSet<int> QueuedSet => [.. QueuedNodeIds];
@@ -58,7 +63,13 @@
 
   private int AreaHeightPx => TreeLayout.AreaHeight(MaxDepth);
 
-  private int RequiredWidthPx => TreeLayout.RequiredWidthPx(Nodes.Count);
+  private int DiagramWidthPx => TreeLayout.DiagramWidthPx(Nodes.Count);
+
+  /// <summary>The footprint the scroll container should actually reserve once the diagram is
+  /// painted at <see cref="Zoom"/> — see the "explicitly-sized wrapper" note on <see cref="TreeLayout"/>.</summary>
+  private int ScaledWidthPx => (int)Math.Round(DiagramWidthPx * Zoom);
+
+  private int ScaledHeightPx => (int)Math.Round(AreaHeightPx * Zoom);
 
   private int NodeDiameter => TreeLayout.NodeDiameter(Nodes.Count);
 
