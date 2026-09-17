@@ -135,7 +135,8 @@ public static class SelectionSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -162,7 +163,7 @@ public static class SelectionSortSimulator
           PivotIndex = min,
           ActiveCodeLines = [3, 4],
           SortedIndices = [.. sorted],
-          Caption = $"Lượt {i + 1}: giả sử a[{i}] là nhỏ nhất, đi tìm phần tử nhỏ hơn."
+          Caption = Res.Caption("Selection_StartPass", language, i + 1, i)
         }
       );
 
@@ -185,8 +186,11 @@ public static class SelectionSortSimulator
             PivotIndex = min,
             ActiveCodeLines = [5, 6],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh a[{j}] = {a[j]} với a[min] = {a[min]}"
-              + (smaller ? "  →  nhỏ hơn!" : "  →  không nhỏ hơn")
+            Caption = Res.Caption(
+              smaller ? "Selection_CompareSmaller" : "Selection_CompareNotSmaller",
+              language,
+              j, a[j], a[min]
+            )
           }
         );
 
@@ -207,7 +211,7 @@ public static class SelectionSortSimulator
               PivotIndex = min,
               ActiveCodeLines = [7],
               SortedIndices = [.. sorted],
-              Caption = $"a[{j}] = {a[j]} nhỏ hơn — min cập nhật thành {j}."
+              Caption = Res.Caption("Selection_NewCandidate", language, j, a[j], j)
             }
           );
         }
@@ -231,7 +235,7 @@ public static class SelectionSortSimulator
             RightIndex = min,
             ActiveCodeLines = [10, 11, 12, 13],
             SortedIndices = [.. sorted],
-            Caption = $"Đổi chỗ a[{i}] và a[{min}] — phần tử nhỏ nhất về đầu."
+            Caption = Res.Caption("Selection_Swap", language, i, min)
           }
         );
       }
@@ -249,7 +253,7 @@ public static class SelectionSortSimulator
             LeftIndex = i,
             ActiveCodeLines = [10],
             SortedIndices = [.. sorted],
-            Caption = $"a[{i}] đã là nhỏ nhất, không cần đổi chỗ."
+            Caption = Res.Caption("Selection_NoSwap", language, i)
           }
         );
       }
@@ -267,7 +271,7 @@ public static class SelectionSortSimulator
           RightIndex = i,
           ActiveCodeLines = [14, 15],
           SortedIndices = [.. sorted],
-          Caption = $"a[{i}] đã về đúng vị trí cuối cùng."
+          Caption = Res.Caption("Selection_MarkSorted", language, i)
         }
       );
     }
@@ -287,7 +291,7 @@ public static class SelectionSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [16],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

@@ -112,7 +112,8 @@ public static class InsertionSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -138,7 +139,7 @@ public static class InsertionSortSimulator
           LeftIndex = i,
           ActiveCodeLines = [3, 4],
           SortedIndices = Range(0, i),
-          Caption = $"Lấy a[{i}] = {a[i]} làm khoá, dịch dần về đúng chỗ trong đoạn đã sắp xếp."
+          Caption = Res.Caption("Insertion_StartPass", language, i, a[i])
         }
       );
 
@@ -160,8 +161,11 @@ public static class InsertionSortSimulator
             RightIndex = j,
             ActiveCodeLines = [5],
             SortedIndices = Range(0, i),
-            Caption = $"So sánh a[{j - 1}] = {a[j - 1]} và a[{j}] = {a[j]}"
-              + (outOfOrder ? "  →  sai thứ tự" : "  →  đúng thứ tự, dừng")
+            Caption = Res.Caption(
+              outOfOrder ? "Insertion_CompareOutOfOrder" : "Insertion_CompareInOrder",
+              language,
+              j - 1, a[j - 1], j, a[j]
+            )
           }
         );
 
@@ -186,7 +190,7 @@ public static class InsertionSortSimulator
             RightIndex = j,
             ActiveCodeLines = [6, 7, 8],
             SortedIndices = Range(0, i),
-            Caption = $"Đổi chỗ: a[{j - 1}] ↔ a[{j}]."
+            Caption = Res.Caption("Insertion_Swap", language, j - 1, j)
           }
         );
 
@@ -203,7 +207,7 @@ public static class InsertionSortSimulator
           SwapCount = swapCount,
           ActiveCodeLines = [11],
           SortedIndices = Range(0, i + 1),
-          Caption = $"Đoạn a[0..{i}] đã được sắp xếp."
+          Caption = Res.Caption("Insertion_EndPass", language, i)
         }
       );
     }
@@ -218,7 +222,7 @@ public static class InsertionSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [12],
         SortedIndices = Range(0, n),
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

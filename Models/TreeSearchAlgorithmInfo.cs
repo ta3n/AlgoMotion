@@ -22,24 +22,26 @@ public sealed class TreeSearchAlgorithmInfo
 {
   public required TreeSearchAlgorithmKind Kind { get; init; }
 
-  /// <summary>Big header title, e.g. "BST SEARCH".</summary>
+  /// <summary>Big header title, e.g. "BST SEARCH" — kept as the one canonical (English) technical
+  /// name regardless of <see cref="UiLanguage"/>; the resx-backed subtitle/hint carry the
+  /// translated description.</summary>
   public required string Name { get; init; }
 
-  /// <summary>Spanish-style tagline under the title, matching the sorting page's convention.</summary>
-  public required string Subtitle { get; init; }
+  /// <summary>Key prefix used to look up this algorithm's Subtitle/Hint text in
+  /// Resources/TreeMeta.resx (e.g. "Bst" → "Bst_Subtitle", "Bst_Hint").</summary>
+  public required string ResourceKey { get; init; }
 
   /// <summary>File name shown in the code panel's title bar, without extension — e.g. "bst_search";
   /// <see cref="GetFileName"/> appends the extension for whichever language is selected.</summary>
   public required string BaseFileName { get; init; }
 
-  /// <summary>Small caption under the code panel describing the core idea.</summary>
-  public required string HintCaption { get; init; }
+  /// <summary>TreeMeta.resx key for the comparison counter label — "Common_Compare" for every
+  /// algorithm here.</summary>
+  public string CompareLabelKey { get; init; } = "Common_Compare";
 
-  /// <summary>Label for the comparison counter — "COMPARA" for every algorithm here.</summary>
-  public string CompareLabel { get; init; } = "COMPARA";
-
-  /// <summary>Label for the visit counter — "VISITA" for every algorithm here.</summary>
-  public string ActionLabel { get; init; } = "VISITA";
+  /// <summary>TreeMeta.resx key for the visit counter label — "Common_Visit" for every algorithm
+  /// here.</summary>
+  public string ActionLabelKey { get; init; } = "Common_Visit";
 
   /// <summary>Pre-tokenized HTML source lines per language shown in the code panel. See
   /// <see cref="SortAlgorithmInfo.CodeByLanguage"/> for why only C's lines up with the recorded
@@ -47,8 +49,8 @@ public sealed class TreeSearchAlgorithmInfo
   public required IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage { get; init; }
 
   /// <summary>Builds a tree from the given values and records every step of searching it for
-  /// <c>target</c>.</summary>
-  public required Func<int[], int, TreeSearchResult> Record { get; init; }
+  /// <c>target</c>, narrating each one in the requested <see cref="UiLanguage"/>.</summary>
+  public required Func<int[], int, UiLanguage, TreeSearchResult> Record { get; init; }
 
   public string[] GetCodeLines(
     CodeLanguage language
@@ -63,6 +65,34 @@ public sealed class TreeSearchAlgorithmInfo
   {
     return $"{BaseFileName}.{CodeLanguages.Extension(language)}";
   }
+
+  public string GetSubtitle(
+    UiLanguage language
+  )
+  {
+    return Res.TreeMeta($"{ResourceKey}_Subtitle", language);
+  }
+
+  public string GetHintCaption(
+    UiLanguage language
+  )
+  {
+    return Res.TreeMeta($"{ResourceKey}_Hint", language);
+  }
+
+  public string GetCompareLabel(
+    UiLanguage language
+  )
+  {
+    return Res.TreeMeta(CompareLabelKey, language);
+  }
+
+  public string GetActionLabel(
+    UiLanguage language
+  )
+  {
+    return Res.TreeMeta(ActionLabelKey, language);
+  }
 }
 
 /// <summary>The full registry of tree-search algorithms offered in the picker, in display order.</summary>
@@ -74,9 +104,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.Bst,
       Name = "BST SEARCH",
-      Subtitle = "BÚSQUEDA POR ÁRBOL BINARIO",
+      ResourceKey = "Bst",
       BaseFileName = "bst_search",
-      HintCaption = "USA EL ORDEN DEL ÁRBOL PARA IR DIRECTO AL OBJETIVO",
       CodeByLanguage = BstSearchSimulator.CodeByLanguage,
       Record = BstSearchSimulator.Record
     },
@@ -84,9 +113,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.DfsPreorder,
       Name = "DFS PREORDER SEARCH",
-      Subtitle = "BÚSQUEDA EN PROFUNDIDAD (PREORDEN)",
+      ResourceKey = "DfsPreorder",
       BaseFileName = "preorder_search",
-      HintCaption = "VISITA RAÍZ, LUEGO IZQUIERDA, LUEGO DERECHA",
       CodeByLanguage = DfsPreorderSearchSimulator.CodeByLanguage,
       Record = DfsPreorderSearchSimulator.Record
     },
@@ -94,9 +122,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.DfsInorder,
       Name = "DFS INORDER SEARCH",
-      Subtitle = "BÚSQUEDA EN PROFUNDIDAD (INORDEN)",
+      ResourceKey = "DfsInorder",
       BaseFileName = "inorder_search",
-      HintCaption = "VISITA IZQUIERDA, LUEGO RAÍZ, LUEGO DERECHA",
       CodeByLanguage = DfsInorderSearchSimulator.CodeByLanguage,
       Record = DfsInorderSearchSimulator.Record
     },
@@ -104,9 +131,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.DfsPostorder,
       Name = "DFS POSTORDER SEARCH",
-      Subtitle = "BÚSQUEDA EN PROFUNDIDAD (POSTORDEN)",
+      ResourceKey = "DfsPostorder",
       BaseFileName = "postorder_search",
-      HintCaption = "VISITA IZQUIERDA, LUEGO DERECHA, LUEGO RAÍZ",
       CodeByLanguage = DfsPostorderSearchSimulator.CodeByLanguage,
       Record = DfsPostorderSearchSimulator.Record
     },
@@ -114,9 +140,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.Bfs,
       Name = "BFS SEARCH",
-      Subtitle = "BÚSQUEDA EN ANCHURA",
+      ResourceKey = "Bfs",
       BaseFileName = "bfs_search",
-      HintCaption = "VISITA NIVEL POR NIVEL USANDO UNA COLA",
       CodeByLanguage = BfsSearchSimulator.CodeByLanguage,
       Record = BfsSearchSimulator.Record
     },
@@ -124,9 +149,8 @@ public static class TreeSearchAlgorithms
     {
       Kind = TreeSearchAlgorithmKind.Avl,
       Name = "AVL SEARCH",
-      Subtitle = "BÚSQUEDA POR ÁRBOL AVL",
+      ResourceKey = "Avl",
       BaseFileName = "avl_search",
-      HintCaption = "ÁRBOL AUTOBALANCEADO: PROFUNDIDAD SIEMPRE O(LOG N)",
       CodeByLanguage = AvlSearchSimulator.CodeByLanguage,
       Record = AvlSearchSimulator.Record
     }

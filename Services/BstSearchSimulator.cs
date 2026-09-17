@@ -119,11 +119,12 @@ public static class BstSearchSimulator
 
   public static TreeSearchResult Record(
     int[] values,
-    int target
+    int target,
+    UiLanguage language
   )
   {
     var (nodes, rootId) = BstBuilder.Build(values);
-    return Search(nodes, rootId, target);
+    return Search(nodes, rootId, target, language);
   }
 
   /// <summary>Shared with <see cref="AvlSearchSimulator"/> — once a tree is built, walking down by
@@ -131,7 +132,8 @@ public static class BstSearchSimulator
   internal static TreeSearchResult Search(
     List<TreeNode> nodes,
     int? rootId,
-    int target
+    int target,
+    UiLanguage language
   )
   {
     var steps = new List<TreeSearchStep>();
@@ -156,7 +158,7 @@ public static class BstSearchSimulator
             CompareCount = compareCount,
             VisitCount = visited.Count,
             ActiveCodeLines = [5, 6],
-            Caption = $"So sánh {target} với node {node.Value}  →  bằng nhau, tìm thấy!"
+            Caption = Res.Caption("TreeCompare_Found", language, target, node.Value)
           }
         );
 
@@ -174,8 +176,11 @@ public static class BstSearchSimulator
           CompareCount = compareCount,
           VisitCount = visited.Count,
           ActiveCodeLines = goLeft ? [8, 9] : [10, 11],
-          Caption = $"So sánh {target} với node {node.Value}"
-            + (goLeft ? "  →  nhỏ hơn, đi sang trái" : "  →  lớn hơn, đi sang phải")
+          Caption = Res.Caption(
+            goLeft ? "TreeCompare_GoLeft" : "TreeCompare_GoRight",
+            language,
+            target, node.Value
+          )
         }
       );
 
@@ -191,7 +196,7 @@ public static class BstSearchSimulator
         CompareCount = compareCount,
         VisitCount = visited.Count,
         ActiveCodeLines = [13, 14],
-        Caption = $"Gặp nhánh rỗng — không tìm thấy {target} trong cây."
+        Caption = Res.Caption("TreeCompare_NotFound", language, target)
       }
     );
 

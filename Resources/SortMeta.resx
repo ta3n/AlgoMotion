@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>SO SÁNH</value></data>
+  <data name="Common_Swap" xml:space="preserve"><value>ĐỔI CHỖ</value></data>
+  <data name="Common_Write" xml:space="preserve"><value>GHI</value></data>
+  <data name="Common_Count" xml:space="preserve"><value>ĐẾM</value></data>
+
+  <data name="Bubble_Subtitle" xml:space="preserve"><value>SẮP XẾP HOÁN ĐỔI</value></data>
+  <data name="Bubble_Hint" xml:space="preserve"><value>CHỈ SO SÁNH HAI PHẦN TỬ LIỀN KỀ</value></data>
+
+  <data name="Selection_Subtitle" xml:space="preserve"><value>SẮP XẾP CHỌN</value></data>
+  <data name="Selection_Hint" xml:space="preserve"><value>TÌM PHẦN TỬ NHỎ NHẤT VÀ ĐƯA LÊN ĐẦU</value></data>
+
+  <data name="Insertion_Subtitle" xml:space="preserve"><value>SẮP XẾP CHÈN</value></data>
+  <data name="Insertion_Hint" xml:space="preserve"><value>LẤY MỘT PHẦN TỬ VÀ TRƯỢT VÀO ĐÚNG VỊ TRÍ</value></data>
+
+  <data name="Quick_Subtitle" xml:space="preserve"><value>SẮP XẾP NHANH</value></data>
+  <data name="Quick_Hint" xml:space="preserve"><value>CHIA MẢNG QUANH MỘT PHẦN TỬ CHỐT</value></data>
+
+  <data name="Merge_Subtitle" xml:space="preserve"><value>SẮP XẾP TRỘN</value></data>
+  <data name="Merge_Hint" xml:space="preserve"><value>CHIA NHỎ, SẮP XẾP RỒI TRỘN LẠI</value></data>
+
+  <data name="Heap_Subtitle" xml:space="preserve"><value>SẮP XẾP VUN ĐỐNG</value></data>
+  <data name="Heap_Hint" xml:space="preserve"><value>DỰNG HEAP RỒI LIÊN TỤC LẤY PHẦN TỬ LỚN NHẤT</value></data>
+
+  <data name="Shell_Subtitle" xml:space="preserve"><value>SẮP XẾP SHELL</value></data>
+  <data name="Shell_Hint" xml:space="preserve"><value>CHÈN VỚI KHOẢNG CÁCH GIẢM DẦN</value></data>
+
+  <data name="Cocktail_Subtitle" xml:space="preserve"><value>SẮP XẾP LẮC (HAI CHIỀU)</value></data>
+  <data name="Cocktail_Hint" xml:space="preserve"><value>DUYỆT MẢNG THEO CẢ HAI HƯỚNG</value></data>
+
+  <data name="Counting_Subtitle" xml:space="preserve"><value>SẮP XẾP ĐẾM</value></data>
+  <data name="Counting_Hint" xml:space="preserve"><value>ĐẾM TẦN SUẤT RỒI ĐẶT TỪNG GIÁ TRỊ VÀO ĐÚNG CHỖ</value></data>
+
+  <data name="Radix_Subtitle" xml:space="preserve"><value>SẮP XẾP CƠ SỐ</value></data>
+  <data name="Radix_Hint" xml:space="preserve"><value>SẮP XẾP TỪNG CHỮ SỐ, TỪ HÀNG THẤP ĐẾN HÀNG CAO</value></data>
+
+  <data name="Gnome_Subtitle" xml:space="preserve"><value>SẮP XẾP CHÚ LÙN</value></data>
+  <data name="Gnome_Hint" xml:space="preserve"><value>TIẾN HOẶC LÙI MỘT BƯỚC TUỲ KẾT QUẢ SO SÁNH</value></data>
+
+  <data name="Cycle_Subtitle" xml:space="preserve"><value>SẮP XẾP CHU TRÌNH</value></data>
+  <data name="Cycle_Hint" xml:space="preserve"><value>ĐI THEO TỪNG CHU TRÌNH: SỐ LẦN ĐỔI CHỖ TỐI THIỂU</value></data>
+
+  <data name="Pancake_Subtitle" xml:space="preserve"><value>SẮP XẾP BÁNH KẾP</value></data>
+  <data name="Pancake_Hint" xml:space="preserve"><value>LẬT MỘT ĐOẠN ĐẦU MẢNG NHƯ LẬT CHỒNG BÁNH KẾP</value></data>
+
+  <data name="Tree_Subtitle" xml:space="preserve"><value>SẮP XẾP BẰNG CÂY NHỊ PHÂN</value></data>
+  <data name="Tree_Hint" xml:space="preserve"><value>DỰNG CÂY BST RỒI DUYỆT IN-ORDER</value></data>
+</root>

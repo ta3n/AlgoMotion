@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>COMPARE</value></data>
+  <data name="Common_Swap" xml:space="preserve"><value>SWAPS</value></data>
+  <data name="Common_Write" xml:space="preserve"><value>WRITES</value></data>
+  <data name="Common_Count" xml:space="preserve"><value>COUNT</value></data>
+
+  <data name="Bubble_Subtitle" xml:space="preserve"><value>EXCHANGE SORT</value></data>
+  <data name="Bubble_Hint" xml:space="preserve"><value>ONLY COMPARES ADJACENT PAIRS</value></data>
+
+  <data name="Selection_Subtitle" xml:space="preserve"><value>SELECTION SORT</value></data>
+  <data name="Selection_Hint" xml:space="preserve"><value>FINDS THE MINIMUM AND MOVES IT TO THE FRONT</value></data>
+
+  <data name="Insertion_Subtitle" xml:space="preserve"><value>INSERTION SORT</value></data>
+  <data name="Insertion_Hint" xml:space="preserve"><value>TAKES ONE ELEMENT AND SLIDES IT INTO PLACE</value></data>
+
+  <data name="Quick_Subtitle" xml:space="preserve"><value>QUICK SORT</value></data>
+  <data name="Quick_Hint" xml:space="preserve"><value>PARTITIONS AROUND A PIVOT</value></data>
+
+  <data name="Merge_Subtitle" xml:space="preserve"><value>MERGE SORT</value></data>
+  <data name="Merge_Hint" xml:space="preserve"><value>DIVIDE, SORT, AND MERGE</value></data>
+
+  <data name="Heap_Subtitle" xml:space="preserve"><value>HEAP SORT</value></data>
+  <data name="Heap_Hint" xml:space="preserve"><value>BUILDS A HEAP AND REPEATEDLY EXTRACTS THE MAX</value></data>
+
+  <data name="Shell_Subtitle" xml:space="preserve"><value>SHELL SORT</value></data>
+  <data name="Shell_Hint" xml:space="preserve"><value>INSERTION SORT WITH A SHRINKING GAP</value></data>
+
+  <data name="Cocktail_Subtitle" xml:space="preserve"><value>COCKTAIL SHAKER SORT</value></data>
+  <data name="Cocktail_Hint" xml:space="preserve"><value>SWEEPS THE ARRAY IN BOTH DIRECTIONS</value></data>
+
+  <data name="Counting_Subtitle" xml:space="preserve"><value>COUNTING SORT</value></data>
+  <data name="Counting_Hint" xml:space="preserve"><value>COUNTS FREQUENCIES AND PLACES EACH VALUE</value></data>
+
+  <data name="Radix_Subtitle" xml:space="preserve"><value>RADIX SORT</value></data>
+  <data name="Radix_Hint" xml:space="preserve"><value>SORTS DIGIT BY DIGIT, LEAST TO MOST SIGNIFICANT</value></data>
+
+  <data name="Gnome_Subtitle" xml:space="preserve"><value>GNOME SORT</value></data>
+  <data name="Gnome_Hint" xml:space="preserve"><value>STEPS FORWARD OR BACKWARD BASED ON THE COMPARISON</value></data>
+
+  <data name="Cycle_Subtitle" xml:space="preserve"><value>CYCLE SORT</value></data>
+  <data name="Cycle_Hint" xml:space="preserve"><value>FOLLOWS EACH CYCLE: THE FEWEST SWAPS POSSIBLE</value></data>
+
+  <data name="Pancake_Subtitle" xml:space="preserve"><value>PANCAKE SORT</value></data>
+  <data name="Pancake_Hint" xml:space="preserve"><value>FLIPS A LEADING SEGMENT LIKE A STACK OF PANCAKES</value></data>
+
+  <data name="Tree_Subtitle" xml:space="preserve"><value>TREE SORT</value></data>
+  <data name="Tree_Hint" xml:space="preserve"><value>BUILDS A BST AND TRAVERSES IT IN-ORDER</value></data>
+</root>

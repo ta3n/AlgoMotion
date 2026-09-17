@@ -144,7 +144,8 @@ public static class BfsSearchSimulator
 
   public static TreeSearchResult Record(
     int[] values,
-    int target
+    int target,
+    UiLanguage language
   )
   {
     var (nodes, rootId) = BstBuilder.Build(values);
@@ -177,7 +178,7 @@ public static class BfsSearchSimulator
             CompareCount = compareCount,
             VisitCount = visited.Count,
             ActiveCodeLines = [7, 8],
-            Caption = $"Lấy node {node.Value} ra khỏi hàng đợi  →  đúng mục tiêu {target}, tìm thấy!"
+            Caption = Res.Caption("Bfs_Found", language, node.Value, target)
           }
         );
 
@@ -207,8 +208,9 @@ public static class BfsSearchSimulator
           CompareCount = compareCount,
           VisitCount = visited.Count,
           ActiveCodeLines = [7, 10, 11],
-          Caption = $"Lấy node {node.Value} ra khỏi hàng đợi  →  chưa khớp {target}"
-            + (enqueuedCount > 0 ? $", thêm {enqueuedCount} node con vào hàng đợi." : ", không có con để thêm.")
+          Caption = enqueuedCount > 0
+            ? Res.Caption("Bfs_SkipWithChildren", language, node.Value, target, enqueuedCount)
+            : Res.Caption("Bfs_SkipNoChildren", language, node.Value, target)
         }
       );
     }
@@ -222,7 +224,7 @@ public static class BfsSearchSimulator
         CompareCount = compareCount,
         VisitCount = visited.Count,
         ActiveCodeLines = [13],
-        Caption = $"Hàng đợi rỗng — không tìm thấy {target}."
+        Caption = Res.Caption("Bfs_NotFound", language, target)
       }
     );
 

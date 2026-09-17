@@ -149,7 +149,8 @@ public static class QuickSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -196,7 +197,7 @@ public static class QuickSortSimulator
           RangeEnd = hi,
           ActiveCodeLines = [3, 4, 5],
           SortedIndices = [.. sorted],
-          Caption = $"Vùng [{lo}..{hi}]: chọn pivot = a[{hi}] = {pivotValue}."
+          Caption = Res.Caption("Quick_SetPivot", language, lo, hi, hi, pivotValue)
         }
       );
 
@@ -223,8 +224,11 @@ public static class QuickSortSimulator
             RangeEnd = hi,
             ActiveCodeLines = [6, 7],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh a[{j}] = {a[j]} với pivot = {pivotValue}"
-              + (smaller ? "  →  nhỏ hơn" : "  →  không nhỏ hơn")
+            Caption = Res.Caption(
+              smaller ? "Quick_CompareSmaller" : "Quick_CompareNotSmaller",
+              language,
+              j, a[j], pivotValue
+            )
           }
         );
 
@@ -252,7 +256,7 @@ public static class QuickSortSimulator
                 RangeEnd = hi,
                 ActiveCodeLines = [8, 9],
                 SortedIndices = [.. sorted],
-                Caption = $"Đưa a[{j}] về vùng nhỏ hơn pivot: đổi chỗ a[{i}] ↔ a[{j}]."
+                Caption = Res.Caption("Quick_SwapToLeft", language, j, i, j)
               }
             );
           }
@@ -274,7 +278,7 @@ public static class QuickSortSimulator
                 RangeEnd = hi,
                 ActiveCodeLines = [8, 9],
                 SortedIndices = [.. sorted],
-                Caption = $"a[{j}] đã đúng vùng, không cần đổi chỗ."
+                Caption = Res.Caption("Quick_NoSwapInPlace", language, j)
               }
             );
           }
@@ -301,7 +305,7 @@ public static class QuickSortSimulator
           RangeEnd = hi,
           ActiveCodeLines = [12, 13],
           SortedIndices = [.. sorted],
-          Caption = $"Đặt pivot vào đúng vị trí: đổi chỗ a[{p}] ↔ a[{hi}]."
+          Caption = Res.Caption("Quick_PlacePivot", language, p, hi)
         }
       );
 
@@ -321,7 +325,7 @@ public static class QuickSortSimulator
           RangeEnd = hi,
           ActiveCodeLines = [14, 15],
           SortedIndices = [.. sorted],
-          Caption = $"a[{p}] cố định — chia thành vùng [{lo}..{p - 1}] và [{p + 1}..{hi}]."
+          Caption = Res.Caption("Quick_RangeDone", language, p, lo, p - 1, p + 1, hi)
         }
       );
 
@@ -344,7 +348,7 @@ public static class QuickSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

@@ -135,7 +135,8 @@ public static class BubbleSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -162,7 +163,7 @@ public static class BubbleSortSimulator
           Swapped = false,
           ActiveCodeLines = [3, 4],
           SortedIndices = [.. sorted],
-          Caption = $"Lượt {i + 1}: quét từ đầu dãy, so sánh từng cặp liền kề."
+          Caption = Res.Caption("Bubble_StartPass", language, i + 1)
         }
       );
 
@@ -185,8 +186,11 @@ public static class BubbleSortSimulator
             RightIndex = j + 1,
             ActiveCodeLines = [5, 6],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh a[{j}] = {a[j]} và a[{j + 1}] = {a[j + 1]}"
-              + (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
+            Caption = Res.Caption(
+              willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
+              language,
+              j, a[j], j + 1, a[j + 1]
+            )
           }
         );
 
@@ -210,7 +214,7 @@ public static class BubbleSortSimulator
               RightIndex = j + 1,
               ActiveCodeLines = [7, 8, 9, 10],
               SortedIndices = [.. sorted],
-              Caption = $"Đổi chỗ: a[{j}] ↔ a[{j + 1}]"
+              Caption = Res.Caption("Bubble_Swap", language, j, j + 1)
             }
           );
         }
@@ -230,7 +234,7 @@ public static class BubbleSortSimulator
               RightIndex = j + 1,
               ActiveCodeLines = [6],
               SortedIndices = [.. sorted],
-              Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
+              Caption = Res.Caption("Bubble_NoSwap", language)
             }
           );
         }
@@ -252,7 +256,7 @@ public static class BubbleSortSimulator
           RightIndex = settledIndex,
           ActiveCodeLines = [12, 13],
           SortedIndices = [.. sorted],
-          Caption = $"Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{settledIndex}]."
+          Caption = Res.Caption("Bubble_MarkSorted", language, settledIndex)
         }
       );
 
@@ -275,7 +279,7 @@ public static class BubbleSortSimulator
             Swapped = false,
             ActiveCodeLines = [13, 15],
             SortedIndices = [.. sorted],
-            Caption = "Không có đổi chỗ nào trong lượt này — dừng sớm, dãy đã được sắp xếp!"
+            Caption = Res.Caption("Bubble_EarlyStop", language)
           }
         );
         return steps;
@@ -293,7 +297,7 @@ public static class BubbleSortSimulator
           Swapped = swapped,
           ActiveCodeLines = [14],
           SortedIndices = [.. sorted],
-          Caption = $"Kết thúc lượt {i + 1}."
+          Caption = Res.Caption("Bubble_EndPass", language, i + 1)
         }
       );
     }
@@ -315,7 +319,7 @@ public static class BubbleSortSimulator
         Swapped = false,
         ActiveCodeLines = [15],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Bubble_Completed", language)
       }
     );
 

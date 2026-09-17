@@ -194,7 +194,8 @@ public static class CountingSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -213,7 +214,7 @@ public static class CountingSortSimulator
           Type = StepType.Completed,
           Snapshot = [],
           ActiveCodeLines = [1, 2],
-          Caption = "Hoàn tất! Dãy đã được sắp xếp."
+          Caption = Res.Caption("Common_SortCompleted", language)
         }
       );
 
@@ -241,7 +242,7 @@ public static class CountingSortSimulator
           LeftIndex = i,
           ActiveCodeLines = [12, 13],
           SortedIndices = [.. sorted],
-          Caption = $"Đếm a[{i}] = {a[i]}: count[{a[i] - min}] = {count[a[i] - min]}."
+          Caption = Res.Caption("Counting_Tally", language, i, a[i], a[i] - min, count[a[i] - min])
         }
       );
     }
@@ -260,7 +261,7 @@ public static class CountingSortSimulator
         SwapCount = writeCount,
         ActiveCodeLines = [16, 17],
         SortedIndices = [.. sorted],
-        Caption = "Cộng dồn count[] để biết vị trí cuối cùng của mỗi giá trị trong mảng kết quả."
+        Caption = Res.Caption("Counting_Prefix", language)
       }
     );
 
@@ -289,7 +290,7 @@ public static class CountingSortSimulator
           RightIndex = target,
           ActiveCodeLines = [21, 22],
           SortedIndices = [.. sorted],
-          Caption = $"Đặt {value} (từ a[{sourceIndex}] ban đầu) vào vị trí a[{target}]."
+          Caption = Res.Caption("Counting_Place", language, value, sourceIndex, target)
         }
       );
     }
@@ -308,7 +309,7 @@ public static class CountingSortSimulator
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

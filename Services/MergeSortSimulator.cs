@@ -178,7 +178,8 @@ public static class MergeSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -191,7 +192,7 @@ public static class MergeSortSimulator
 
     if (n > 1)
     {
-      Split(a, 0, n - 1, n, steps, sorted, ref compareCount, ref writeCount);
+      Split(a, 0, n - 1, n, steps, sorted, ref compareCount, ref writeCount, language);
     }
 
     for (var k = 0; k < n; k++)
@@ -208,7 +209,7 @@ public static class MergeSortSimulator
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -223,7 +224,8 @@ public static class MergeSortSimulator
     List<SortStep> steps,
     SortedSet<int> sorted,
     ref int compareCount,
-    ref int writeCount
+    ref int writeCount,
+    UiLanguage language
   )
   {
     if (lo >= hi)
@@ -244,13 +246,13 @@ public static class MergeSortSimulator
         RangeEnd = hi,
         ActiveCodeLines = [4, 5, 6],
         SortedIndices = [.. sorted],
-        Caption = $"Chia [{lo}..{hi}] thành [{lo}..{mid}] và [{mid + 1}..{hi}]."
+        Caption = Res.Caption("Merge_SplitRange", language, lo, hi, lo, mid, mid + 1, hi)
       }
     );
 
-    Split(a, lo, mid, n, steps, sorted, ref compareCount, ref writeCount);
-    Split(a, mid + 1, hi, n, steps, sorted, ref compareCount, ref writeCount);
-    Merge(a, lo, mid, hi, n, steps, sorted, ref compareCount, ref writeCount);
+    Split(a, lo, mid, n, steps, sorted, ref compareCount, ref writeCount, language);
+    Split(a, mid + 1, hi, n, steps, sorted, ref compareCount, ref writeCount, language);
+    Merge(a, lo, mid, hi, n, steps, sorted, ref compareCount, ref writeCount, language);
   }
 
   private static void Merge(
@@ -262,7 +264,8 @@ public static class MergeSortSimulator
     List<SortStep> steps,
     SortedSet<int> sorted,
     ref int compareCount,
-    ref int writeCount
+    ref int writeCount,
+    UiLanguage language
   )
   {
     var isTopLevel = lo == 0 && hi == n - 1;
@@ -287,8 +290,11 @@ public static class MergeSortSimulator
           RangeEnd = hi,
           ActiveCodeLines = [14, 15],
           SortedIndices = [.. sorted],
-          Caption = $"So sánh a[{i}] = {a[i]} và a[{j}] = {a[j]}"
-            + (takeLeft ? "  →  lấy bên trái trước" : "  →  lấy bên phải trước")
+          Caption = Res.Caption(
+            takeLeft ? "Merge_CompareTakeLeft" : "Merge_CompareTakeRight",
+            language,
+            i, a[i], j, a[j]
+          )
         }
       );
 
@@ -338,7 +344,7 @@ public static class MergeSortSimulator
           RangeEnd = hi,
           ActiveCodeLines = [19],
           SortedIndices = [.. sorted],
-          Caption = $"Đã đặt {tmp[x]} vào a[{lo + x}]."
+          Caption = Res.Caption("Merge_Write", language, tmp[x], lo + x)
         }
       );
     }
@@ -354,7 +360,7 @@ public static class MergeSortSimulator
         RangeEnd = hi,
         ActiveCodeLines = [7],
         SortedIndices = [.. sorted],
-        Caption = $"Đã gộp xong [{lo}..{hi}]."
+        Caption = Res.Caption("Merge_RangeDone", language, lo, hi)
       }
     );
   }

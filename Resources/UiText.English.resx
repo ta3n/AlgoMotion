@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="NavSort" xml:space="preserve"><value>Sort</value></data>
+  <data name="NavTreeSearch" xml:space="preserve"><value>Tree Search</value></data>
+  <data name="AlgorithmLabel" xml:space="preserve"><value>Algorithm</value></data>
+  <data name="CodeLanguageLabel" xml:space="preserve"><value>Code language</value></data>
+  <data name="UiLanguageLabel" xml:space="preserve"><value>Interface</value></data>
+  <data name="Play" xml:space="preserve"><value>▶ Play</value></data>
+  <data name="Pause" xml:space="preserve"><value>⏸ Pause</value></data>
+  <data name="Step" xml:space="preserve"><value>⏭ Step</value></data>
+  <data name="Reset" xml:space="preserve"><value>⟲ Reset</value></data>
+  <data name="Replay" xml:space="preserve"><value>↻ Replay</value></data>
+  <data name="NewArray" xml:space="preserve"><value>🔀 New array</value></data>
+  <data name="NewArrayTitle" xml:space="preserve"><value>Generate a new random array of the same size</value></data>
+  <data name="NewTree" xml:space="preserve"><value>🔀 New tree</value></data>
+  <data name="NewTreeTitle" xml:space="preserve"><value>Generate a new random tree of the same size</value></data>
+  <data name="DepthLabel" xml:space="preserve"><value>Depth</value></data>
+  <data name="TargetLabel" xml:space="preserve"><value>Target</value></data>
+  <data name="SpeedLabel" xml:space="preserve"><value>Speed</value></data>
+  <data name="ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
+  <data name="ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="FitView" xml:space="preserve"><value>⛶ Fit view</value></data>
+  <data name="FitViewTitle" xml:space="preserve"><value>Adjust zoom to fit the whole tree</value></data>
+  <data name="CurrentSection" xml:space="preserve"><value>CURRENT</value></data>
+  <data name="HistorySection" xml:space="preserve"><value>HISTORY</value></data>
+  <data name="LegendUnvisited" xml:space="preserve"><value>Unvisited</value></data>
+  <data name="LegendActive" xml:space="preserve"><value>Active</value></data>
+  <data name="LegendVisited" xml:space="preserve"><value>Visited</value></data>
+  <data name="LegendQueued" xml:space="preserve"><value>Queued</value></data>
+  <data name="LegendFound" xml:space="preserve"><value>Found</value></data>
+  <data name="ChipN" xml:space="preserve"><value>n</value></data>
+  <data name="ChipI" xml:space="preserve"><value>i</value></data>
+  <data name="ChipJ" xml:space="preserve"><value>j</value></data>
+  <data name="ChipSwapped" xml:space="preserve"><value>swapped</value></data>
+  <data name="ChipTarget" xml:space="preserve"><value>target</value></data>
+  <data name="ChipCurrentNode" xml:space="preserve"><value>current node</value></data>
+  <data name="ChipFound" xml:space="preserve"><value>found</value></data>
+  <data name="True" xml:space="preserve"><value>true</value></data>
+  <data name="False" xml:space="preserve"><value>false</value></data>
+</root>

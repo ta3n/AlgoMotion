@@ -124,7 +124,8 @@ public static class GnomeSortSimulator
     ]
   };
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -149,7 +150,7 @@ public static class GnomeSortSimulator
             SwapCount = swapCount,
             RightIndex = 0,
             ActiveCodeLines = [5, 6],
-            Caption = "i = 0: chưa có phần tử phía trước để so sánh, tiến lên (i++)."
+            Caption = Res.Caption("Gnome_AtStart", language)
           }
         );
 
@@ -171,8 +172,11 @@ public static class GnomeSortSimulator
           LeftIndex = i - 1,
           RightIndex = i,
           ActiveCodeLines = [5],
-          Caption = $"So sánh a[{i - 1}] = {a[i - 1]} và a[{i}] = {a[i]}"
-            + (inOrder ? "  →  đúng thứ tự, tiến lên (i++)" : "  →  sai thứ tự, đổi chỗ rồi lùi lại (i--)")
+          Caption = Res.Caption(
+            inOrder ? "Gnome_CompareInOrder" : "Gnome_CompareOutOfOrder",
+            language,
+            i - 1, a[i - 1], i, a[i]
+          )
         }
       );
 
@@ -196,7 +200,7 @@ public static class GnomeSortSimulator
             LeftIndex = i - 1,
             RightIndex = i,
             ActiveCodeLines = [8, 9, 10, 11],
-            Caption = $"Đổi chỗ: a[{i - 1}] ↔ a[{i}], lùi lại kiểm tra tiếp."
+            Caption = Res.Caption("Gnome_Swap", language, i - 1, i)
           }
         );
 
@@ -219,7 +223,7 @@ public static class GnomeSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = allSorted,
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

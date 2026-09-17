@@ -120,10 +120,11 @@ public static class AvlSearchSimulator
 
   public static TreeSearchResult Record(
     int[] values,
-    int target
+    int target,
+    UiLanguage language
   )
   {
     var (nodes, rootId) = AvlBuilder.Build(values);
-    return BstSearchSimulator.Search(nodes, rootId, target);
+    return BstSearchSimulator.Search(nodes, rootId, target, language);
   }
 }

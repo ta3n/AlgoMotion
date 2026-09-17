@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <!-- Bubble Sort -->
+  <data name="Bubble_StartPass" xml:space="preserve"><value>Lượt {0}: quét từ đầu dãy, so sánh từng cặp liền kề.</value></data>
+  <data name="Bubble_CompareInOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  đúng thứ tự</value></data>
+  <data name="Bubble_CompareOutOfOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  sai thứ tự</value></data>
+  <data name="Bubble_Swap" xml:space="preserve"><value>Đổi chỗ: a[{0}] ↔ a[{1}]</value></data>
+  <data name="Bubble_NoSwap" xml:space="preserve"><value>Đã đúng thứ tự, giữ nguyên vị trí.</value></data>
+  <data name="Bubble_MarkSorted" xml:space="preserve"><value>Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{0}].</value></data>
+  <data name="Bubble_EarlyStop" xml:space="preserve"><value>Không có đổi chỗ nào trong lượt này — dừng sớm, dãy đã được sắp xếp!</value></data>
+  <data name="Bubble_EndPass" xml:space="preserve"><value>Kết thúc lượt {0}.</value></data>
+  <data name="Bubble_Completed" xml:space="preserve"><value>Hoàn tất! Dãy đã được sắp xếp.</value></data>
+
+  <!-- Shared across sort algorithms -->
+  <data name="Common_SortCompleted" xml:space="preserve"><value>Hoàn tất! Dãy đã được sắp xếp.</value></data>
+
+  <!-- Selection Sort -->
+  <data name="Selection_StartPass" xml:space="preserve"><value>Lượt {0}: giả sử a[{1}] là nhỏ nhất, đi tìm phần tử nhỏ hơn.</value></data>
+  <data name="Selection_CompareSmaller" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[min] = {2}  →  nhỏ hơn!</value></data>
+  <data name="Selection_CompareNotSmaller" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[min] = {2}  →  không nhỏ hơn</value></data>
+  <data name="Selection_NewCandidate" xml:space="preserve"><value>a[{0}] = {1} nhỏ hơn — min cập nhật thành {2}.</value></data>
+  <data name="Selection_Swap" xml:space="preserve"><value>Đổi chỗ a[{0}] và a[{1}] — phần tử nhỏ nhất về đầu.</value></data>
+  <data name="Selection_NoSwap" xml:space="preserve"><value>a[{0}] đã là nhỏ nhất, không cần đổi chỗ.</value></data>
+  <data name="Selection_MarkSorted" xml:space="preserve"><value>a[{0}] đã về đúng vị trí cuối cùng.</value></data>
+
+  <!-- Insertion Sort -->
+  <data name="Insertion_StartPass" xml:space="preserve"><value>Lấy a[{0}] = {1} làm khoá, dịch dần về đúng chỗ trong đoạn đã sắp xếp.</value></data>
+  <data name="Insertion_CompareOutOfOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  sai thứ tự</value></data>
+  <data name="Insertion_CompareInOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  đúng thứ tự, dừng</value></data>
+  <data name="Insertion_Swap" xml:space="preserve"><value>Đổi chỗ: a[{0}] ↔ a[{1}].</value></data>
+  <data name="Insertion_EndPass" xml:space="preserve"><value>Đoạn a[0..{0}] đã được sắp xếp.</value></data>
+
+  <!-- Quick Sort -->
+  <data name="Quick_SetPivot" xml:space="preserve"><value>Vùng [{0}..{1}]: chọn pivot = a[{2}] = {3}.</value></data>
+  <data name="Quick_CompareSmaller" xml:space="preserve"><value>So sánh a[{0}] = {1} với pivot = {2}  →  nhỏ hơn</value></data>
+  <data name="Quick_CompareNotSmaller" xml:space="preserve"><value>So sánh a[{0}] = {1} với pivot = {2}  →  không nhỏ hơn</value></data>
+  <data name="Quick_SwapToLeft" xml:space="preserve"><value>Đưa a[{0}] về vùng nhỏ hơn pivot: đổi chỗ a[{1}] ↔ a[{2}].</value></data>
+  <data name="Quick_NoSwapInPlace" xml:space="preserve"><value>a[{0}] đã đúng vùng, không cần đổi chỗ.</value></data>
+  <data name="Quick_PlacePivot" xml:space="preserve"><value>Đặt pivot vào đúng vị trí: đổi chỗ a[{0}] ↔ a[{1}].</value></data>
+  <data name="Quick_RangeDone" xml:space="preserve"><value>a[{0}] cố định — chia thành vùng [{1}..{2}] và [{3}..{4}].</value></data>
+
+  <!-- Merge Sort -->
+  <data name="Merge_SplitRange" xml:space="preserve"><value>Chia [{0}..{1}] thành [{2}..{3}] và [{4}..{5}].</value></data>
+  <data name="Merge_CompareTakeLeft" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  lấy bên trái trước</value></data>
+  <data name="Merge_CompareTakeRight" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  lấy bên phải trước</value></data>
+  <data name="Merge_Write" xml:space="preserve"><value>Đã đặt {0} vào a[{1}].</value></data>
+  <data name="Merge_RangeDone" xml:space="preserve"><value>Đã gộp xong [{0}..{1}].</value></data>
+
+  <!-- Heap Sort -->
+  <data name="Heap_ExtractSwap" xml:space="preserve"><value>Đưa đỉnh heap (lớn nhất còn lại) về đúng vị trí: đổi chỗ a[0] ↔ a[{0}].</value></data>
+  <data name="Heap_CompareLeftBigger" xml:space="preserve"><value>So sánh con trái a[{0}] = {1} với a[{2}] = {3}  →  con trái lớn hơn</value></data>
+  <data name="Heap_CompareLeftNotBigger" xml:space="preserve"><value>So sánh con trái a[{0}] = {1} với a[{2}] = {3}  →  không lớn hơn</value></data>
+  <data name="Heap_CompareRightBigger" xml:space="preserve"><value>So sánh con phải a[{0}] = {1} với a[{2}] = {3}  →  con phải lớn hơn</value></data>
+  <data name="Heap_CompareRightNotBigger" xml:space="preserve"><value>So sánh con phải a[{0}] = {1} với a[{2}] = {3}  →  không lớn hơn</value></data>
+  <data name="Heap_NoSwapStop" xml:space="preserve"><value>a[{0}] đã lớn hơn cả hai con — dừng dồn nhánh tại đây.</value></data>
+  <data name="Heap_SiftSwap" xml:space="preserve"><value>Đổi chỗ a[{0}] ↔ a[{1}] để phần tử lớn nổi lên trên.</value></data>
+
+  <!-- Shell Sort -->
+  <data name="Shell_StartPass" xml:space="preserve"><value>Khoảng cách gap = {0}: so sánh và đổi chỗ các phần tử cách nhau {0} vị trí.</value></data>
+  <data name="Shell_CompareOutOfOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  sai thứ tự</value></data>
+  <data name="Shell_CompareInOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  đúng thứ tự, dừng</value></data>
+  <data name="Shell_Swap" xml:space="preserve"><value>Đổi chỗ: a[{0}] ↔ a[{1}].</value></data>
+  <data name="Shell_EndPass" xml:space="preserve"><value>Hoàn tất một lượt với gap = {0}.</value></data>
+
+  <!-- Cocktail Shaker Sort (reuses Bubble_CompareInOrder/OutOfOrder/Swap/NoSwap/EarlyStop, identical shape) -->
+  <data name="Cocktail_ForwardPass" xml:space="preserve"><value>Quét xuôi từ {0} đến {1}: đẩy phần tử lớn nhất về cuối đoạn.</value></data>
+  <data name="Cocktail_BackwardPass" xml:space="preserve"><value>Quét ngược từ {0} đến {1}: đẩy phần tử nhỏ nhất về đầu đoạn.</value></data>
+  <data name="Cocktail_MarkSortedMax" xml:space="preserve"><value>Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{0}].</value></data>
+  <data name="Cocktail_MarkSortedMin" xml:space="preserve"><value>Phần tử nhỏ nhất của đoạn còn lại đã về đúng vị trí a[{0}].</value></data>
+
+  <!-- Counting Sort -->
+  <data name="Counting_Tally" xml:space="preserve"><value>Đếm a[{0}] = {1}: count[{2}] = {3}.</value></data>
+  <data name="Counting_Prefix" xml:space="preserve"><value>Cộng dồn count[] để biết vị trí cuối cùng của mỗi giá trị trong mảng kết quả.</value></data>
+  <data name="Counting_Place" xml:space="preserve"><value>Đặt {0} (từ a[{1}] ban đầu) vào vị trí a[{2}].</value></data>
+
+  <!-- Radix Sort -->
+  <data name="Radix_StartPass" xml:space="preserve"><value>Sắp xếp theo {0} (exp = {1}).</value></data>
+  <data name="Radix_Tally" xml:space="preserve"><value>Đếm a[{0}] = {1} (chữ số {2}): count[{2}] = {3}.</value></data>
+  <data name="Radix_Prefix" xml:space="preserve"><value>Cộng dồn count[] để biết vị trí cuối cùng của mỗi chữ số.</value></data>
+  <data name="Radix_Place" xml:space="preserve"><value>Đặt {0} (từ a[{1}]) vào vị trí a[{2}].</value></data>
+  <data name="Radix_PlaceOnes" xml:space="preserve"><value>hàng đơn vị</value></data>
+  <data name="Radix_PlaceTens" xml:space="preserve"><value>hàng chục</value></data>
+  <data name="Radix_PlaceHundreds" xml:space="preserve"><value>hàng trăm</value></data>
+  <data name="Radix_PlaceThousands" xml:space="preserve"><value>hàng nghìn</value></data>
+  <data name="Radix_PlacePowerOfTen" xml:space="preserve"><value>hàng 10^{0}</value></data>
+
+  <!-- Gnome Sort -->
+  <data name="Gnome_AtStart" xml:space="preserve"><value>i = 0: chưa có phần tử phía trước để so sánh, tiến lên (i++).</value></data>
+  <data name="Gnome_CompareInOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  đúng thứ tự, tiến lên (i++)</value></data>
+  <data name="Gnome_CompareOutOfOrder" xml:space="preserve"><value>So sánh a[{0}] = {1} và a[{2}] = {3}  →  sai thứ tự, đổi chỗ rồi lùi lại (i--)</value></data>
+  <data name="Gnome_Swap" xml:space="preserve"><value>Đổi chỗ: a[{0}] ↔ a[{1}], lùi lại kiểm tra tiếp.</value></data>
+
+  <!-- Cycle Sort -->
+  <data name="Cycle_StartPass" xml:space="preserve"><value>Bắt đầu chu trình tại vị trí {0}: tìm đúng vị trí cuối cùng của a[{1}] = {2}.</value></data>
+  <data name="Cycle_AlreadyPlaced" xml:space="preserve"><value>a[{0}] đã đúng vị trí — bỏ qua chu trình này.</value></data>
+  <data name="Cycle_SwapFinal" xml:space="preserve"><value>Đổi chỗ a[{0}] ↔ a[{1}] — a[{1}] = {2} đã về đúng vị trí cuối cùng.</value></data>
+  <data name="Cycle_CycleClosed" xml:space="preserve"><value>Chu trình khép lại — a[{0}] = {1} cũng đã đúng vị trí.</value></data>
+  <data name="Cycle_ScanLess" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[{2}] = {3}  →  nhỏ hơn, tăng vị trí đích</value></data>
+  <data name="Cycle_ScanNotLess" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[{2}] = {3}  →  không nhỏ hơn</value></data>
+
+  <!-- Pancake Sort -->
+  <data name="Pancake_StartPass" xml:space="preserve"><value>Đoạn [0..{0}]: giả sử a[0] là lớn nhất, đi tìm phần tử lớn hơn.</value></data>
+  <data name="Pancake_CompareBigger" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[max] = {2}  →  lớn hơn!</value></data>
+  <data name="Pancake_CompareNotBigger" xml:space="preserve"><value>So sánh a[{0}] = {1} với a[max] = {2}  →  không lớn hơn</value></data>
+  <data name="Pancake_NewCandidate" xml:space="preserve"><value>a[{0}] = {1} lớn hơn — max cập nhật thành {2}.</value></data>
+  <data name="Pancake_FlipLabel1" xml:space="preserve"><value>Lật 1 (đưa lớn nhất lên đầu đoạn)</value></data>
+  <data name="Pancake_FlipLabel2" xml:space="preserve"><value>Lật 2 (đưa lớn nhất về cuối đoạn)</value></data>
+  <data name="Pancake_FlipSwap" xml:space="preserve"><value>{0}: đổi chỗ a[{1}] ↔ a[{2}].</value></data>
+  <data name="Pancake_NoFlipNeeded" xml:space="preserve"><value>a[{0}] đã là lớn nhất trong đoạn — không cần lật.</value></data>
+  <data name="Pancake_MarkSorted" xml:space="preserve"><value>a[{0}] đã về đúng vị trí cuối cùng.</value></data>
+
+  <!-- Tree Sort -->
+  <data name="TreeSort_InsertStart" xml:space="preserve"><value>Chèn a[{0}] = {1} vào cây nhị phân tìm kiếm.</value></data>
+  <data name="TreeSort_TraverseStart" xml:space="preserve"><value>Cây đã dựng xong — duyệt in-order (trái → gốc → phải) để lấy dãy đã sắp xếp.</value></data>
+  <data name="TreeSort_Place" xml:space="preserve"><value>Duyệt in-order: đặt {0} (từ a[{1}] ban đầu) vào a[{2}].</value></data>
+  <data name="TreeSort_EmptySlot" xml:space="preserve"><value>Gặp chỗ trống trong cây — gắn node mới cho giá trị {0} tại đây.</value></data>
+  <data name="TreeSort_CompareLeft" xml:space="preserve"><value>So sánh {0} với node hiện tại a[{1}] = {2}  →  nhỏ hơn, đi sang trái</value></data>
+  <data name="TreeSort_CompareRight" xml:space="preserve"><value>So sánh {0} với node hiện tại a[{1}] = {2}  →  lớn hơn, đi sang phải</value></data>
+
+  <!-- BST / AVL Search (shared walk-down-by-comparison logic) -->
+  <data name="TreeCompare_Found" xml:space="preserve"><value>So sánh {0} với node {1}  →  bằng nhau, tìm thấy!</value></data>
+  <data name="TreeCompare_GoLeft" xml:space="preserve"><value>So sánh {0} với node {1}  →  nhỏ hơn, đi sang trái</value></data>
+  <data name="TreeCompare_GoRight" xml:space="preserve"><value>So sánh {0} với node {1}  →  lớn hơn, đi sang phải</value></data>
+  <data name="TreeCompare_NotFound" xml:space="preserve"><value>Gặp nhánh rỗng — không tìm thấy {0} trong cây.</value></data>
+
+  <!-- DFS Search (Preorder / Inorder / Postorder share the visit/skip captions) -->
+  <data name="DfsVisit_Found" xml:space="preserve"><value>Ghé node {0}  →  đúng mục tiêu {1}, tìm thấy!</value></data>
+  <data name="DfsVisit_Skip" xml:space="preserve"><value>Ghé node {0}  →  chưa khớp {1}, tiếp tục duyệt.</value></data>
+  <data name="DfsVisit_NotFoundPreorder" xml:space="preserve"><value>Đã duyệt hết cây theo preorder — không tìm thấy {0}.</value></data>
+  <data name="DfsVisit_NotFoundInorder" xml:space="preserve"><value>Đã duyệt hết cây theo inorder — không tìm thấy {0}.</value></data>
+  <data name="DfsVisit_NotFoundPostorder" xml:space="preserve"><value>Đã duyệt hết cây theo postorder — không tìm thấy {0}.</value></data>
+
+  <!-- BFS Search -->
+  <data name="Bfs_Found" xml:space="preserve"><value>Lấy node {0} ra khỏi hàng đợi  →  đúng mục tiêu {1}, tìm thấy!</value></data>
+  <data name="Bfs_SkipWithChildren" xml:space="preserve"><value>Lấy node {0} ra khỏi hàng đợi  →  chưa khớp {1}, thêm {2} node con vào hàng đợi.</value></data>
+  <data name="Bfs_SkipNoChildren" xml:space="preserve"><value>Lấy node {0} ra khỏi hàng đợi  →  chưa khớp {1}, không có con để thêm.</value></data>
+  <data name="Bfs_NotFound" xml:space="preserve"><value>Hàng đợi rỗng — không tìm thấy {0}.</value></data>
+
+  <!-- TreeSearch page: initial-state caption -->
+  <data name="TreeSearch_InitialCaption" xml:space="preserve"><value>Cây đã dựng xong với {0} node. Đang tìm giá trị {1}. Nhấn Play để bắt đầu.</value></data>
+
+</root>

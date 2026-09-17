@@ -159,7 +159,8 @@ public static class CycleSortSimulator
     ]
   };
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -183,11 +184,11 @@ public static class CycleSortSimulator
           LeftIndex = start,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [3, 4],
-          Caption = $"Bắt đầu chu trình tại vị trí {start}: tìm đúng vị trí cuối cùng của a[{start}] = {a[start]}."
+          Caption = Res.Caption("Cycle_StartPass", language, start, start, a[start])
         }
       );
 
-      var pos = ScanForRank(a, start, steps, sorted, ref compareCount, swapCount, [5, 6]);
+      var pos = ScanForRank(a, start, steps, sorted, ref compareCount, swapCount, [5, 6], language);
 
       if (pos == start)
       {
@@ -204,7 +205,7 @@ public static class CycleSortSimulator
             LeftIndex = start,
             SortedIndices = [.. sorted],
             ActiveCodeLines = [8],
-            Caption = $"a[{start}] đã đúng vị trí — bỏ qua chu trình này."
+            Caption = Res.Caption("Cycle_AlreadyPlaced", language, start)
           }
         );
 
@@ -228,13 +229,13 @@ public static class CycleSortSimulator
           RightIndex = pos,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [9],
-          Caption = $"Đổi chỗ a[{start}] ↔ a[{pos}] — a[{pos}] = {a[pos]} đã về đúng vị trí cuối cùng."
+          Caption = Res.Caption("Cycle_SwapFinal", language, start, pos, a[pos])
         }
       );
 
       while (pos != start)
       {
-        pos = ScanForRank(a, start, steps, sorted, ref compareCount, swapCount, [12, 13]);
+        pos = ScanForRank(a, start, steps, sorted, ref compareCount, swapCount, [12, 13], language);
 
         if (pos != start)
         {
@@ -255,7 +256,7 @@ public static class CycleSortSimulator
               RightIndex = pos,
               SortedIndices = [.. sorted],
               ActiveCodeLines = [15, 16],
-              Caption = $"Đổi chỗ a[{start}] ↔ a[{pos}] — a[{pos}] = {a[pos]} đã về đúng vị trí cuối cùng."
+              Caption = Res.Caption("Cycle_SwapFinal", language, start, pos, a[pos])
             }
           );
         }
@@ -274,7 +275,7 @@ public static class CycleSortSimulator
           RightIndex = start,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [10],
-          Caption = $"Chu trình khép lại — a[{start}] = {a[start]} cũng đã đúng vị trí."
+          Caption = Res.Caption("Cycle_CycleClosed", language, start, a[start])
         }
       );
     }
@@ -293,7 +294,7 @@ public static class CycleSortSimulator
         SwapCount = swapCount,
         SortedIndices = [.. sorted],
         ActiveCodeLines = [1, 2],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -310,7 +311,8 @@ public static class CycleSortSimulator
     SortedSet<int> sorted,
     ref int compareCount,
     int swapCount,
-    int[] activeCodeLines
+    int[] activeCodeLines,
+    UiLanguage language
   )
   {
     var pos = start;
@@ -333,8 +335,11 @@ public static class CycleSortSimulator
           RightIndex = i,
           SortedIndices = [.. sorted],
           ActiveCodeLines = activeCodeLines,
-          Caption = $"So sánh a[{i}] = {a[i]} với a[{start}] = {a[start]}"
-            + (lessThanStart ? "  →  nhỏ hơn, tăng vị trí đích" : "  →  không nhỏ hơn")
+          Caption = Res.Caption(
+            lessThanStart ? "Cycle_ScanLess" : "Cycle_ScanNotLess",
+            language,
+            i, a[i], start, a[start]
+          )
         }
       );
 

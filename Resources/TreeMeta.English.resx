@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>COMPARE</value></data>
+  <data name="Common_Visit" xml:space="preserve"><value>VISITS</value></data>
+
+  <data name="Bst_Subtitle" xml:space="preserve"><value>BINARY SEARCH TREE SEARCH</value></data>
+  <data name="Bst_Hint" xml:space="preserve"><value>USES THE TREE'S ORDER TO GO STRAIGHT TO THE TARGET</value></data>
+
+  <data name="DfsPreorder_Subtitle" xml:space="preserve"><value>DEPTH-FIRST SEARCH (PREORDER)</value></data>
+  <data name="DfsPreorder_Hint" xml:space="preserve"><value>VISITS ROOT, THEN LEFT, THEN RIGHT</value></data>
+
+  <data name="DfsInorder_Subtitle" xml:space="preserve"><value>DEPTH-FIRST SEARCH (INORDER)</value></data>
+  <data name="DfsInorder_Hint" xml:space="preserve"><value>VISITS LEFT, THEN ROOT, THEN RIGHT</value></data>
+
+  <data name="DfsPostorder_Subtitle" xml:space="preserve"><value>DEPTH-FIRST SEARCH (POSTORDER)</value></data>
+  <data name="DfsPostorder_Hint" xml:space="preserve"><value>VISITS LEFT, THEN RIGHT, THEN ROOT</value></data>
+
+  <data name="Bfs_Subtitle" xml:space="preserve"><value>BREADTH-FIRST SEARCH</value></data>
+  <data name="Bfs_Hint" xml:space="preserve"><value>VISITS LEVEL BY LEVEL USING A QUEUE</value></data>
+
+  <data name="Avl_Subtitle" xml:space="preserve"><value>AVL TREE SEARCH</value></data>
+  <data name="Avl_Hint" xml:space="preserve"><value>SELF-BALANCING TREE: DEPTH ALWAYS O(LOG N)</value></data>
+</root>

@@ -180,7 +180,8 @@ public static class PancakeSortSimulator
     ]
   };
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -208,7 +209,7 @@ public static class PancakeSortSimulator
           RangeEnd = size - 1,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [3, 4],
-          Caption = $"Đoạn [0..{size - 1}]: giả sử a[0] là lớn nhất, đi tìm phần tử lớn hơn."
+          Caption = Res.Caption("Pancake_StartPass", language, size - 1)
         }
       );
 
@@ -233,8 +234,11 @@ public static class PancakeSortSimulator
             RangeEnd = size - 1,
             SortedIndices = [.. sorted],
             ActiveCodeLines = [5, 6],
-            Caption = $"So sánh a[{i}] = {a[i]} với a[max] = {a[maxIdx]}"
-              + (bigger ? "  →  lớn hơn!" : "  →  không lớn hơn")
+            Caption = Res.Caption(
+              bigger ? "Pancake_CompareBigger" : "Pancake_CompareNotBigger",
+              language,
+              i, a[i], a[maxIdx]
+            )
           }
         );
 
@@ -258,7 +262,7 @@ public static class PancakeSortSimulator
               RangeEnd = size - 1,
               SortedIndices = [.. sorted],
               ActiveCodeLines = [6],
-              Caption = $"a[{i}] = {a[i]} lớn hơn — max cập nhật thành {i}."
+              Caption = Res.Caption("Pancake_NewCandidate", language, i, a[i], i)
             }
           );
         }
@@ -268,10 +272,10 @@ public static class PancakeSortSimulator
       {
         if (maxIdx > 0)
         {
-          Flip(a, maxIdx, "Lật 1 (đưa lớn nhất lên đầu đoạn)", steps, sorted, size, ref swapCount);
+          Flip(a, maxIdx, "Pancake_FlipLabel1", steps, sorted, size, ref swapCount, language);
         }
 
-        Flip(a, size - 1, "Lật 2 (đưa lớn nhất về cuối đoạn)", steps, sorted, size, ref swapCount);
+        Flip(a, size - 1, "Pancake_FlipLabel2", steps, sorted, size, ref swapCount, language);
       }
       else
       {
@@ -287,7 +291,7 @@ public static class PancakeSortSimulator
             RangeEnd = size - 1,
             SortedIndices = [.. sorted],
             ActiveCodeLines = [8],
-            Caption = $"a[{size - 1}] đã là lớn nhất trong đoạn — không cần lật."
+            Caption = Res.Caption("Pancake_NoFlipNeeded", language, size - 1)
           }
         );
       }
@@ -305,7 +309,7 @@ public static class PancakeSortSimulator
           RightIndex = size - 1,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [10],
-          Caption = $"a[{size - 1}] đã về đúng vị trí cuối cùng."
+          Caption = Res.Caption("Pancake_MarkSorted", language, size - 1)
         }
       );
     }
@@ -324,7 +328,7 @@ public static class PancakeSortSimulator
         SwapCount = swapCount,
         SortedIndices = [.. sorted],
         ActiveCodeLines = [1, 2],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -335,15 +339,17 @@ public static class PancakeSortSimulator
   private static void Flip(
     int[] a,
     int k,
-    string label,
+    string labelKey,
     List<SortStep> steps,
     SortedSet<int> sorted,
     int size,
-    ref int swapCount
+    ref int swapCount,
+    UiLanguage language
   )
   {
     var lo = 0;
     var hi = k;
+    var label = Res.Caption(labelKey, language);
 
     while (lo < hi)
     {
@@ -362,7 +368,7 @@ public static class PancakeSortSimulator
           RangeEnd = size - 1,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [17, 18, 19, 20],
-          Caption = $"{label}: đổi chỗ a[{lo}] ↔ a[{hi}]."
+          Caption = Res.Caption("Pancake_FlipSwap", language, label, lo, hi)
         }
       );
 

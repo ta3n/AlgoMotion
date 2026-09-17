@@ -107,7 +107,8 @@ public static class DfsInorderSearchSimulator
 
   public static TreeSearchResult Record(
     int[] values,
-    int target
+    int target,
+    UiLanguage language
   )
   {
     var (nodes, rootId) = BstBuilder.Build(values);
@@ -145,7 +146,7 @@ public static class DfsInorderSearchSimulator
             CompareCount = compareCount,
             VisitCount = visited.Count,
             ActiveCodeLines = [9, 10],
-            Caption = $"Ghé node {node.Value}  →  đúng mục tiêu {target}, tìm thấy!"
+            Caption = Res.Caption("DfsVisit_Found", language, node.Value, target)
           }
         );
 
@@ -161,7 +162,7 @@ public static class DfsInorderSearchSimulator
           CompareCount = compareCount,
           VisitCount = visited.Count,
           ActiveCodeLines = [9],
-          Caption = $"Ghé node {node.Value}  →  chưa khớp {target}, tiếp tục duyệt."
+          Caption = Res.Caption("DfsVisit_Skip", language, node.Value, target)
         }
       );
 
@@ -181,7 +182,7 @@ public static class DfsInorderSearchSimulator
           CompareCount = compareCount,
           VisitCount = visited.Count,
           ActiveCodeLines = [3, 4],
-          Caption = $"Đã duyệt hết cây theo inorder — không tìm thấy {target}."
+          Caption = Res.Caption("DfsVisit_NotFoundInorder", language, target)
         }
       );
     }

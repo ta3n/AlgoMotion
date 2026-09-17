@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <!-- Bubble Sort -->
+  <data name="Bubble_StartPass" xml:space="preserve"><value>Pass {0}: sweep from the start, comparing each adjacent pair.</value></data>
+  <data name="Bubble_CompareInOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  in order</value></data>
+  <data name="Bubble_CompareOutOfOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  out of order</value></data>
+  <data name="Bubble_Swap" xml:space="preserve"><value>Swap: a[{0}] ↔ a[{1}]</value></data>
+  <data name="Bubble_NoSwap" xml:space="preserve"><value>Already in order, left in place.</value></data>
+  <data name="Bubble_MarkSorted" xml:space="preserve"><value>The largest remaining element has settled into a[{0}].</value></data>
+  <data name="Bubble_EarlyStop" xml:space="preserve"><value>No swaps this pass — early exit, the array is already sorted!</value></data>
+  <data name="Bubble_EndPass" xml:space="preserve"><value>End of pass {0}.</value></data>
+  <data name="Bubble_Completed" xml:space="preserve"><value>Done! The array is sorted.</value></data>
+
+  <!-- Shared across sort algorithms -->
+  <data name="Common_SortCompleted" xml:space="preserve"><value>Done! The array is sorted.</value></data>
+
+  <!-- Selection Sort -->
+  <data name="Selection_StartPass" xml:space="preserve"><value>Pass {0}: assume a[{1}] is the minimum, then look for something smaller.</value></data>
+  <data name="Selection_CompareSmaller" xml:space="preserve"><value>Compare a[{0}] = {1} with a[min] = {2}  →  smaller!</value></data>
+  <data name="Selection_CompareNotSmaller" xml:space="preserve"><value>Compare a[{0}] = {1} with a[min] = {2}  →  not smaller</value></data>
+  <data name="Selection_NewCandidate" xml:space="preserve"><value>a[{0}] = {1} is smaller — min updated to {2}.</value></data>
+  <data name="Selection_Swap" xml:space="preserve"><value>Swap a[{0}] and a[{1}] — the minimum moves to the front.</value></data>
+  <data name="Selection_NoSwap" xml:space="preserve"><value>a[{0}] is already the minimum, no swap needed.</value></data>
+  <data name="Selection_MarkSorted" xml:space="preserve"><value>a[{0}] has settled into its final position.</value></data>
+
+  <!-- Insertion Sort -->
+  <data name="Insertion_StartPass" xml:space="preserve"><value>Take a[{0}] = {1} as the key, and slide it into place within the sorted segment.</value></data>
+  <data name="Insertion_CompareOutOfOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  out of order</value></data>
+  <data name="Insertion_CompareInOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  in order, stop</value></data>
+  <data name="Insertion_Swap" xml:space="preserve"><value>Swap: a[{0}] ↔ a[{1}].</value></data>
+  <data name="Insertion_EndPass" xml:space="preserve"><value>The segment a[0..{0}] is now sorted.</value></data>
+
+  <!-- Quick Sort -->
+  <data name="Quick_SetPivot" xml:space="preserve"><value>Range [{0}..{1}]: pick pivot = a[{2}] = {3}.</value></data>
+  <data name="Quick_CompareSmaller" xml:space="preserve"><value>Compare a[{0}] = {1} with pivot = {2}  →  smaller</value></data>
+  <data name="Quick_CompareNotSmaller" xml:space="preserve"><value>Compare a[{0}] = {1} with pivot = {2}  →  not smaller</value></data>
+  <data name="Quick_SwapToLeft" xml:space="preserve"><value>Move a[{0}] into the smaller-than-pivot region: swap a[{1}] ↔ a[{2}].</value></data>
+  <data name="Quick_NoSwapInPlace" xml:space="preserve"><value>a[{0}] is already in the right region, no swap needed.</value></data>
+  <data name="Quick_PlacePivot" xml:space="preserve"><value>Place the pivot into its final position: swap a[{0}] ↔ a[{1}].</value></data>
+  <data name="Quick_RangeDone" xml:space="preserve"><value>a[{0}] is fixed — split into ranges [{1}..{2}] and [{3}..{4}].</value></data>
+
+  <!-- Merge Sort -->
+  <data name="Merge_SplitRange" xml:space="preserve"><value>Split [{0}..{1}] into [{2}..{3}] and [{4}..{5}].</value></data>
+  <data name="Merge_CompareTakeLeft" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  take the left one first</value></data>
+  <data name="Merge_CompareTakeRight" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  take the right one first</value></data>
+  <data name="Merge_Write" xml:space="preserve"><value>Placed {0} into a[{1}].</value></data>
+  <data name="Merge_RangeDone" xml:space="preserve"><value>Finished merging [{0}..{1}].</value></data>
+
+  <!-- Heap Sort -->
+  <data name="Heap_ExtractSwap" xml:space="preserve"><value>Move the heap's top (the largest remaining) into place: swap a[0] ↔ a[{0}].</value></data>
+  <data name="Heap_CompareLeftBigger" xml:space="preserve"><value>Compare left child a[{0}] = {1} with a[{2}] = {3}  →  left child is bigger</value></data>
+  <data name="Heap_CompareLeftNotBigger" xml:space="preserve"><value>Compare left child a[{0}] = {1} with a[{2}] = {3}  →  not bigger</value></data>
+  <data name="Heap_CompareRightBigger" xml:space="preserve"><value>Compare right child a[{0}] = {1} with a[{2}] = {3}  →  right child is bigger</value></data>
+  <data name="Heap_CompareRightNotBigger" xml:space="preserve"><value>Compare right child a[{0}] = {1} with a[{2}] = {3}  →  not bigger</value></data>
+  <data name="Heap_NoSwapStop" xml:space="preserve"><value>a[{0}] is already bigger than both children — sift-down stops here.</value></data>
+  <data name="Heap_SiftSwap" xml:space="preserve"><value>Swap a[{0}] ↔ a[{1}] to float the larger element up.</value></data>
+
+  <!-- Shell Sort -->
+  <data name="Shell_StartPass" xml:space="preserve"><value>Gap = {0}: compare and swap elements {0} positions apart.</value></data>
+  <data name="Shell_CompareOutOfOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  out of order</value></data>
+  <data name="Shell_CompareInOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  in order, stop</value></data>
+  <data name="Shell_Swap" xml:space="preserve"><value>Swap: a[{0}] ↔ a[{1}].</value></data>
+  <data name="Shell_EndPass" xml:space="preserve"><value>Finished a pass with gap = {0}.</value></data>
+
+  <!-- Cocktail Shaker Sort (reuses Bubble_CompareInOrder/OutOfOrder/Swap/NoSwap/EarlyStop, identical shape) -->
+  <data name="Cocktail_ForwardPass" xml:space="preserve"><value>Sweep forward from {0} to {1}: push the largest element to the end of the range.</value></data>
+  <data name="Cocktail_BackwardPass" xml:space="preserve"><value>Sweep backward from {0} to {1}: push the smallest element to the start of the range.</value></data>
+  <data name="Cocktail_MarkSortedMax" xml:space="preserve"><value>The largest remaining element has settled into a[{0}].</value></data>
+  <data name="Cocktail_MarkSortedMin" xml:space="preserve"><value>The smallest remaining element has settled into a[{0}].</value></data>
+
+  <!-- Counting Sort -->
+  <data name="Counting_Tally" xml:space="preserve"><value>Count a[{0}] = {1}: count[{2}] = {3}.</value></data>
+  <data name="Counting_Prefix" xml:space="preserve"><value>Accumulate count[] to know each value's final position in the output array.</value></data>
+  <data name="Counting_Place" xml:space="preserve"><value>Place {0} (originally a[{1}]) into position a[{2}].</value></data>
+
+  <!-- Radix Sort -->
+  <data name="Radix_StartPass" xml:space="preserve"><value>Sort by the {0} (exp = {1}).</value></data>
+  <data name="Radix_Tally" xml:space="preserve"><value>Count a[{0}] = {1} (digit {2}): count[{2}] = {3}.</value></data>
+  <data name="Radix_Prefix" xml:space="preserve"><value>Accumulate count[] to know each digit's final position.</value></data>
+  <data name="Radix_Place" xml:space="preserve"><value>Place {0} (from a[{1}]) into position a[{2}].</value></data>
+  <data name="Radix_PlaceOnes" xml:space="preserve"><value>ones place</value></data>
+  <data name="Radix_PlaceTens" xml:space="preserve"><value>tens place</value></data>
+  <data name="Radix_PlaceHundreds" xml:space="preserve"><value>hundreds place</value></data>
+  <data name="Radix_PlaceThousands" xml:space="preserve"><value>thousands place</value></data>
+  <data name="Radix_PlacePowerOfTen" xml:space="preserve"><value>10^{0} place</value></data>
+
+  <!-- Gnome Sort -->
+  <data name="Gnome_AtStart" xml:space="preserve"><value>i = 0: no element before it to compare, move forward (i++).</value></data>
+  <data name="Gnome_CompareInOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  in order, move forward (i++)</value></data>
+  <data name="Gnome_CompareOutOfOrder" xml:space="preserve"><value>Compare a[{0}] = {1} and a[{2}] = {3}  →  out of order, swap and step back (i--)</value></data>
+  <data name="Gnome_Swap" xml:space="preserve"><value>Swap: a[{0}] ↔ a[{1}], stepping back to check again.</value></data>
+
+  <!-- Cycle Sort -->
+  <data name="Cycle_StartPass" xml:space="preserve"><value>Start a cycle at position {0}: find the final position of a[{1}] = {2}.</value></data>
+  <data name="Cycle_AlreadyPlaced" xml:space="preserve"><value>a[{0}] is already in place — skip this cycle.</value></data>
+  <data name="Cycle_SwapFinal" xml:space="preserve"><value>Swap a[{0}] ↔ a[{1}] — a[{1}] = {2} has settled into its final position.</value></data>
+  <data name="Cycle_CycleClosed" xml:space="preserve"><value>Cycle closed — a[{0}] = {1} is also in place now.</value></data>
+  <data name="Cycle_ScanLess" xml:space="preserve"><value>Compare a[{0}] = {1} with a[{2}] = {3}  →  smaller, bump the target position</value></data>
+  <data name="Cycle_ScanNotLess" xml:space="preserve"><value>Compare a[{0}] = {1} with a[{2}] = {3}  →  not smaller</value></data>
+
+  <!-- Pancake Sort -->
+  <data name="Pancake_StartPass" xml:space="preserve"><value>Range [0..{0}]: assume a[0] is the max, then look for something bigger.</value></data>
+  <data name="Pancake_CompareBigger" xml:space="preserve"><value>Compare a[{0}] = {1} with a[max] = {2}  →  bigger!</value></data>
+  <data name="Pancake_CompareNotBigger" xml:space="preserve"><value>Compare a[{0}] = {1} with a[max] = {2}  →  not bigger</value></data>
+  <data name="Pancake_NewCandidate" xml:space="preserve"><value>a[{0}] = {1} is bigger — max updated to {2}.</value></data>
+  <data name="Pancake_FlipLabel1" xml:space="preserve"><value>Flip 1 (bring the max to the front of the range)</value></data>
+  <data name="Pancake_FlipLabel2" xml:space="preserve"><value>Flip 2 (send the max to the end of the range)</value></data>
+  <data name="Pancake_FlipSwap" xml:space="preserve"><value>{0}: swap a[{1}] ↔ a[{2}].</value></data>
+  <data name="Pancake_NoFlipNeeded" xml:space="preserve"><value>a[{0}] is already the max of the range — no flip needed.</value></data>
+  <data name="Pancake_MarkSorted" xml:space="preserve"><value>a[{0}] has settled into its final position.</value></data>
+
+  <!-- Tree Sort -->
+  <data name="TreeSort_InsertStart" xml:space="preserve"><value>Insert a[{0}] = {1} into the binary search tree.</value></data>
+  <data name="TreeSort_TraverseStart" xml:space="preserve"><value>Tree is built — traverse in-order (left → root → right) to read the sorted sequence.</value></data>
+  <data name="TreeSort_Place" xml:space="preserve"><value>In-order traversal: place {0} (originally a[{1}]) into a[{2}].</value></data>
+  <data name="TreeSort_EmptySlot" xml:space="preserve"><value>Found an empty spot in the tree — attach a new node for value {0} here.</value></data>
+  <data name="TreeSort_CompareLeft" xml:space="preserve"><value>Compare {0} with the current node a[{1}] = {2}  →  smaller, go left</value></data>
+  <data name="TreeSort_CompareRight" xml:space="preserve"><value>Compare {0} with the current node a[{1}] = {2}  →  bigger, go right</value></data>
+
+  <!-- BST / AVL Search (shared walk-down-by-comparison logic) -->
+  <data name="TreeCompare_Found" xml:space="preserve"><value>Compare {0} with node {1}  →  equal, found it!</value></data>
+  <data name="TreeCompare_GoLeft" xml:space="preserve"><value>Compare {0} with node {1}  →  smaller, go left</value></data>
+  <data name="TreeCompare_GoRight" xml:space="preserve"><value>Compare {0} with node {1}  →  bigger, go right</value></data>
+  <data name="TreeCompare_NotFound" xml:space="preserve"><value>Hit an empty branch — {0} is not in the tree.</value></data>
+
+  <!-- DFS Search (Preorder / Inorder / Postorder share the visit/skip captions) -->
+  <data name="DfsVisit_Found" xml:space="preserve"><value>Visit node {0}  →  matches target {1}, found it!</value></data>
+  <data name="DfsVisit_Skip" xml:space="preserve"><value>Visit node {0}  →  not a match for {1}, keep traversing.</value></data>
+  <data name="DfsVisit_NotFoundPreorder" xml:space="preserve"><value>Traversed the whole tree in preorder — {0} not found.</value></data>
+  <data name="DfsVisit_NotFoundInorder" xml:space="preserve"><value>Traversed the whole tree in inorder — {0} not found.</value></data>
+  <data name="DfsVisit_NotFoundPostorder" xml:space="preserve"><value>Traversed the whole tree in postorder — {0} not found.</value></data>
+
+  <!-- BFS Search -->
+  <data name="Bfs_Found" xml:space="preserve"><value>Dequeue node {0}  →  matches target {1}, found it!</value></data>
+  <data name="Bfs_SkipWithChildren" xml:space="preserve"><value>Dequeue node {0}  →  not a match for {1}, enqueue {2} child node(s).</value></data>
+  <data name="Bfs_SkipNoChildren" xml:space="preserve"><value>Dequeue node {0}  →  not a match for {1}, no children to enqueue.</value></data>
+  <data name="Bfs_NotFound" xml:space="preserve"><value>Queue is empty — {0} not found.</value></data>
+
+  <!-- TreeSearch page: initial-state caption -->
+  <data name="TreeSearch_InitialCaption" xml:space="preserve"><value>Tree built with {0} nodes. Searching for {1}. Press Play to start.</value></data>
+
+</root>

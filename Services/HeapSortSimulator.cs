@@ -189,7 +189,8 @@ public static class HeapSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -202,7 +203,7 @@ public static class HeapSortSimulator
 
     for (var i = (n / 2) - 1; i >= 0; i--)
     {
-      SiftDown(a, n, i, steps, sorted, ref compareCount, ref swapCount);
+      SiftDown(a, n, i, steps, sorted, ref compareCount, ref swapCount, language);
     }
 
     for (var end = n - 1; end > 0; end--)
@@ -225,11 +226,11 @@ public static class HeapSortSimulator
           RangeEnd = end,
           ActiveCodeLines = [6, 7],
           SortedIndices = [.. sorted],
-          Caption = $"Đưa đỉnh heap (lớn nhất còn lại) về đúng vị trí: đổi chỗ a[0] ↔ a[{end}]."
+          Caption = Res.Caption("Heap_ExtractSwap", language, end)
         }
       );
 
-      SiftDown(a, end, 0, steps, sorted, ref compareCount, ref swapCount);
+      SiftDown(a, end, 0, steps, sorted, ref compareCount, ref swapCount, language);
     }
 
     for (var k = 0; k < n; k++)
@@ -246,7 +247,7 @@ public static class HeapSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -263,7 +264,8 @@ public static class HeapSortSimulator
     List<SortStep> steps,
     SortedSet<int> sorted,
     ref int compareCount,
-    ref int swapCount
+    ref int swapCount,
+    UiLanguage language
   )
   {
     while (true)
@@ -293,8 +295,11 @@ public static class HeapSortSimulator
             RangeEnd = size - 1,
             ActiveCodeLines = [17],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh con trái a[{left}] = {a[left]} với a[{largest}] = {a[largest]}"
-              + (leftBigger ? "  →  con trái lớn hơn" : "  →  không lớn hơn")
+            Caption = Res.Caption(
+              leftBigger ? "Heap_CompareLeftBigger" : "Heap_CompareLeftNotBigger",
+              language,
+              left, a[left], largest, a[largest]
+            )
           }
         );
 
@@ -325,8 +330,11 @@ public static class HeapSortSimulator
             RangeEnd = size - 1,
             ActiveCodeLines = [18],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh con phải a[{right}] = {a[right]} với a[{largest}] = {a[largest]}"
-              + (rightBigger ? "  →  con phải lớn hơn" : "  →  không lớn hơn")
+            Caption = Res.Caption(
+              rightBigger ? "Heap_CompareRightBigger" : "Heap_CompareRightNotBigger",
+              language,
+              right, a[right], largest, a[largest]
+            )
           }
         );
 
@@ -351,7 +359,7 @@ public static class HeapSortSimulator
             RangeEnd = size - 1,
             ActiveCodeLines = [19],
             SortedIndices = [.. sorted],
-            Caption = $"a[{root}] đã lớn hơn cả hai con — dừng dồn nhánh tại đây."
+            Caption = Res.Caption("Heap_NoSwapStop", language, root)
           }
         );
 
@@ -377,7 +385,7 @@ public static class HeapSortSimulator
           RangeEnd = size - 1,
           ActiveCodeLines = [20, 21],
           SortedIndices = [.. sorted],
-          Caption = $"Đổi chỗ a[{root}] ↔ a[{largest}] để phần tử lớn nổi lên trên."
+          Caption = Res.Caption("Heap_SiftSwap", language, root, largest)
         }
       );
 

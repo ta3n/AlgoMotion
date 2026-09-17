@@ -198,7 +198,8 @@ public static class CocktailShakerSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -227,7 +228,7 @@ public static class CocktailShakerSortSimulator
           SwapCount = swapCount,
           ActiveCodeLines = [5, 6],
           SortedIndices = [.. sorted],
-          Caption = $"Quét xuôi từ {lo} đến {hi}: đẩy phần tử lớn nhất về cuối đoạn."
+          Caption = Res.Caption("Cocktail_ForwardPass", language, lo, hi)
         }
       );
 
@@ -250,8 +251,11 @@ public static class CocktailShakerSortSimulator
             RightIndex = j + 1,
             ActiveCodeLines = [7],
             SortedIndices = [.. sorted],
-            Caption = $"So sánh a[{j}] = {a[j]} và a[{j + 1}] = {a[j + 1]}"
-              + (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
+            Caption = Res.Caption(
+              willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
+              language,
+              j, a[j], j + 1, a[j + 1]
+            )
           }
         );
 
@@ -275,7 +279,7 @@ public static class CocktailShakerSortSimulator
               RightIndex = j + 1,
               ActiveCodeLines = [8, 9, 10, 11],
               SortedIndices = [.. sorted],
-              Caption = $"Đổi chỗ: a[{j}] ↔ a[{j + 1}]"
+              Caption = Res.Caption("Bubble_Swap", language, j, j + 1)
             }
           );
         }
@@ -295,7 +299,7 @@ public static class CocktailShakerSortSimulator
               RightIndex = j + 1,
               ActiveCodeLines = [7],
               SortedIndices = [.. sorted],
-              Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
+              Caption = Res.Caption("Bubble_NoSwap", language)
             }
           );
         }
@@ -316,7 +320,7 @@ public static class CocktailShakerSortSimulator
           RightIndex = hi,
           ActiveCodeLines = [14],
           SortedIndices = [.. sorted],
-          Caption = $"Phần tử lớn nhất của đoạn còn lại đã về đúng vị trí a[{hi}]."
+          Caption = Res.Caption("Cocktail_MarkSortedMax", language, hi)
         }
       );
 
@@ -335,7 +339,7 @@ public static class CocktailShakerSortSimulator
             SwapCount = swapCount,
             ActiveCodeLines = [15],
             SortedIndices = [.. sorted],
-            Caption = $"Quét ngược từ {hi} đến {lo}: đẩy phần tử nhỏ nhất về đầu đoạn."
+            Caption = Res.Caption("Cocktail_BackwardPass", language, hi, lo)
           }
         );
 
@@ -358,8 +362,11 @@ public static class CocktailShakerSortSimulator
               RightIndex = j,
               ActiveCodeLines = [16],
               SortedIndices = [.. sorted],
-              Caption = $"So sánh a[{j - 1}] = {a[j - 1]} và a[{j}] = {a[j]}"
-                + (willSwap ? "  →  sai thứ tự" : "  →  đúng thứ tự")
+              Caption = Res.Caption(
+                willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
+                language,
+                j - 1, a[j - 1], j, a[j]
+              )
             }
           );
 
@@ -383,7 +390,7 @@ public static class CocktailShakerSortSimulator
                 RightIndex = j,
                 ActiveCodeLines = [17, 18, 19, 20],
                 SortedIndices = [.. sorted],
-                Caption = $"Đổi chỗ: a[{j - 1}] ↔ a[{j}]"
+                Caption = Res.Caption("Bubble_Swap", language, j - 1, j)
               }
             );
           }
@@ -403,7 +410,7 @@ public static class CocktailShakerSortSimulator
                 RightIndex = j,
                 ActiveCodeLines = [16],
                 SortedIndices = [.. sorted],
-                Caption = "Đã đúng thứ tự, giữ nguyên vị trí."
+                Caption = Res.Caption("Bubble_NoSwap", language)
               }
             );
           }
@@ -424,7 +431,7 @@ public static class CocktailShakerSortSimulator
             LeftIndex = lo,
             ActiveCodeLines = [23],
             SortedIndices = [.. sorted],
-            Caption = $"Phần tử nhỏ nhất của đoạn còn lại đã về đúng vị trí a[{lo}]."
+            Caption = Res.Caption("Cocktail_MarkSortedMin", language, lo)
           }
         );
 
@@ -447,7 +454,7 @@ public static class CocktailShakerSortSimulator
             SwapCount = swapCount,
             ActiveCodeLines = [24, 26],
             SortedIndices = [.. sorted],
-            Caption = "Không có đổi chỗ nào trong lượt này — dừng sớm, dãy đã được sắp xếp!"
+            Caption = Res.Caption("Bubble_EarlyStop", language)
           }
         );
 
@@ -469,7 +476,7 @@ public static class CocktailShakerSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [26],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

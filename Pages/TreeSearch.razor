@@ -3,6 +3,7 @@
 @using AlgoMotion.Models
 @using AlgoMotion.Services
 @using AlgoMotion.Components
+@inject UiLanguageState LangState
 @implements IDisposable
 
 <PageTitle>Tree Search Visualizer</PageTitle>
@@ -12,32 +13,32 @@
   <header class="app-header">
     <div class="title-block">
       <h1 class="app-title">@_algorithm.Name</h1>
-      <p class="app-subtitle">@_algorithm.Subtitle</p>
+      <p class="app-subtitle">@_algorithm.GetSubtitle(_uiLanguage)</p>
     </div>
     <div class="counters">
-      <StatCounter Label="@_algorithm.CompareLabel" Value="@Step.CompareCount"/>
-      <StatCounter Label="@_algorithm.ActionLabel" Value="@Step.VisitCount"/>
+      <StatCounter Label="@_algorithm.GetCompareLabel(_uiLanguage)" Value="@Step.CompareCount"/>
+      <StatCounter Label="@_algorithm.GetActionLabel(_uiLanguage)" Value="@Step.VisitCount"/>
     </div>
   </header>
 
   <section class="chart-area tree-chart-area">
     <div class="tree-toolbar">
       <div class="tree-legend">
-        <span class="tree-legend-item"><span class="tree-swatch"></span>Chưa ghé</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-active"></span>Đang xét</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-visited"></span>Đã ghé</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-queued"></span>Trong hàng đợi</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-found"></span>Tìm thấy</span>
+        <span class="tree-legend-item"><span class="tree-swatch"></span>@UiText.Get(UiTextKey.LegendUnvisited, _uiLanguage)</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-active"></span>@UiText.Get(UiTextKey.LegendActive, _uiLanguage)</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-visited"></span>@UiText.Get(UiTextKey.LegendVisited, _uiLanguage)</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-queued"></span>@UiText.Get(UiTextKey.LegendQueued, _uiLanguage)</span>
+        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-found"></span>@UiText.Get(UiTextKey.LegendFound, _uiLanguage)</span>
       </div>
       <div class="zoom-control">
-        <button class="btn btn-zoom" @onclick="ZoomOut" title="Thu nhỏ">−</button>
+        <button class="btn btn-zoom" @onclick="ZoomOut" title="@UiText.Get(UiTextKey.ZoomOut, _uiLanguage)">−</button>
         <input type="range" min="@(TreeLayout.MinZoom.ToString(CultureInfo.InvariantCulture))"
                max="@(TreeLayout.MaxZoom.ToString(CultureInfo.InvariantCulture))"
                step="@(TreeLayout.ZoomStep.ToString(CultureInfo.InvariantCulture))"
                value="@(_zoom.ToString(CultureInfo.InvariantCulture))" @oninput="OnZoomInput"/>
-        <button class="btn btn-zoom" @onclick="ZoomIn" title="Phóng to">+</button>
+        <button class="btn btn-zoom" @onclick="ZoomIn" title="@UiText.Get(UiTextKey.ZoomIn, _uiLanguage)">+</button>
         <span class="zoom-readout">@((_zoom * 100).ToString("0")) %</span>
-        <button class="btn" @onclick="FitZoom" title="Chỉnh zoom để nhìn toàn bộ cây">⛶ Vừa khung</button>
+        <button class="btn" @onclick="FitZoom" title="@UiText.Get(UiTextKey.FitViewTitle, _uiLanguage)">@UiText.Get(UiTextKey.FitView, _uiLanguage)</button>
       </div>
     </div>
 
@@ -50,12 +51,12 @@
   </section>
 
   <section class="lower-area">
-    <CodeViewer ActiveLines="@(_language == CodeLanguage.C ? Step.ActiveCodeLines : [])"
-                Lines="@_algorithm.GetCodeLines(_language)" FileName="@_algorithm.GetFileName(_language)"/>
+    <CodeViewer ActiveLines="@(_codeLanguage == CodeLanguage.C ? Step.ActiveCodeLines : [])"
+                Lines="@_algorithm.GetCodeLines(_codeLanguage)" FileName="@_algorithm.GetFileName(_codeLanguage)"/>
 
     <div class="controls">
       <div class="algo-control @(_algoMenuOpen ? "is-open" : "")">
-        <label id="algo-label">Thuật toán</label>
+        <label id="algo-label">@UiText.Get(UiTextKey.AlgorithmLabel, _uiLanguage)</label>
         <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_algoMenuOpen"
                 aria-labelledby="algo-label" @onclick="ToggleAlgoMenu">
           <span>@_algorithm.Name</span>
@@ -78,23 +79,23 @@
         }
       </div>
 
-      <div class="algo-control @(_langMenuOpen ? "is-open" : "")">
-        <label id="lang-label">Ngôn ngữ</label>
-        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_langMenuOpen"
-                aria-labelledby="lang-label" @onclick="ToggleLangMenu">
-          <span>@CodeLanguages.Label(_language)</span>
+      <div class="algo-control @(_codeLangMenuOpen ? "is-open" : "")">
+        <label id="code-lang-label">@UiText.Get(UiTextKey.CodeLanguageLabel, _uiLanguage)</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_codeLangMenuOpen"
+                aria-labelledby="code-lang-label" @onclick="ToggleCodeLangMenu">
+          <span>@CodeLanguages.Label(_codeLanguage)</span>
           <span class="algo-caret">▾</span>
         </button>
 
-        @if (_langMenuOpen)
+        @if (_codeLangMenuOpen)
         {
-          <div class="menu-scrim" @onclick="CloseLangMenu"></div>
+          <div class="menu-scrim" @onclick="CloseCodeLangMenu"></div>
           <ul class="algo-menu" role="listbox">
             @foreach (var lang in CodeLanguages.All)
             {
-              <li role="option" aria-selected="@(lang == _language)"
-                  class="algo-menu-item @(lang == _language ? "is-selected" : "")"
-                  @onclick="() => SelectLanguage(lang)">
+              <li role="option" aria-selected="@(lang == _codeLanguage)"
+                  class="algo-menu-item @(lang == _codeLanguage ? "is-selected" : "")"
+                  @onclick="() => SelectCodeLanguage(lang)">
                 @CodeLanguages.Label(lang)
               </li>
             }
@@ -102,33 +103,57 @@
         }
       </div>
 
+      <div class="algo-control @(_uiLangMenuOpen ? "is-open" : "")">
+        <label id="ui-lang-label">@UiText.Get(UiTextKey.UiLanguageLabel, _uiLanguage)</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_uiLangMenuOpen"
+                aria-labelledby="ui-lang-label" @onclick="ToggleUiLangMenu">
+          <span>@UiLanguages.Code(_uiLanguage)</span>
+          <span class="algo-caret">▾</span>
+        </button>
+
+        @if (_uiLangMenuOpen)
+        {
+          <div class="menu-scrim" @onclick="CloseUiLangMenu"></div>
+          <ul class="algo-menu" role="listbox">
+            @foreach (var lang in UiLanguages.All)
+            {
+              <li role="option" aria-selected="@(lang == _uiLanguage)"
+                  class="algo-menu-item @(lang == _uiLanguage ? "is-selected" : "")"
+                  @onclick="() => SelectUiLanguage(lang)">
+                @UiLanguages.Label(lang)
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
       <button class="btn btn-play" @onclick="TogglePlay">
-        @(_player.State.IsPlaying ? "⏸ Pause" : "▶ Play")
+        @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
       </button>
-      <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">⏭ Step</button>
-      <button class="btn" @onclick="() => _player.Reset()">⟲ Reset</button>
-      <button class="btn" @onclick="() => _player.Replay()">↻ Replay</button>
+      <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
 
       <div class="n-control">
-        <label for="n-input">n</label>
+        <label for="n-input">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</label>
         <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
                value="@_n" @onchange="OnNChanged"/>
       </div>
-      <button class="btn" @onclick="NewTree" title="Tạo cây ngẫu nhiên mới cùng kích thước">🔀 Cây mới</button>
+      <button class="btn" @onclick="NewTree" title="@UiText.Get(UiTextKey.NewTreeTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewTree, _uiLanguage)</button>
 
       <div class="n-control">
-        <label for="depth-input">Độ sâu</label>
+        <label for="depth-input">@UiText.Get(UiTextKey.DepthLabel, _uiLanguage)</label>
         <input id="depth-input" type="number" class="n-input" min="@MinDepth" max="@MaxDepth"
                value="@_depth" @onchange="OnDepthChanged"/>
       </div>
 
       <div class="n-control">
-        <label for="target-input">Mục tiêu</label>
+        <label for="target-input">@UiText.Get(UiTextKey.TargetLabel, _uiLanguage)</label>
         <input id="target-input" type="number" class="n-input" value="@_target" @onchange="OnTargetChanged"/>
       </div>
 
       <div class="speed-control">
-        <label for="speed-input">Tốc độ</label>
+        <label for="speed-input">@UiText.Get(UiTextKey.SpeedLabel, _uiLanguage)</label>
         <input id="speed-input" type="range"
                min="@PlaybackSpeeds.Min.ToString(CultureInfo.InvariantCulture)"
                max="@PlaybackSpeeds.Max.ToString(CultureInfo.InvariantCulture)"
@@ -139,28 +164,28 @@
       </div>
     </div>
 
-    <p class="hint-caption">@_algorithm.HintCaption</p>
+    <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
   </section>
 
   <div class="status-bar">
-    <div class="status-chip"><span class="status-key">n</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</span><span class="status-eq">=</span><span
         class="status-val">@_nodes.Count</span></div>
-    <div class="status-chip"><span class="status-key">mục tiêu</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipTarget, _uiLanguage)</span><span class="status-eq">=</span><span
         class="status-val">@_target</span></div>
-    <div class="status-chip"><span class="status-key">node hiện tại</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipCurrentNode, _uiLanguage)</span><span class="status-eq">=</span><span
         class="status-val">@(Step.CurrentNodeId is { } id ? _nodes[id].Value.ToString() : "-")</span></div>
-    <div class="status-chip"><span class="status-key">tìm thấy</span><span class="status-eq">=</span><span
-        class="status-val status-bool-@((Step.Type == TreeSearchStepType.Found).ToString().ToLowerInvariant())">@((Step.Type == TreeSearchStepType.Found).ToString().ToLowerInvariant())</span>
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipFound, _uiLanguage)</span><span class="status-eq">=</span><span
+        class="status-val status-bool-@((Step.Type == TreeSearchStepType.Found).ToString().ToLowerInvariant())">@UiText.Bool(Step.Type == TreeSearchStepType.Found, _uiLanguage)</span>
     </div>
   </div>
 
   <div class="status-now">
-    <span class="status-section-label">HIỆN TẠI</span>
+    <span class="status-section-label">@UiText.Get(UiTextKey.CurrentSection, _uiLanguage)</span>
     <p class="status-caption">@Step.Caption</p>
   </div>
 
   <div class="status-history-wrap">
-    <span class="status-section-label">LỊCH SỬ (@_history.Count)</span>
+    <span class="status-section-label">@UiText.Get(UiTextKey.HistorySection, _uiLanguage) (@_history.Count)</span>
     <div class="status-history">
       @foreach (var entry in _history)
       {
@@ -186,8 +211,9 @@
 
   private TreeSearchAlgorithmInfo _algorithm = TreeSearchAlgorithms.Get(TreeSearchAlgorithmKind.Bst);
   private bool _algoMenuOpen;
-  private CodeLanguage _language = CodeLanguage.C;
-  private bool _langMenuOpen;
+  private CodeLanguage _codeLanguage = CodeLanguage.C;
+  private bool _codeLangMenuOpen;
+  private bool _uiLangMenuOpen;
   private int _n = 15;
   private int _depth = 10;
   private int[] _values = [];
@@ -196,6 +222,8 @@
   private double _zoom = TreeLayout.DefaultZoom;
   private int _lastLoggedIndex = -1;
   private TreeSearchStep _initialStep = new();
+
+  private UiLanguage _uiLanguage => LangState.Current;
 
   private TreeSearchStep Step => _player.Current ?? _initialStep;
 
@@ -207,6 +235,7 @@
   protected override void OnInitialized()
   {
     _player.Changed += OnPlayerChanged;
+    LangState.Changed += OnUiLanguageChanged;
     NewTree();
   }
 
@@ -241,13 +270,13 @@
   /// the algorithm or the target changes, so switching keeps the exact tree for a fair comparison.</summary>
   private void LoadCurrentTree()
   {
-    var result = _algorithm.Record(_values, _target);
+    var result = _algorithm.Record(_values, _target, _uiLanguage);
     _nodes = [.. result.Nodes];
 
     _initialStep = new TreeSearchStep
     {
       ActiveCodeLines = [1, 2],
-      Caption = $"Cây đã dựng xong với {_nodes.Count} node. Đang tìm giá trị {_target}. Nhấn Play để bắt đầu."
+      Caption = Res.Caption("TreeSearch_InitialCaption", _uiLanguage, _nodes.Count, _target)
     };
 
     _player.Load(result.Steps);
@@ -361,22 +390,48 @@
     _algoMenuOpen = false;
   }
 
-  private void ToggleLangMenu()
+  private void ToggleCodeLangMenu()
   {
-    _langMenuOpen = !_langMenuOpen;
+    _codeLangMenuOpen = !_codeLangMenuOpen;
   }
 
-  private void CloseLangMenu()
+  private void CloseCodeLangMenu()
   {
-    _langMenuOpen = false;
+    _codeLangMenuOpen = false;
   }
 
-  private void SelectLanguage(
+  private void SelectCodeLanguage(
     CodeLanguage language
   )
   {
-    _langMenuOpen = false;
-    _language = language;
+    _codeLangMenuOpen = false;
+    _codeLanguage = language;
+  }
+
+  private void ToggleUiLangMenu()
+  {
+    _uiLangMenuOpen = !_uiLangMenuOpen;
+  }
+
+  private void CloseUiLangMenu()
+  {
+    _uiLangMenuOpen = false;
+  }
+
+  private void SelectUiLanguage(
+    UiLanguage language
+  )
+  {
+    _uiLangMenuOpen = false;
+    LangState.Set(language);
+  }
+
+  /// <summary>Re-records the current algorithm's captions in the newly selected language —
+  /// fires whenever <see cref="UiLanguageState"/> changes, whether the switch happened on this
+  /// page or (via the shared nav) while the user was on the sort page.</summary>
+  private void OnUiLanguageChanged()
+  {
+    LoadCurrentTree();
   }
 
   private void SelectAlgorithm(
@@ -393,6 +448,7 @@
   public void Dispose()
   {
     _player.Changed -= OnPlayerChanged;
+    LangState.Changed -= OnUiLanguageChanged;
     _player.Dispose();
   }
 

@@ -1,11 +1,34 @@
 @inherits LayoutComponentBase
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@inject UiLanguageState LangState
+@implements IDisposable
 
 <main class="app-shell">
   <div class="page-shell">
     <nav class="top-nav">
-      <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">Sắp xếp</NavLink>
-      <NavLink href="/tree-search" class="top-nav-link">Tìm kiếm trên cây</NavLink>
+      <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">@UiText.Get(UiTextKey.NavSort, LangState.Current)</NavLink>
+      <NavLink href="/tree-search" class="top-nav-link">@UiText.Get(UiTextKey.NavTreeSearch, LangState.Current)</NavLink>
     </nav>
     @Body
   </div>
 </main>
+
+@code {
+
+  protected override void OnInitialized()
+  {
+    LangState.Changed += OnLanguageChanged;
+  }
+
+  private void OnLanguageChanged()
+  {
+    InvokeAsync(StateHasChanged);
+  }
+
+  public void Dispose()
+  {
+    LangState.Changed -= OnLanguageChanged;
+  }
+
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="NavSort" xml:space="preserve"><value>Sắp xếp</value></data>
+  <data name="NavTreeSearch" xml:space="preserve"><value>Tìm kiếm trên cây</value></data>
+  <data name="AlgorithmLabel" xml:space="preserve"><value>Thuật toán</value></data>
+  <data name="CodeLanguageLabel" xml:space="preserve"><value>Ngôn ngữ code</value></data>
+  <data name="UiLanguageLabel" xml:space="preserve"><value>Giao diện</value></data>
+  <data name="Play" xml:space="preserve"><value>▶ Phát</value></data>
+  <data name="Pause" xml:space="preserve"><value>⏸ Tạm dừng</value></data>
+  <data name="Step" xml:space="preserve"><value>⏭ Bước</value></data>
+  <data name="Reset" xml:space="preserve"><value>⟲ Đặt lại</value></data>
+  <data name="Replay" xml:space="preserve"><value>↻ Phát lại</value></data>
+  <data name="NewArray" xml:space="preserve"><value>🔀 Mảng mới</value></data>
+  <data name="NewArrayTitle" xml:space="preserve"><value>Tạo mảng ngẫu nhiên mới cùng kích thước</value></data>
+  <data name="NewTree" xml:space="preserve"><value>🔀 Cây mới</value></data>
+  <data name="NewTreeTitle" xml:space="preserve"><value>Tạo cây ngẫu nhiên mới cùng kích thước</value></data>
+  <data name="DepthLabel" xml:space="preserve"><value>Độ sâu</value></data>
+  <data name="TargetLabel" xml:space="preserve"><value>Mục tiêu</value></data>
+  <data name="SpeedLabel" xml:space="preserve"><value>Tốc độ</value></data>
+  <data name="ZoomIn" xml:space="preserve"><value>Phóng to</value></data>
+  <data name="ZoomOut" xml:space="preserve"><value>Thu nhỏ</value></data>
+  <data name="FitView" xml:space="preserve"><value>⛶ Vừa khung</value></data>
+  <data name="FitViewTitle" xml:space="preserve"><value>Chỉnh zoom để nhìn toàn bộ cây</value></data>
+  <data name="CurrentSection" xml:space="preserve"><value>HIỆN TẠI</value></data>
+  <data name="HistorySection" xml:space="preserve"><value>LỊCH SỬ</value></data>
+  <data name="LegendUnvisited" xml:space="preserve"><value>Chưa ghé</value></data>
+  <data name="LegendActive" xml:space="preserve"><value>Đang xét</value></data>
+  <data name="LegendVisited" xml:space="preserve"><value>Đã ghé</value></data>
+  <data name="LegendQueued" xml:space="preserve"><value>Trong hàng đợi</value></data>
+  <data name="LegendFound" xml:space="preserve"><value>Tìm thấy</value></data>
+  <data name="ChipN" xml:space="preserve"><value>n</value></data>
+  <data name="ChipI" xml:space="preserve"><value>i</value></data>
+  <data name="ChipJ" xml:space="preserve"><value>j</value></data>
+  <data name="ChipSwapped" xml:space="preserve"><value>đã đổi chỗ</value></data>
+  <data name="ChipTarget" xml:space="preserve"><value>mục tiêu</value></data>
+  <data name="ChipCurrentNode" xml:space="preserve"><value>node hiện tại</value></data>
+  <data name="ChipFound" xml:space="preserve"><value>tìm thấy</value></data>
+  <data name="True" xml:space="preserve"><value>đúng</value></data>
+  <data name="False" xml:space="preserve"><value>sai</value></data>
+</root>

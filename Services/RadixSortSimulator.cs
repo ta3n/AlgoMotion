@@ -219,7 +219,8 @@ public static class RadixSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -238,7 +239,7 @@ public static class RadixSortSimulator
           Type = StepType.Completed,
           Snapshot = [],
           ActiveCodeLines = [1, 2],
-          Caption = "Hoàn tất! Dãy đã được sắp xếp."
+          Caption = Res.Caption("Common_SortCompleted", language)
         }
       );
 
@@ -258,7 +259,7 @@ public static class RadixSortSimulator
           SwapCount = writeCount,
           ActiveCodeLines = [7],
           SortedIndices = [.. sorted],
-          Caption = $"Sắp xếp theo {DigitPlaceName(exp)} (exp = {exp})."
+          Caption = Res.Caption("Radix_StartPass", language, DigitPlaceName(exp, language), exp)
         }
       );
 
@@ -281,7 +282,7 @@ public static class RadixSortSimulator
             LeftIndex = i,
             ActiveCodeLines = [16, 17],
             SortedIndices = [.. sorted],
-            Caption = $"Đếm a[{i}] = {a[i]} (chữ số {digit}): count[{digit}] = {count[digit]}."
+            Caption = Res.Caption("Radix_Tally", language, i, a[i], digit, count[digit])
           }
         );
       }
@@ -300,7 +301,7 @@ public static class RadixSortSimulator
           SwapCount = writeCount,
           ActiveCodeLines = [19, 20],
           SortedIndices = [.. sorted],
-          Caption = "Cộng dồn count[] để biết vị trí cuối cùng của mỗi chữ số."
+          Caption = Res.Caption("Radix_Prefix", language)
         }
       );
 
@@ -329,7 +330,7 @@ public static class RadixSortSimulator
             RightIndex = target,
             ActiveCodeLines = [22, 23],
             SortedIndices = [.. sorted],
-            Caption = $"Đặt {value} (từ a[{sourceIndex}]) vào vị trí a[{target}]."
+            Caption = Res.Caption("Radix_Place", language, value, sourceIndex, target)
           }
         );
       }
@@ -351,7 +352,7 @@ public static class RadixSortSimulator
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = [.. sorted],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -359,16 +360,17 @@ public static class RadixSortSimulator
   }
 
   private static string DigitPlaceName(
-    int exp
+    int exp,
+    UiLanguage language
   )
   {
     return exp switch
     {
-      1 => "hàng đơn vị",
-      10 => "hàng chục",
-      100 => "hàng trăm",
-      1000 => "hàng nghìn",
-      _ => $"hàng 10^{(int)Math.Log10(exp)}"
+      1 => Res.Caption("Radix_PlaceOnes", language),
+      10 => Res.Caption("Radix_PlaceTens", language),
+      100 => Res.Caption("Radix_PlaceHundreds", language),
+      1000 => Res.Caption("Radix_PlaceThousands", language),
+      _ => Res.Caption("Radix_PlacePowerOfTen", language, (int)Math.Log10(exp))
     };
   }
 }

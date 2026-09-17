@@ -252,7 +252,8 @@ public static class TreeSortSimulator
     ]
   };
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -278,11 +279,11 @@ public static class TreeSortSimulator
           RightIndex = i,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [30, 31],
-          Caption = $"Chèn a[{i}] = {a[i]} vào cây nhị phân tìm kiếm."
+          Caption = Res.Caption("TreeSort_InsertStart", language, i, a[i])
         }
       );
 
-      root = Insert(root, a[i], i, a, steps, sorted, ref compareCount, writeCount);
+      root = Insert(root, a[i], i, a, steps, sorted, ref compareCount, writeCount, language);
     }
 
     steps.Add(
@@ -294,7 +295,7 @@ public static class TreeSortSimulator
         SwapCount = writeCount,
         SortedIndices = [.. sorted],
         ActiveCodeLines = [33, 34],
-        Caption = "Cây đã dựng xong — duyệt in-order (trái → gốc → phải) để lấy dãy đã sắp xếp."
+        Caption = Res.Caption("TreeSort_TraverseStart", language)
       }
     );
 
@@ -322,7 +323,7 @@ public static class TreeSortSimulator
           RightIndex = idx,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [23],
-          Caption = $"Duyệt in-order: đặt {visited[idx].Value} (từ a[{visited[idx].SourceIndex}] ban đầu) vào a[{idx}]."
+          Caption = Res.Caption("TreeSort_Place", language, visited[idx].Value, visited[idx].SourceIndex, idx)
         }
       );
     }
@@ -336,7 +337,7 @@ public static class TreeSortSimulator
         SwapCount = writeCount,
         SortedIndices = [.. sorted],
         ActiveCodeLines = [27, 28],
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
@@ -354,7 +355,8 @@ public static class TreeSortSimulator
     List<SortStep> steps,
     SortedSet<int> sorted,
     ref int compareCount,
-    int writeCount
+    int writeCount,
+    UiLanguage language
   )
   {
     if (node is null)
@@ -369,7 +371,7 @@ public static class TreeSortSimulator
           RightIndex = originalIndex,
           SortedIndices = [.. sorted],
           ActiveCodeLines = [8, 9],
-          Caption = $"Gặp chỗ trống trong cây — gắn node mới cho giá trị {value} tại đây."
+          Caption = Res.Caption("TreeSort_EmptySlot", language, value)
         }
       );
 
@@ -390,18 +392,21 @@ public static class TreeSortSimulator
         RightIndex = originalIndex,
         SortedIndices = [.. sorted],
         ActiveCodeLines = goLeft ? [11, 12] : [11, 13, 14],
-        Caption = $"So sánh {value} với node hiện tại a[{node.OriginalIndex}] = {node.Value}"
-          + (goLeft ? "  →  nhỏ hơn, đi sang trái" : "  →  lớn hơn, đi sang phải")
+        Caption = Res.Caption(
+          goLeft ? "TreeSort_CompareLeft" : "TreeSort_CompareRight",
+          language,
+          value, node.OriginalIndex, node.Value
+        )
       }
     );
 
     if (goLeft)
     {
-      node.Left = Insert(node.Left, value, originalIndex, a, steps, sorted, ref compareCount, writeCount);
+      node.Left = Insert(node.Left, value, originalIndex, a, steps, sorted, ref compareCount, writeCount, language);
     }
     else
     {
-      node.Right = Insert(node.Right, value, originalIndex, a, steps, sorted, ref compareCount, writeCount);
+      node.Right = Insert(node.Right, value, originalIndex, a, steps, sorted, ref compareCount, writeCount, language);
     }
 
     return node;

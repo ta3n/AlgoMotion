@@ -130,7 +130,8 @@ public static class ShellSortSimulator
   };
 
   public static List<SortStep> Record(
-    IReadOnlyList<int> input
+    IReadOnlyList<int> input,
+    UiLanguage language
   )
   {
     var a = input.ToArray();
@@ -150,7 +151,7 @@ public static class ShellSortSimulator
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [3],
-          Caption = $"Khoảng cách gap = {gap}: so sánh và đổi chỗ các phần tử cách nhau {gap} vị trí."
+          Caption = Res.Caption("Shell_StartPass", language, gap)
         }
       );
 
@@ -175,8 +176,11 @@ public static class ShellSortSimulator
               LeftIndex = j - gap,
               RightIndex = j,
               ActiveCodeLines = [6],
-              Caption = $"So sánh a[{j - gap}] = {a[j - gap]} và a[{j}] = {a[j]}"
-                + (outOfOrder ? "  →  sai thứ tự" : "  →  đúng thứ tự, dừng")
+              Caption = Res.Caption(
+                outOfOrder ? "Shell_CompareOutOfOrder" : "Shell_CompareInOrder",
+                language,
+                j - gap, a[j - gap], j, a[j]
+              )
             }
           );
 
@@ -200,7 +204,7 @@ public static class ShellSortSimulator
               LeftIndex = j - gap,
               RightIndex = j,
               ActiveCodeLines = [7, 8, 9],
-              Caption = $"Đổi chỗ: a[{j - gap}] ↔ a[{j}]."
+              Caption = Res.Caption("Shell_Swap", language, j - gap, j)
             }
           );
 
@@ -216,7 +220,7 @@ public static class ShellSortSimulator
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [12, 13],
-          Caption = $"Hoàn tất một lượt với gap = {gap}."
+          Caption = Res.Caption("Shell_EndPass", language, gap)
         }
       );
     }
@@ -236,7 +240,7 @@ public static class ShellSortSimulator
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
         SortedIndices = allSorted,
-        Caption = "Hoàn tất! Dãy đã được sắp xếp."
+        Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 

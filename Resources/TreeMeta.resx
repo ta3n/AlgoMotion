@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>SO SÁNH</value></data>
+  <data name="Common_Visit" xml:space="preserve"><value>THĂM</value></data>
+
+  <data name="Bst_Subtitle" xml:space="preserve"><value>TÌM KIẾM TRÊN CÂY NHỊ PHÂN</value></data>
+  <data name="Bst_Hint" xml:space="preserve"><value>DÙNG THỨ TỰ CỦA CÂY ĐỂ ĐI THẲNG ĐẾN MỤC TIÊU</value></data>
+
+  <data name="DfsPreorder_Subtitle" xml:space="preserve"><value>TÌM KIẾM THEO CHIỀU SÂU (TIỀN TỰ)</value></data>
+  <data name="DfsPreorder_Hint" xml:space="preserve"><value>THĂM GỐC, RỒI TRÁI, RỒI PHẢI</value></data>
+
+  <data name="DfsInorder_Subtitle" xml:space="preserve"><value>TÌM KIẾM THEO CHIỀU SÂU (TRUNG TỰ)</value></data>
+  <data name="DfsInorder_Hint" xml:space="preserve"><value>THĂM TRÁI, RỒI GỐC, RỒI PHẢI</value></data>
+
+  <data name="DfsPostorder_Subtitle" xml:space="preserve"><value>TÌM KIẾM THEO CHIỀU SÂU (HẬU TỰ)</value></data>
+  <data name="DfsPostorder_Hint" xml:space="preserve"><value>THĂM TRÁI, RỒI PHẢI, RỒI GỐC</value></data>
+
+  <data name="Bfs_Subtitle" xml:space="preserve"><value>TÌM KIẾM THEO CHIỀU RỘNG</value></data>
+  <data name="Bfs_Hint" xml:space="preserve"><value>THĂM TỪNG TẦNG BẰNG HÀNG ĐỢI</value></data>
+
+  <data name="Avl_Subtitle" xml:space="preserve"><value>TÌM KIẾM TRÊN CÂY AVL</value></data>
+  <data name="Avl_Hint" xml:space="preserve"><value>CÂY TỰ CÂN BẰNG: ĐỘ SÂU LUÔN LÀ O(LOG N)</value></data>
+</root>
