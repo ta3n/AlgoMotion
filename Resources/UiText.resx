@@ -49,4 +49,7 @@
   <data name="ChipFound" xml:space="preserve"><value>tìm thấy</value></data>
   <data name="True" xml:space="preserve"><value>đúng</value></data>
   <data name="False" xml:space="preserve"><value>sai</value></data>
+  <data name="PwaInstall" xml:space="preserve"><value>📲 Cài đặt ứng dụng</value></data>
+  <data name="PwaUpdateAvailable" xml:space="preserve"><value>Có bản cập nhật mới.</value></data>
+  <data name="PwaUpdateAction" xml:space="preserve"><value>Tải lại</value></data>
 </root>

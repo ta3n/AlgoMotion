@@ -56,7 +56,11 @@ public enum UiTextKey
   False,
 
   InitialArrayCaption,
-  InitialTreeCaption
+  InitialTreeCaption,
+
+  PwaInstall,
+  PwaUpdateAvailable,
+  PwaUpdateAction
 }
 
 public static class UiText
@@ -111,7 +115,11 @@ public static class UiText
     [UiTextKey.False] = ("sai", "false"),
 
     [UiTextKey.InitialArrayCaption] = ("Dãy ban đầu. Nhấn Play để bắt đầu sắp xếp.", "Initial array. Press Play to start sorting."),
-    [UiTextKey.InitialTreeCaption] = ("Cây ban đầu. Nhấn Play để bắt đầu tìm kiếm.", "Initial tree. Press Play to start the search.")
+    [UiTextKey.InitialTreeCaption] = ("Cây ban đầu. Nhấn Play để bắt đầu tìm kiếm.", "Initial tree. Press Play to start the search."),
+
+    [UiTextKey.PwaInstall] = ("📲 Cài đặt ứng dụng", "📲 Install app"),
+    [UiTextKey.PwaUpdateAvailable] = ("Có bản cập nhật mới.", "A new version is available."),
+    [UiTextKey.PwaUpdateAction] = ("Tải lại", "Reload")
   };
 
   public static string Get(

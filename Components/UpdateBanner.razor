@@ -1,0 +1,44 @@
+@using AlgoMotion.Models
+@implements IAsyncDisposable
+@inject IJSRuntime JsRuntime
+
+@if (_isUpdateAvailable)
+{
+    <div class="pwa-update-banner">
+        <span>@UiText.Get(UiTextKey.PwaUpdateAvailable, Language)</span>
+        <button type="button" class="btn" @onclick="ApplyUpdate">
+            @UiText.Get(UiTextKey.PwaUpdateAction, Language)
+        </button>
+    </div>
+}
+
+@code {
+    [Parameter] public UiLanguage Language { get; set; } = UiLanguage.Vi;
+
+    private DotNetObjectReference<UpdateBanner>? _selfRef;
+    private bool _isUpdateAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _selfRef = DotNetObjectReference.Create(this);
+        await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeUpdate", _selfRef);
+    }
+
+    [JSInvokable]
+    public void OnUpdateAvailable()
+    {
+        _isUpdateAvailable = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ApplyUpdate()
+    {
+        await JsRuntime.InvokeVoidAsync("algoMotionPwa.applyUpdate");
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _selfRef?.Dispose();
+        return ValueTask.CompletedTask;
+    }
+}

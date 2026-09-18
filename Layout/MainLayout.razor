@@ -1,4 +1,5 @@
 @inherits LayoutComponentBase
+@using AlgoMotion.Components
 @using AlgoMotion.Models
 @using AlgoMotion.Services
 @inject UiLanguageState LangState
@@ -6,9 +7,11 @@
 
 <main class="app-shell">
   <div class="page-shell">
+    <UpdateBanner Language="@LangState.Current"/>
     <nav class="top-nav">
       <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">@UiText.Get(UiTextKey.NavSort, LangState.Current)</NavLink>
       <NavLink href="/tree-search" class="top-nav-link">@UiText.Get(UiTextKey.NavTreeSearch, LangState.Current)</NavLink>
+      <InstallAppButton Language="@LangState.Current"/>
     </nav>
     @Body
   </div>

@@ -97,6 +97,21 @@ html, body {
   box-shadow: 0 0 16px var(--neon-cyan-soft);
 }
 
+.pwa-update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--neon-amber);
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+  box-shadow: 0 0 16px rgba(255, 198, 90, 0.25);
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--neon-amber);
+}
+
 /* ---------- stage ---------- */
 
 .stage {
@@ -709,6 +724,18 @@ html, body {
 .btn-play {
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
+}
+
+.btn-install {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  margin-left: auto;
+  align-self: center;
+}
+
+.btn-install:hover:not(:disabled) {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 12px var(--neon-green-soft);
 }
 
 .algo-control {

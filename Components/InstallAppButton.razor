@@ -1,0 +1,49 @@
+@using AlgoMotion.Models
+@implements IAsyncDisposable
+@inject IJSRuntime JsRuntime
+
+@if (_isAvailable)
+{
+    <button type="button" class="btn btn-install" @onclick="PromptInstall">
+        @UiText.Get(UiTextKey.PwaInstall, Language)
+    </button>
+}
+
+@code {
+    [Parameter] public UiLanguage Language { get; set; } = UiLanguage.Vi;
+
+    private DotNetObjectReference<InstallAppButton>? _selfRef;
+    private bool _isAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _selfRef = DotNetObjectReference.Create(this);
+        await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeInstall", _selfRef);
+        _isAvailable = await JsRuntime.InvokeAsync<bool>("algoMotionPwa.isInstallAvailable");
+    }
+
+    [JSInvokable]
+    public void OnInstallAvailable()
+    {
+        _isAvailable = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public void OnInstallDone()
+    {
+        _isAvailable = false;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task PromptInstall()
+    {
+        await JsRuntime.InvokeVoidAsync("algoMotionPwa.promptInstall");
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _selfRef?.Dispose();
+        return ValueTask.CompletedTask;
+    }
+}

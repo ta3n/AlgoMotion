@@ -49,4 +49,7 @@
   <data name="ChipFound" xml:space="preserve"><value>found</value></data>
   <data name="True" xml:space="preserve"><value>true</value></data>
   <data name="False" xml:space="preserve"><value>false</value></data>
+  <data name="PwaInstall" xml:space="preserve"><value>📲 Install app</value></data>
+  <data name="PwaUpdateAvailable" xml:space="preserve"><value>A new version is available.</value></data>
+  <data name="PwaUpdateAction" xml:space="preserve"><value>Reload</value></data>
 </root>
