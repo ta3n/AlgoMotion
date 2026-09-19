@@ -1,6 +1,6 @@
 namespace AlgoMotion.Models;
 
-public enum DpAlgorithm { Fibonacci, Knapsack, Lcs }
+public enum DpAlgorithm { Fibonacci, Knapsack, Lcs, EditDistance, CoinChange, Lis }
 
 public sealed record DpStep(
   int Row,

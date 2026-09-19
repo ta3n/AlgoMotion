@@ -1,6 +1,6 @@
 namespace AlgoMotion.Models;
 
-public enum GraphAlgorithm { Bfs, Dfs, Dijkstra, Prim }
+public enum GraphAlgorithm { Bfs, Dfs, Dijkstra, Prim, Kruskal, BellmanFord, TopologicalSort }
 
 public sealed record GraphEdge(
   int From,
@@ -21,5 +21,6 @@ public sealed record GraphStep(
   int[] Distances,
   bool[] Visited,
   int[] Frontier,
-  int[] SelectedEdges
+  int[] SelectedEdges,
+  int? Round = null
 );

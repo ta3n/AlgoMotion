@@ -31,7 +31,7 @@ public static class GraphSimulator
         || to < 0
         || to >= count
         || from == to
-        || weight is < 0 or > 99
+        || weight is < -99 or > 99
         || !seen.Add((Math.Min(from, to), Math.Max(from, to))))
       {
         return false;
@@ -59,15 +59,21 @@ public static class GraphSimulator
     var selected = new List<int>();
     var frontier = new List<int> { input.Start };
     var steps = new List<GraphStep>();
-    distances[input.Start] = 0;
+    // Topological Sort seeds every zero-in-degree node, not just Start, so it must not
+    // inherit the "Start already knows its own distance is 0" head start the other algorithms rely on.
+    if (algorithm != GraphAlgorithm.TopologicalSort)
+    {
+      distances[input.Start] = 0;
+    }
 
     void Save(
       string key,
       int? node = null,
-      int? edge = null
+      int? edge = null,
+      int? round = null
     )
     {
-      steps.Add(new(key, node, edge, [.. distances], [.. visited], [.. frontier], [.. selected]));
+      steps.Add(new(key, node, edge, [.. distances], [.. visited], [.. frontier], [.. selected], round));
     }
 
     Save("Initial");
@@ -76,6 +82,168 @@ public static class GraphSimulator
       frontier.Clear();
       VisitDepthFirst(input.Start);
       Save("Complete");
+      return steps;
+    }
+
+    if (algorithm == GraphAlgorithm.TopologicalSort)
+    {
+      // Kahn's algorithm. Edges are read as directed From→To here (the parser still stores
+      // each pair only once, so a graph edited for BFS/Dijkstra doubles as a DAG definition).
+      frontier.Clear();
+      var inDegree = new int[input.NodeCount];
+      foreach (var edge in input.Edges)
+      {
+        inDegree[edge.To]++;
+      }
+
+      for (var node = 0; node < input.NodeCount; node++)
+      {
+        if (inDegree[node] == 0)
+        {
+          frontier.Add(node);
+        }
+      }
+
+      frontier.Sort();
+      var order = 0;
+      while (frontier.Count > 0)
+      {
+        var node = frontier[0];
+        frontier.RemoveAt(0);
+        visited[node] = true;
+        distances[node] = order++;
+        Save("Visit", node);
+        foreach (var (edge, index) in input.Edges.Select((edge, index) => (edge, index)))
+        {
+          if (edge.From != node)
+          {
+            continue;
+          }
+
+          inDegree[edge.To]--;
+          Save("Relax", node, index);
+          if (inDegree[edge.To] == 0)
+          {
+            frontier.Add(edge.To);
+            frontier.Sort();
+          }
+        }
+      }
+
+      Save(order < input.NodeCount ? "CycleDetected" : "Complete");
+      return steps;
+    }
+
+    if (algorithm == GraphAlgorithm.Kruskal)
+    {
+      // Restricted to the component reachable from Start so its MST weight is directly
+      // comparable to Prim's — Prim can only ever grow a single tree from that same node.
+      frontier.Clear();
+      var reachable = new bool[input.NodeCount];
+      var toVisit = new Stack<int>();
+      toVisit.Push(input.Start);
+      reachable[input.Start] = true;
+      while (toVisit.Count > 0)
+      {
+        var node = toVisit.Pop();
+        foreach (var edge in input.Edges)
+        {
+          int next;
+          if (edge.From == node) next = edge.To;
+          else if (edge.To == node) next = edge.From;
+          else next = -1;
+          if (next < 0 || reachable[next])
+          {
+            continue;
+          }
+
+          reachable[next] = true;
+          toVisit.Push(next);
+        }
+      }
+
+      var parent = Enumerable.Range(0, input.NodeCount).ToArray();
+      int Find(
+        int x
+      )
+      {
+        if (parent[x] == x)
+        {
+          return x;
+        }
+
+        parent[x] = Find(parent[x]);
+        return parent[x];
+      }
+
+      var orderedEdges = input.Edges.Select((edge, index) => (edge, index))
+        .Where(e => reachable[e.edge.From] && reachable[e.edge.To])
+        .OrderBy(e => e.edge.Weight)
+        .ThenBy(e => e.index);
+      foreach (var (edge, index) in orderedEdges)
+      {
+        var rootFrom = Find(edge.From);
+        var rootTo = Find(edge.To);
+        if (rootFrom == rootTo)
+        {
+          Save("RejectEdge", edge.From, index);
+          continue;
+        }
+
+        parent[rootFrom] = rootTo;
+        selected.Add(index);
+        visited[edge.From] = true;
+        visited[edge.To] = true;
+        Save("SelectEdge", edge.From, index);
+      }
+
+      Save("Complete");
+      return steps;
+    }
+
+    if (algorithm == GraphAlgorithm.BellmanFord)
+    {
+      // Edges are read as directed From→To, like Topological Sort — an undirected negative
+      // edge would otherwise always form a trivial two-step negative cycle.
+      frontier.Clear();
+      var rounds = Math.Max(0, input.NodeCount - 1);
+      for (var round = 1; round <= rounds; round++)
+      {
+        var improved = false;
+        foreach (var (edge, index) in input.Edges.Select((edge, index) => (edge, index)))
+        {
+          if (distances[edge.From] == int.MaxValue)
+          {
+            continue;
+          }
+
+          var candidate = distances[edge.From] + edge.Weight;
+          if (candidate >= distances[edge.To])
+          {
+            continue;
+          }
+
+          distances[edge.To] = candidate;
+          parents[edge.To] = index;
+          improved = true;
+          Save("Relax", edge.To, index, round);
+        }
+
+        if (!improved)
+        {
+          break;
+        }
+      }
+
+      var negativeCycle = input.Edges.Any(
+        edge => distances[edge.From] != int.MaxValue && distances[edge.From] + edge.Weight < distances[edge.To]
+      );
+      for (var node = 0; node < input.NodeCount; node++)
+      {
+        visited[node] = distances[node] != int.MaxValue;
+      }
+
+      Save(negativeCycle ? "NegativeCycle" : "Complete");
       return steps;
     }
 

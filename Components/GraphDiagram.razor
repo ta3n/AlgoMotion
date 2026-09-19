@@ -1,12 +1,22 @@
 @using AlgoMotion.Models
 @using System.Globalization
 <svg class="graph-canvas" viewBox="0 0 600 420" role="img" aria-label="@LearningText.Get("Graph", Language)">
+  @if (Directed)
+  {
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+        <polygon points="0 0, 10 4, 0 8" fill="#c7d1e8"/>
+      </marker>
+    </defs>
+  }
   @for (var i = 0; i < Input.Edges.Count; i++)
   {
     var edge = Input.Edges[i];
     var selected = Step?.SelectedEdges.Contains(i) == true;
-    <line x1="@F(X(edge.From))" y1="@F(Y(edge.From))" x2="@F(X(edge.To))" y2="@F(Y(edge.To))"
-          stroke="@EdgeColor(i, selected)" stroke-width="@(selected ? 4 : 2)"/>
+    var (x1, y1, x2, y2) = Directed ? Shortened(edge.From, edge.To) : (X(edge.From), Y(edge.From), X(edge.To), Y(edge.To));
+    <line x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)"
+          stroke="@EdgeColor(i, selected)" stroke-width="@(selected ? 4 : 2)"
+          marker-end="@(Directed ? "url(#arrowhead)" : null)"/>
     <g>
       <text class="edge-label" text-anchor="middle" x="@F((X(edge.From) + X(edge.To)) / 2)"
             y="@F((Y(edge.From) + Y(edge.To)) / 2 - 6)">@edge.Weight</text>
@@ -33,13 +43,34 @@
   [Parameter]
   public UiLanguage Language { get; set; }
 
+  /// <summary>True renders edges with an arrowhead (From→To) for algorithms that interpret
+  /// edges as directed — Bellman-Ford and Topological Sort. Undirected algorithms leave this false.</summary>
+  [Parameter]
+  public bool Directed { get; set; }
+
   private string EdgeColor(
     int index,
     bool selected
   )
   {
+    if (Step?.CaptionKey == "RejectEdge" && Step.EdgeIndex == index) return "#ff5c7a";
     if (Step?.EdgeIndex == index) return "#ffc857";
     return selected ? "#55e6a5" : "#667088";
+  }
+
+  /// <summary>Pulls the line's endpoint back to the edge of the destination node circle (radius 21)
+  /// so a directed edge's arrowhead lands on the circle's rim instead of being hidden under it.</summary>
+  private (double X1, double Y1, double X2, double Y2) Shortened(
+    int from,
+    int to
+  )
+  {
+    var (x1, y1, x2, y2) = (X(from), Y(from), X(to), Y(to));
+    var (dx, dy) = (x2 - x1, y2 - y1);
+    var length = Math.Sqrt(dx * dx + dy * dy);
+    if (length < 0.01) return (x1, y1, x2, y2);
+    const double radius = 23;
+    return (x1, y1, x2 - dx / length * radius, y2 - dy / length * radius);
   }
 
   private string NodeColor(

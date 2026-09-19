@@ -152,4 +152,18 @@
   <!-- TreeSearch page: initial-state caption -->
   <data name="TreeSearch_InitialCaption" xml:space="preserve"><value>Tree built with {0} nodes. Searching for {1}. Press Play to start.</value></data>
 
+
+  <!-- Array search (Linear / Binary / Jump / Interpolation) -->
+  <data name="Searching_InitialCaption" xml:space="preserve"><value>Array sorted ascending with {0} elements. Searching for {1}. Press Play to start.</value></data>
+  <data name="Search_Found" xml:space="preserve"><value>a[{0}] = {1} equals target {2}: found at index {0}.</value></data>
+  <data name="Search_NotFound" xml:space="preserve"><value>No elements left to check: {0} was not found.</value></data>
+  <data name="Linear_Check" xml:space="preserve"><value>Compare a[{0}] = {1} with target {2}: not equal, move to the next element.</value></data>
+  <data name="Binary_NarrowRight" xml:space="preserve"><value>Middle: a[{0}] = {1} &lt; target {2}, discard the left half. Continue in {3}.</value></data>
+  <data name="Binary_NarrowLeft" xml:space="preserve"><value>Middle: a[{0}] = {1} &gt; target {2}, discard the right half. Continue in {3}.</value></data>
+  <data name="Jump_Skip" xml:space="preserve"><value>Block end: a[{0}] = {1} &lt; target {2}, skip the whole block. Next block: {3}.</value></data>
+  <data name="Jump_BlockFound" xml:space="preserve"><value>Block end: a[{0}] = {1} ≥ target {2}, so the target (if present) is inside block {3}. Scan it linearly.</value></data>
+  <data name="Jump_Scan" xml:space="preserve"><value>Compare a[{0}] = {1} with target {2}: not equal, move to the next element in the block.</value></data>
+  <data name="Interpolation_NarrowRight" xml:space="preserve"><value>Estimated position {0}: a[{0}] = {1} &lt; target {2}, discard everything to the left. Continue in {3}.</value></data>
+  <data name="Interpolation_NarrowLeft" xml:space="preserve"><value>Estimated position {0}: a[{0}] = {1} &gt; target {2}, discard everything to the right. Continue in {3}.</value></data>
+  <data name="Interpolation_OutOfRange" xml:space="preserve"><value>Target {0} lies outside [{1}, {2}], the range that is left: it cannot be in the array.</value></data>
 </root>

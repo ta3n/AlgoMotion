@@ -12,7 +12,7 @@
     <label>@L("Algorithm") <select @bind="_algorithm" @bind:after="Reload">
         @foreach (var a in Enum.GetValues<GraphAlgorithm>())
         {
-          <option value="@a">@a</option>
+          <option value="@a">@AlgorithmLabel(a)</option>
         }
       </select></label>
     <label>@L("Nodes") <input type="number" min="2" max="12" @bind="_count"/></label>
@@ -24,10 +24,14 @@
   {
     <p role="alert" class="custom-error">@L("InvalidGraph")</p>
   }
-  <GraphDiagram Input="@_input" Step="@Current" Language="@Language"/>
+  <GraphDiagram Input="@_input" Step="@Current" Language="@Language" Directed="@IsDirected(_algorithm)"/>
   <p role="status">@L(Current.CaptionKey) @Current.Current</p>
   <p>@L("Frontier"): @string.Join(", ", Current.Frontier)</p>
-  @if (_algorithm == GraphAlgorithm.Prim)
+  @if (_algorithm == GraphAlgorithm.BellmanFord && Current.Round is { } round)
+  {
+    <p>@L("Round"): @round</p>
+  }
+  @if (_algorithm is GraphAlgorithm.Prim or GraphAlgorithm.Kruskal)
   {
     <p>@L("Weight"): @Current.SelectedEdges.Sum(i => _input.Edges[i].Weight)</p>
   }
@@ -45,7 +49,7 @@
     {
       <tr>
         <td>@i</td>
-        <td>@(Current.Distances[i] == int.MaxValue ? "∞" : Current.Distances[i].ToString())</td>
+        <td>@DistanceLabel(i)</td>
         <td>@L(Current.Visited[i] ? "Visited" : "Unvisited")</td>
       </tr>
     }
@@ -84,6 +88,36 @@
     _steps = GraphSimulator.Record(_input, _algorithm);
     _index = -1;
     _revision++;
+  }
+
+  /// <summary>Bellman-Ford and Topological Sort read edges as directed From→To (see
+  /// GraphSimulator), so only those two get an arrowhead in the diagram.</summary>
+  private static bool IsDirected(
+    GraphAlgorithm algorithm
+  )
+  {
+    return algorithm is GraphAlgorithm.BellmanFord or GraphAlgorithm.TopologicalSort;
+  }
+
+  /// <summary>Inserts a space before each interior capital so enum names like "BellmanFord"
+  /// read as "Bellman Ford" in the dropdown instead of running the words together.</summary>
+  private static string AlgorithmLabel(
+    GraphAlgorithm algorithm
+  )
+  {
+    var name = algorithm.ToString();
+    var spaced = System.Text.RegularExpressions.Regex.Replace(name, "(?<=[a-z])(?=[A-Z])", " ", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromMilliseconds(100));
+    return spaced;
+  }
+
+  /// <summary>Kruskal never assigns start-relative distances (it only ever selects or rejects
+  /// edges by weight), so its Distance column would show a misleading 0/∞ pair — show "—" instead.</summary>
+  private string DistanceLabel(
+    int node
+  )
+  {
+    if (_algorithm == GraphAlgorithm.Kruskal) return "—";
+    return Current.Distances[node] == int.MaxValue ? "∞" : Current.Distances[node].ToString();
   }
 
 }

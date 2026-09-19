@@ -24,10 +24,19 @@
       <label>@L("Values") <input @bind="_values"/></label>
       <label>@L("Capacity") <input type="number" min="1" max="20" @bind="_capacity"/></label>
     }
-    else
+    else if (_algorithm is DpAlgorithm.Lcs or DpAlgorithm.EditDistance)
     {
       <label>@L("FirstString") <input maxlength="12" @bind="_first"/></label>
       <label>@L("SecondString") <input maxlength="12" @bind="_second"/></label>
+    }
+    else if (_algorithm == DpAlgorithm.CoinChange)
+    {
+      <label>@L("Coins") <input @bind="_coins"/></label>
+      <label>@L("Amount") <input type="number" min="1" max="30" @bind="_amount"/></label>
+    }
+    else
+    {
+      <label>@L("Sequence") <input @bind="_sequence"/></label>
     }
     <button class="btn" @onclick="Apply">@L("Apply")</button>
   </div>
@@ -66,7 +75,7 @@
   <LessonPlayback @key="_revision" Count="@_recording.Steps.Count" IndexChanged="i => _index = i"/>
   @if (_index == _recording.Steps.Count - 1)
   {
-    <p><strong>@L("Result"): @_recording.Result</strong></p>
+    <p><strong>@L("Result"): @ResultLabel()</strong></p>
   }
 </section>
 
@@ -79,6 +88,9 @@
   private string _values = "1, 4, 5, 7";
   private string _first = "ABCBDAB";
   private string _second = "BDCABA";
+  private string _coins = "1, 3, 4";
+  private int _amount = 6;
+  private string _sequence = "3, 1, 4, 1, 5, 9, 2, 6";
   private DpRecording _recording = DpSimulator.Fibonacci(8);
   private int _index = -1;
   private int _revision;
@@ -92,6 +104,14 @@
   {
     if (Current.Row == row && Current.Column == column) return "active-cell";
     return Current.Dependencies.Contains((row, column)) ? "dependency-cell" : "";
+  }
+
+  /// <summary>Coin Change can leave the target amount unreachable with the given coins, which
+  /// DpSimulator reports as a negative Result — every other algorithm's Result is always ≥ 0.</summary>
+  private string ResultLabel()
+  {
+    if (_recordedAlgorithm == DpAlgorithm.CoinChange && _recording.Result < 0) return L("NoCoinSolution");
+    return _recording.Result.ToString();
   }
 
   private void Apply()
@@ -117,8 +137,6 @@
         break;
       }
       case DpAlgorithm.Lcs:
-        break;
-      default:
       {
         if (_first.Length > 12 || _second.Length > 12)
         {
@@ -127,6 +145,39 @@
         }
 
         _recording = DpSimulator.Lcs(_first, _second);
+        break;
+      }
+      case DpAlgorithm.EditDistance:
+      {
+        if (_first.Length > 12 || _second.Length > 12)
+        {
+          _error = true;
+          return;
+        }
+
+        _recording = DpSimulator.EditDistance(_first, _second);
+        break;
+      }
+      case DpAlgorithm.CoinChange:
+      {
+        if (!CustomInput.TryParse(_coins, 1, 8, out var coins) || coins.Any(c => c > 20) || _amount is < 1 or > 30)
+        {
+          _error = true;
+          return;
+        }
+
+        _recording = DpSimulator.CoinChange(coins, _amount);
+        break;
+      }
+      default:
+      {
+        if (!CustomInput.TryParse(_sequence, 1, 12, out var sequence))
+        {
+          _error = true;
+          return;
+        }
+
+        _recording = DpSimulator.Lis(sequence);
         break;
       }
     }

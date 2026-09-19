@@ -1,0 +1,485 @@
+@page "/searching"
+@using System.Globalization
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@using AlgoMotion.Components
+@inject UiLanguageState LangState
+@implements IDisposable
+
+<PageTitle>Array Search Visualizer</PageTitle>
+
+<div class="stage" style="--speed-scale:@(SpeedScale);">
+
+  <header class="app-header">
+    <div class="title-block">
+      <h1 class="app-title">@_algorithm.Name</h1>
+      <p class="app-subtitle">@_algorithm.GetSubtitle(_uiLanguage)</p>
+    </div>
+    <div class="counters">
+      <StatCounter Label="@_algorithm.GetCompareLabel(_uiLanguage)" Value="@Step.CompareCount"/>
+      <StatCounter Label="@_algorithm.GetActionLabel(_uiLanguage)" Value="@Step.NarrowCount"/>
+    </div>
+  </header>
+
+  <section class="chart-area">
+    <SortBars Bars="@Bars" MaxValue="@_maxValue"/>
+  </section>
+
+  <section class="lower-area">
+    <CodeViewer ActiveLines="@(_codeLanguage == CodeLanguage.C ? Step.ActiveCodeLines : [])"
+                Lines="@_algorithm.GetCodeLines(_codeLanguage)" FileName="@_algorithm.GetFileName(_codeLanguage)"/>
+
+    <div class="controls">
+      <div class="algo-control @(_algoMenuOpen ? "is-open" : "")">
+        <label id="algo-label">@UiText.Get(UiTextKey.AlgorithmLabel, _uiLanguage)</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_algoMenuOpen"
+                aria-labelledby="algo-label" @onclick="ToggleAlgoMenu">
+          <span>@_algorithm.Name</span>
+          <span class="algo-caret">▾</span>
+        </button>
+
+        @if (_algoMenuOpen)
+        {
+          <div class="menu-scrim" @onclick="CloseAlgoMenu"></div>
+          <ul class="algo-menu" role="listbox">
+            @foreach (var algo in SearchAlgorithms.All)
+            {
+              <li role="option" aria-selected="@(algo.Kind == _algorithm.Kind)"
+                  class="algo-menu-item @(algo.Kind == _algorithm.Kind ? "is-selected" : "")"
+                  @onclick="() => SelectAlgorithm(algo.Kind)">
+                @algo.Name
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="algo-control @(_codeLangMenuOpen ? "is-open" : "")">
+        <label id="code-lang-label">@UiText.Get(UiTextKey.CodeLanguageLabel, _uiLanguage)</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_codeLangMenuOpen"
+                aria-labelledby="code-lang-label" @onclick="ToggleCodeLangMenu">
+          <span>@CodeLanguages.Label(_codeLanguage)</span>
+          <span class="algo-caret">▾</span>
+        </button>
+
+        @if (_codeLangMenuOpen)
+        {
+          <div class="menu-scrim" @onclick="CloseCodeLangMenu"></div>
+          <ul class="algo-menu" role="listbox">
+            @foreach (var lang in CodeLanguages.All)
+            {
+              <li role="option" aria-selected="@(lang == _codeLanguage)"
+                  class="algo-menu-item @(lang == _codeLanguage ? "is-selected" : "")"
+                  @onclick="() => SelectCodeLanguage(lang)">
+                @CodeLanguages.Label(lang)
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="algo-control @(_uiLangMenuOpen ? "is-open" : "")">
+        <label id="ui-lang-label">@UiText.Get(UiTextKey.UiLanguageLabel, _uiLanguage)</label>
+        <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_uiLangMenuOpen"
+                aria-labelledby="ui-lang-label" @onclick="ToggleUiLangMenu">
+          <span>@UiLanguages.Code(_uiLanguage)</span>
+          <span class="algo-caret">▾</span>
+        </button>
+
+        @if (_uiLangMenuOpen)
+        {
+          <div class="menu-scrim" @onclick="CloseUiLangMenu"></div>
+          <ul class="algo-menu" role="listbox">
+            @foreach (var lang in UiLanguages.All)
+            {
+              <li role="option" aria-selected="@(lang == _uiLanguage)"
+                  class="algo-menu-item @(lang == _uiLanguage ? "is-selected" : "")"
+                  @onclick="() => SelectUiLanguage(lang)">
+                @UiLanguages.Label(lang)
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <button class="btn btn-play" @onclick="TogglePlay">
+        @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
+      </button>
+      <button class="btn" @onclick="() => _player.StepBack()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.StepForward()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
+
+      <div class="n-control">
+        <label for="n-input">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</label>
+        <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
+               value="@_n" @onchange="OnNChanged"/>
+      </div>
+      <button class="btn" @onclick="NewArray"
+              title="@UiText.Get(UiTextKey.NewArrayTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewArray, _uiLanguage)</button>
+
+      <div class="custom-control">
+        <input type="text" class="custom-input"
+               placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
+               aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
+               value="@_customArrayText" @oninput="OnCustomArrayTextChanged" @onkeydown="OnCustomArrayKeyDown"/>
+        <button class="btn" @onclick="ApplyCustomArray">@UiText.Get(UiTextKey.CustomInputApply, _uiLanguage)</button>
+      </div>
+
+      <div class="n-control">
+        <label for="target-input">@UiText.Get(UiTextKey.TargetLabel, _uiLanguage)</label>
+        <input id="target-input" type="number" class="n-input" value="@_target" @onchange="OnTargetChanged"/>
+      </div>
+
+      <div class="speed-control">
+        <label for="speed-input">@UiText.Get(UiTextKey.SpeedLabel, _uiLanguage)</label>
+        <input id="speed-input" type="range"
+               min="@PlaybackSpeeds.Min.ToString(CultureInfo.InvariantCulture)"
+               max="@PlaybackSpeeds.Max.ToString(CultureInfo.InvariantCulture)"
+               step="@PlaybackSpeeds.Step.ToString(CultureInfo.InvariantCulture)"
+               value="@_player.State.Speed.ToString(CultureInfo.InvariantCulture)"
+               @oninput="OnSpeedInput"/>
+        <span class="speed-readout">@PlaybackSpeeds.Format(_player.State.Speed)</span>
+      </div>
+
+      <div class="n-control">
+        <label>@LearningText.Get("BreakAt", _uiLanguage)
+          <input type="number" class="n-input" min="0" max="@_player.Steps.Count"
+                 value="@(_player.BreakAtIndex + 1)" @onchange="OnBreakpointChanged"/>
+        </label>
+      </div>
+      <div class="scrubber-control">
+        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+               title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+               min="-1" max="@(_player.Steps.Count - 1)"
+               value="@_player.State.CurrentIndex" @oninput="OnScrubberInput"/>
+        <span class="scrubber-readout">@(_player.State.CurrentIndex + 1)/@_player.Steps.Count</span>
+      </div>
+    </div>
+
+    @if (_customArrayError)
+    {
+      <p class="custom-error"
+         role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
+    }
+
+    <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
+  </section>
+
+  <div class="status-bar">
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</span><span
+        class="status-eq">=</span><span
+        class="status-val">@_values.Length</span></div>
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipTarget, _uiLanguage)</span><span
+        class="status-eq">=</span><span
+        class="status-val">@_target</span></div>
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipChecked, _uiLanguage)</span><span
+        class="status-eq">=</span><span
+        class="status-val">@(Step.CheckedIndex is { } index ? index.ToString() : "-")</span></div>
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipFound, _uiLanguage)</span><span
+        class="status-eq">=</span><span
+        class="status-val status-bool-@((Step.Type == SearchStepType.Found).ToString().ToLowerInvariant())">@UiText.Bool(Step.Type == SearchStepType.Found, _uiLanguage)</span>
+    </div>
+  </div>
+
+  <div class="status-now">
+    <span class="status-section-label">@UiText.Get(UiTextKey.CurrentSection, _uiLanguage)</span>
+    <p class="status-caption">@Step.Caption</p>
+  </div>
+
+  <div class="status-history-wrap">
+    <span class="status-section-label">@UiText.Get(UiTextKey.HistorySection, _uiLanguage) (@_history.Count)</span>
+    <div class="status-history">
+      @foreach (var entry in _history)
+      {
+        <div class="status-history-row">
+          <span class="status-history-time">@entry.Time.ToString("HH:mm:ss.fff")</span>
+          <span class="status-history-text">@entry.Caption</span>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
+
+@code {
+  private const int MinN = 3;
+  private const int MaxN = 200;
+
+  private readonly SearchAnimationPlayer _player = new();
+  private readonly Random _rng = new();
+  private readonly List<CaptionLogEntry> _history = [];
+
+  private SearchAlgorithmInfo _algorithm = SearchAlgorithms.Get(SearchAlgorithmKind.Linear);
+  private bool _algoMenuOpen;
+  private CodeLanguage _codeLanguage = CodeLanguage.C;
+  private bool _codeLangMenuOpen;
+  private bool _uiLangMenuOpen;
+  private int _n = 15;
+  private int[] _values = [];
+  private int _maxValue = 1;
+  private int _target;
+  private string _customArrayText = "";
+  private bool _customArrayError;
+  private int _lastLoggedIndex = -1;
+  private SearchStep _initialStep = new();
+
+  private UiLanguage _uiLanguage => LangState.Current;
+
+  private SearchStep Step => _player.Current ?? _initialStep;
+
+  private List<BarItem> Bars => BuildBars(Step);
+
+  /// <summary>Same CSS custom property trick as the other pages — every transition duration in app.css
+  /// is calc(BASEms * var(--speed-scale)), so the highlights stay in lockstep with playback speed.</summary>
+  private string SpeedScale => (1.0 / _player.State.Speed).ToString("0.####", CultureInfo.InvariantCulture);
+
+  protected override void OnInitialized()
+  {
+    _player.Changed += OnPlayerChanged;
+    LangState.Changed += OnUiLanguageChanged;
+    NewArray();
+  }
+
+  /// <summary>Generates n distinct values, sorted ascending (every algorithm here needs a sorted array,
+  /// Linear Search included, so all four can be compared on one input). Values are drawn from 1..3n so
+  /// there are gaps — an array that is just 1..n would make Interpolation Search trivially exact.</summary>
+  private void NewArray()
+  {
+    _values = [.. Enumerable.Range(1, _n * 3).OrderBy(_ => _rng.Next()).Take(_n).Order()];
+    _target = PickRandomTarget();
+    LoadCurrentArray();
+  }
+
+  /// <summary>Most runs search for a value that is in the array so playback usually ends in "found";
+  /// the rest pick a value from the same range, which is often absent, so "not found" is shown too.</summary>
+  private int PickRandomTarget()
+  {
+    if (_values.Length > 0 && _rng.NextDouble() < 0.7)
+    {
+      return _values[_rng.Next(_values.Length)];
+    }
+
+    return _rng.Next(1, (_n * 3) + 2);
+  }
+
+  /// <summary>Re-runs the current algorithm against the current array/target — used whenever only the
+  /// algorithm, target or language changes, so switching keeps the exact array for a fair comparison.</summary>
+  private void LoadCurrentArray()
+  {
+    _maxValue = _values.Length == 0 ? 1 : _values.Max();
+    _initialStep = new SearchStep
+    {
+      Snapshot = _values,
+      ActiveCodeLines = [1, 2],
+      Caption = Res.Caption("Searching_InitialCaption", _uiLanguage, _values.Length, _target)
+    };
+
+    _player.Load(_algorithm.Record(_values, _target, _uiLanguage));
+  }
+
+  private void OnPlayerChanged()
+  {
+    var index = _player.State.CurrentIndex;
+    if (index == -1)
+    {
+      _history.Clear();
+      _lastLoggedIndex = -1;
+      _history.Insert(0, new CaptionLogEntry(DateTime.Now, -1, _initialStep.Caption));
+    }
+    else if (index != _lastLoggedIndex)
+    {
+      _lastLoggedIndex = index;
+      _history.Insert(0, new CaptionLogEntry(DateTime.Now, index, _player.Steps[index].Caption));
+      const int maxEntries = 200;
+      if (_history.Count > maxEntries) _history.RemoveRange(maxEntries, _history.Count - maxEntries);
+    }
+
+    InvokeAsync(StateHasChanged);
+  }
+
+  private void TogglePlay()
+  {
+    if (_player.State.IsPlaying) _player.Pause();
+    else _player.Play();
+  }
+
+  private void OnSpeedInput(
+    ChangeEventArgs e
+  )
+  {
+    if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var speed))
+    {
+      _player.SetSpeed(speed);
+    }
+  }
+
+  private void OnBreakpointChanged(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), out var step))
+      _player.BreakAtIndex = Math.Clamp(step, 0, _player.Steps.Count) - 1;
+  }
+
+  private void OnScrubberInput(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var index))
+    {
+      _player.SeekTo(index);
+    }
+  }
+
+  private void OnCustomArrayTextChanged(
+    ChangeEventArgs e
+  )
+  {
+    _customArrayText = e.Value?.ToString() ?? "";
+  }
+
+  private void OnCustomArrayKeyDown(
+    KeyboardEventArgs e
+  )
+  {
+    if (e.Key == "Enter") ApplyCustomArray();
+  }
+
+  /// <summary>Parses the text as comma/whitespace-separated positive integers and uses them as the array.
+  /// Every algorithm here requires ascending order, so the values are sorted rather than rejected.</summary>
+  private void ApplyCustomArray()
+  {
+    if (!CustomInput.TryParse(_customArrayText, MinN, MaxN, out var values))
+    {
+      _customArrayError = true;
+      return;
+    }
+
+    _customArrayError = false;
+    _n = values.Length;
+    _values = [.. values.Order()];
+    LoadCurrentArray();
+  }
+
+  private void OnNChanged(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), out var n))
+    {
+      _n = Math.Clamp(n, MinN, MaxN);
+      NewArray();
+    }
+  }
+
+  private void OnTargetChanged(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), out var target))
+    {
+      _target = target;
+      LoadCurrentArray();
+    }
+  }
+
+  private void ToggleAlgoMenu()
+  {
+    _algoMenuOpen = !_algoMenuOpen;
+  }
+
+  private void CloseAlgoMenu()
+  {
+    _algoMenuOpen = false;
+  }
+
+  private void ToggleCodeLangMenu()
+  {
+    _codeLangMenuOpen = !_codeLangMenuOpen;
+  }
+
+  private void CloseCodeLangMenu()
+  {
+    _codeLangMenuOpen = false;
+  }
+
+  private void SelectCodeLanguage(
+    CodeLanguage language
+  )
+  {
+    _codeLangMenuOpen = false;
+    _codeLanguage = language;
+  }
+
+  private void ToggleUiLangMenu()
+  {
+    _uiLangMenuOpen = !_uiLangMenuOpen;
+  }
+
+  private void CloseUiLangMenu()
+  {
+    _uiLangMenuOpen = false;
+  }
+
+  private void SelectUiLanguage(
+    UiLanguage language
+  )
+  {
+    _uiLangMenuOpen = false;
+    LangState.Set(language);
+  }
+
+  /// <summary>Re-records the captions in the newly selected language.</summary>
+  private void OnUiLanguageChanged()
+  {
+    LoadCurrentArray();
+  }
+
+  private void SelectAlgorithm(
+    SearchAlgorithmKind kind
+  )
+  {
+    _algoMenuOpen = false;
+    if (kind == _algorithm.Kind) return;
+
+    _algorithm = SearchAlgorithms.Get(kind);
+    LoadCurrentArray();
+  }
+
+  /// <summary>Bars outside the candidate range are dimmed; the bar being compared stays lit (never dimmed)
+  /// and the match is marked with the "sorted" (green) style.</summary>
+  private static List<BarItem> BuildBars(
+    SearchStep step
+  )
+  {
+    var list = new List<BarItem>(step.Snapshot.Length);
+    for (var i = 0; i < step.Snapshot.Length; i++)
+    {
+      var isActive = step.CheckedIndex == i;
+      var isOutside = step is { RangeStart: { } lo, RangeEnd: { } hi } && (i < lo || i > hi);
+      list.Add(
+        new BarItem
+        {
+          Value = step.Snapshot[i],
+          SlotIndex = i,
+          IsActive = isActive,
+          IsSorted = step.FoundIndex == i,
+          IsDimmed = isOutside && !isActive
+        }
+      );
+    }
+
+    return list;
+  }
+
+  public void Dispose()
+  {
+    _player.Changed -= OnPlayerChanged;
+    LangState.Changed -= OnUiLanguageChanged;
+    _player.Dispose();
+  }
+
+}

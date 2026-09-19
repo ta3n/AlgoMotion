@@ -22,6 +22,7 @@ public enum UiTextKey
   SubQuiz,
   SubGraphs,
   SubDp,
+  SubSearching,
 
   AlgorithmLabel,
   CodeLanguageLabel,
@@ -70,6 +71,7 @@ public enum UiTextKey
   ChipTarget,
   ChipCurrentNode,
   ChipFound,
+  ChipChecked,
 
   True,
   False,
@@ -101,6 +103,8 @@ public static class UiText
     [UiTextKey.SubQuiz] = ("Kiểm tra lại kiến thức của bạn", "Test what you have learned"),
     [UiTextKey.SubGraphs] = ("Xem từng bước các thuật toán trên đồ thị", "Step through graph algorithms"),
     [UiTextKey.SubDp] = ("Xem từng bước bảng quy hoạch động", "Step through dynamic-programming tables"),
+    [UiTextKey.SubSearching] =
+      ("Xem từng bước các thuật toán tìm kiếm trên mảng đã sắp xếp", "Step through search algorithms on a sorted array"),
     [UiTextKey.AlgorithmLabel] = ("Thuật toán", "Algorithm"),
     [UiTextKey.CodeLanguageLabel] = ("Ngôn ngữ code", "Code language"),
     [UiTextKey.UiLanguageLabel] = ("Giao diện", "Interface"),
@@ -144,6 +148,7 @@ public static class UiText
     [UiTextKey.ChipTarget] = ("mục tiêu", "target"),
     [UiTextKey.ChipCurrentNode] = ("node hiện tại", "current node"),
     [UiTextKey.ChipFound] = ("tìm thấy", "found"),
+    [UiTextKey.ChipChecked] = ("vị trí xét", "checked"),
     [UiTextKey.True] = ("đúng", "true"),
     [UiTextKey.False] = ("sai", "false"),
     [UiTextKey.InitialArrayCaption] =

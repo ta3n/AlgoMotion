@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>SO SÁNH</value></data>
+  <data name="Common_Narrow" xml:space="preserve"><value>THU HẸP</value></data>
+
+  <data name="Linear_Subtitle" xml:space="preserve"><value>TÌM KIẾM TUẦN TỰ</value></data>
+  <data name="Linear_Hint" xml:space="preserve"><value>XÉT TỪNG PHẦN TỬ TỪ ĐẦU ĐẾN CUỐI: O(N)</value></data>
+
+  <data name="Binary_Subtitle" xml:space="preserve"><value>TÌM KIẾM NHỊ PHÂN</value></data>
+  <data name="Binary_Hint" xml:space="preserve"><value>MỖI LẦN XÉT LOẠI BỎ MỘT NỬA PHẠM VI: O(LOG N)</value></data>
+
+  <data name="Jump_Subtitle" xml:space="preserve"><value>TÌM KIẾM NHẢY BƯỚC</value></data>
+  <data name="Jump_Hint" xml:space="preserve"><value>NHẢY THEO KHỐI √N, RỒI DUYỆT TUẦN TỰ TRONG KHỐI: O(√N)</value></data>
+
+  <data name="Interpolation_Subtitle" xml:space="preserve"><value>TÌM KIẾM NỘI SUY</value></data>
+  <data name="Interpolation_Hint" xml:space="preserve"><value>ƯỚC LƯỢNG VỊ TRÍ THEO GIÁ TRỊ MỤC TIÊU: O(LOG LOG N) NẾU DỮ LIỆU ĐỀU</value></data>
+</root>

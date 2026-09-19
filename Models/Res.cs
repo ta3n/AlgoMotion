@@ -37,6 +37,8 @@ public static class Res
   private static readonly ResourceManager SortMetaEn = Rm("SortMeta.English");
   private static readonly ResourceManager TreeMetaVi = Rm("TreeMeta");
   private static readonly ResourceManager TreeMetaEn = Rm("TreeMeta.English");
+  private static readonly ResourceManager SearchMetaVi = Rm("SearchMeta");
+  private static readonly ResourceManager SearchMetaEn = Rm("SearchMeta.English");
   private static readonly ResourceManager CaptionsVi = Rm("Captions");
   private static readonly ResourceManager CaptionsEn = Rm("Captions.English");
 
@@ -78,6 +80,14 @@ public static class Res
   )
   {
     return Lookup(TreeMetaVi, TreeMetaEn, key, language);
+  }
+
+  public static string SearchMeta(
+    string key,
+    UiLanguage language
+  )
+  {
+    return Lookup(SearchMetaVi, SearchMetaEn, key, language);
   }
 
   /// <summary>Looks up a per-step caption template and formats it with the given arguments, e.g.

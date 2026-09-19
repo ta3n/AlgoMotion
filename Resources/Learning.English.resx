@@ -43,11 +43,11 @@
   <data name="Incorrect" xml:space="preserve"><value>Incorrect</value></data>
   <data name="Complete" xml:space="preserve"><value>Complete</value></data>
   <data name="Submit" xml:space="preserve"><value>Check answer</value></data>
-  <data name="GraphHelp" xml:space="preserve"><value>Undirected graph. Each line: source, destination, weight. Nodes start at 0. BFS/DFS ignore weights; Dijkstra requires nonnegative weights; Prim finds the minimum spanning tree of the start component.</value></data>
+  <data name="GraphHelp" xml:space="preserve"><value>Undirected graph. Each line: source, destination, weight. Nodes start at 0. BFS/DFS ignore weights; Dijkstra requires nonnegative weights; Prim and Kruskal find the minimum spanning tree of the start component. Bellman-Ford and Topological Sort read edges as directed (from → to) and allow negative weights; Bellman-Ford detects negative cycles, Topological Sort detects cycles.</value></data>
   <data name="Nodes" xml:space="preserve"><value>Nodes (2–12)</value></data>
   <data name="Start" xml:space="preserve"><value>Start node</value></data>
   <data name="Edges" xml:space="preserve"><value>Edges</value></data>
-  <data name="InvalidGraph" xml:space="preserve"><value>Use 2–12 nodes, a valid start, and at most 40 edges. Each line needs three integers: u v w; no self-loops or duplicate edges, weights 0–99.</value></data>
+  <data name="InvalidGraph" xml:space="preserve"><value>Use 2–12 nodes, a valid start, and at most 40 edges. Each line needs three integers: u v w; no self-loops or duplicate edges, weights from -99 to 99.</value></data>
   <data name="Node" xml:space="preserve"><value>Node</value></data>
   <data name="Distance" xml:space="preserve"><value>Distance / key</value></data>
   <data name="Visited" xml:space="preserve"><value>Visited</value></data>
@@ -61,12 +61,19 @@
   <data name="FibonacciHelp" xml:space="preserve"><value>F(0)=0, F(1)=1; F(i)=F(i−1)+F(i−2). Each step fills one cell from the previous two.</value></data>
   <data name="KnapsackHelp" xml:space="preserve"><value>0/1 knapsack: use each item at most once. dp[i,c] is the best value using the first i items and capacity c. Choose the larger of skipping or taking the item if it fits.</value></data>
   <data name="LcsHelp" xml:space="preserve"><value>Longest common subsequence: equal characters → diagonal + 1; otherwise → max(above, left). A subsequence need not be contiguous.</value></data>
+  <data name="EditDistanceHelp" xml:space="preserve"><value>Edit distance (Levenshtein): equal characters → diagonal cell; otherwise → 1 + min(diagonal, above, left) (substitute/delete/insert). The first row and column are the cost of transforming to/from the empty string.</value></data>
+  <data name="CoinChangeHelp" xml:space="preserve"><value>Minimum coin change: dp[i,a] is the fewest coins using the first i denominations to reach amount a. Skip coin i → dp[i−1,a]; reuse coin i → dp[i,a−coin]+1. If unreachable, the result is "no solution".</value></data>
+  <data name="LisHelp" xml:space="preserve"><value>Longest increasing subsequence: dp[i] is the length of the longest increasing run ending at element i. dp[i] = 1 + max(dp[j]) over every j &lt; i with seq[j] &lt; seq[i]. The result is the largest value anywhere in dp, not necessarily the last cell.</value></data>
   <data name="Capacity" xml:space="preserve"><value>Capacity (1–20)</value></data>
   <data name="Weights" xml:space="preserve"><value>Item weights</value></data>
   <data name="Values" xml:space="preserve"><value>Item values</value></data>
   <data name="FirstString" xml:space="preserve"><value>First string</value></data>
   <data name="SecondString" xml:space="preserve"><value>Second string</value></data>
-  <data name="InvalidDP" xml:space="preserve"><value>Fibonacci: n from 0–30. Knapsack: 1–8 items, weights 1–20, values 1–10000, capacity 1–20. LCS: up to 12 characters per string.</value></data>
+  <data name="Coins" xml:space="preserve"><value>Coin denominations</value></data>
+  <data name="Amount" xml:space="preserve"><value>Target amount (1–30)</value></data>
+  <data name="Sequence" xml:space="preserve"><value>Sequence</value></data>
+  <data name="NoCoinSolution" xml:space="preserve"><value>No combination reaches this amount with the given coins</value></data>
+  <data name="InvalidDP" xml:space="preserve"><value>Fibonacci: n from 0–30. Knapsack: 1–8 items, weights 1–20, values 1–10000, capacity 1–20. LCS / Edit Distance: up to 12 characters per string. Coin Change: 1–8 denominations (1–20 each), amount 1–30. LIS: 1–12 numbers.</value></data>
   <data name="Result" xml:space="preserve"><value>Result</value></data>
   <data name="Initial" xml:space="preserve"><value>Initial state</value></data>
   <data name="FillCell" xml:space="preserve"><value>Fill cell</value></data>
@@ -111,5 +118,60 @@
   <data name="LcsOption1" xml:space="preserve"><value>Shortest subsequence</value></data>
   <data name="LcsOption2" xml:space="preserve"><value>Longest common subsequence, not necessarily contiguous</value></data>
   <data name="LcsExplanation" xml:space="preserve"><value>For example, AC is a common subsequence of ABC and ADC even though its characters are not adjacent.</value></data>
-  <data name="GraphMetrics" xml:space="preserve"><value>BFS shows minimum edge counts; DFS shows traversal-tree depth, not shortest paths. Dijkstra shows total path weights; Prim shows the edge weight connecting each node to the tree.</value></data>
+  <data name="GraphMetrics" xml:space="preserve"><value>BFS shows minimum edge counts; DFS shows traversal-tree depth, not shortest paths. Dijkstra shows total path weights; Prim and Kruskal show the edge weight connecting each node to the spanning tree. Bellman-Ford shows distances after each relaxation round; Topological Sort shows the processing order of nodes.</value></data>
+  <data name="RejectEdge" xml:space="preserve"><value>Reject edge (would form a cycle)</value></data>
+  <data name="NegativeCycle" xml:space="preserve"><value>Negative cycle detected</value></data>
+  <data name="CycleDetected" xml:space="preserve"><value>Cycle detected (cannot topologically sort)</value></data>
+  <data name="Round" xml:space="preserve"><value>Round</value></data>
+  <data name="KruskalQuestion" xml:space="preserve"><value>Which data structure does Kruskal use to avoid creating cycles?</value></data>
+  <data name="KruskalOption0" xml:space="preserve"><value>Union-Find (disjoint set)</value></data>
+  <data name="KruskalOption1" xml:space="preserve"><value>Priority queue</value></data>
+  <data name="KruskalOption2" xml:space="preserve"><value>Depth-first traversal</value></data>
+  <data name="KruskalExplanation" xml:space="preserve"><value>Kruskal considers edges in increasing weight order and uses Union-Find to check whether two nodes are already in the same component before selecting an edge.</value></data>
+  <data name="BellmanFordQuestion" xml:space="preserve"><value>At most how many rounds does Bellman-Ford relax all edges?</value></data>
+  <data name="BellmanFordOption0" xml:space="preserve"><value>log n rounds</value></data>
+  <data name="BellmanFordOption1" xml:space="preserve"><value>n − 1 rounds</value></data>
+  <data name="BellmanFordOption2" xml:space="preserve"><value>n² rounds</value></data>
+  <data name="BellmanFordExplanation" xml:space="preserve"><value>A shortest path without a cycle has at most n − 1 edges, so n − 1 relaxation rounds suffice to converge when there is no negative cycle.</value></data>
+  <data name="TopologicalSortQuestion" xml:space="preserve"><value>What condition does Kahn's algorithm require of the graph?</value></data>
+  <data name="TopologicalSortOption0" xml:space="preserve"><value>It must be a directed acyclic graph (DAG)</value></data>
+  <data name="TopologicalSortOption1" xml:space="preserve"><value>It must be weighted</value></data>
+  <data name="TopologicalSortOption2" xml:space="preserve"><value>It must be a connected undirected graph</value></data>
+  <data name="TopologicalSortExplanation" xml:space="preserve"><value>If the graph has a cycle, some nodes never reach in-degree zero, so Kahn's algorithm cannot process every node.</value></data>
+  <data name="EditDistanceQuestion" xml:space="preserve"><value>What does edit distance measure?</value></data>
+  <data name="EditDistanceOption0" xml:space="preserve"><value>The minimum inserts/deletes/substitutions to turn string A into B</value></data>
+  <data name="EditDistanceOption1" xml:space="preserve"><value>The length of the longest common subsequence between A and B</value></data>
+  <data name="EditDistanceOption2" xml:space="preserve"><value>The number of positions where two same-length strings differ</value></data>
+  <data name="EditDistanceExplanation" xml:space="preserve"><value>Each cell dp[i,j] takes the cheapest of three operations: substitute (diagonal), delete (above), or insert (left), plus 1 when the characters differ.</value></data>
+  <data name="CoinChangeQuestion" xml:space="preserve"><value>In minimum coin change, when reusing coin i, which cell in the same row i does dp[i,a] reference?</value></data>
+  <data name="CoinChangeOption0" xml:space="preserve"><value>dp[i, a − coin[i]] (reused as many times as needed)</value></data>
+  <data name="CoinChangeOption1" xml:space="preserve"><value>dp[i − 1, a − 1]</value></data>
+  <data name="CoinChangeOption2" xml:space="preserve"><value>dp[i, a + coin[i]]</value></data>
+  <data name="CoinChangeExplanation" xml:space="preserve"><value>Unlike 0/1 knapsack, each denomination can be reused, so dp[i,a] can reference its own row i again after subtracting the coin's value.</value></data>
+  <data name="LisQuestion" xml:space="preserve"><value>What is the recurrence for dp[i] in longest increasing subsequence (LIS)?</value></data>
+  <data name="LisOption0" xml:space="preserve"><value>1 + dp[i − 1]</value></data>
+  <data name="LisOption1" xml:space="preserve"><value>1 + max(dp[j]) over every j &lt; i with seq[j] &lt; seq[i]</value></data>
+  <data name="LisOption2" xml:space="preserve"><value>max(dp[i − 1], dp[i − 2])</value></data>
+  <data name="LisExplanation" xml:space="preserve"><value>dp[i] must consider every earlier element with a smaller value, not just the immediate predecessor, since the subsequence need not be contiguous.</value></data>
+  <data name="Searching" xml:space="preserve"><value>Array search</value></data>
+  <data name="LinearSearchQuestion" xml:space="preserve"><value>What is the worst-case time complexity of Linear Search?</value></data>
+  <data name="LinearSearchOption0" xml:space="preserve"><value>O(1)</value></data>
+  <data name="LinearSearchOption1" xml:space="preserve"><value>O(n)</value></data>
+  <data name="LinearSearchOption2" xml:space="preserve"><value>O(log n)</value></data>
+  <data name="LinearSearchExplanation" xml:space="preserve"><value>If the target is last or absent, the algorithm has to look at all n elements.</value></data>
+  <data name="BinarySearchQuestion" xml:space="preserve"><value>What condition must an array meet before you can use binary search on it?</value></data>
+  <data name="BinarySearchOption0" xml:space="preserve"><value>It is sorted</value></data>
+  <data name="BinarySearchOption1" xml:space="preserve"><value>It has no duplicate values</value></data>
+  <data name="BinarySearchOption2" xml:space="preserve"><value>Its length is a power of 2</value></data>
+  <data name="BinarySearchExplanation" xml:space="preserve"><value>Only in a sorted array does comparing with the middle element tell you which half the target is in, so half the range can be discarded each time.</value></data>
+  <data name="JumpSearchQuestion" xml:space="preserve"><value>For an array of n elements, what is the optimal jump size in Jump Search?</value></data>
+  <data name="JumpSearchOption0" xml:space="preserve"><value>n / 2</value></data>
+  <data name="JumpSearchOption1" xml:space="preserve"><value>√n</value></data>
+  <data name="JumpSearchOption2" xml:space="preserve"><value>log n</value></data>
+  <data name="JumpSearchExplanation" xml:space="preserve"><value>A step of √n balances the number of jumps (n / √n) against the elements scanned inside one block (√n), for O(√n) comparisons in total.</value></data>
+  <data name="InterpolationSearchQuestion" xml:space="preserve"><value>Which data does Interpolation Search work best on?</value></data>
+  <data name="InterpolationSearchOption0" xml:space="preserve"><value>Data with many duplicates</value></data>
+  <data name="InterpolationSearchOption1" xml:space="preserve"><value>Unsorted data</value></data>
+  <data name="InterpolationSearchOption2" xml:space="preserve"><value>Sorted data with roughly evenly spread values</value></data>
+  <data name="InterpolationSearchExplanation" xml:space="preserve"><value>The formula assumes values grow evenly between the two ends; when that holds, the estimated position lands very close to the real one and only about O(log log n) probes are needed.</value></data>
 </root>

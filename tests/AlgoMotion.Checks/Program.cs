@@ -92,14 +92,18 @@ Check(mst.SelectedEdges.Sum(i => graph.Edges[i].Weight) == 4 && mst.SelectedEdge
 Check(GraphSimulator.Record(graph, GraphAlgorithm.Bfs)[^1].Distances.SequenceEqual(new[] {0, 1, 1, 2}), "BFS distances");
 Check(GraphSimulator.Record(graph, GraphAlgorithm.Dfs)[^1].Visited.All(v => v), "DFS reaches graph");
 Check(shortest[0].Visited.All(v => !v) && shortest[0].Distances[1] == int.MaxValue, "immutable graph snapshots");
-foreach (var invalid in new[] { "0 0 1", "0 4 1", "0 1 -1", "0 1 1\n1 0 2", "0 1", "x 1 2" })
+foreach (var invalid in new[] { "0 0 1", "0 4 1", "0 1 -100", "0 1 100", "0 1 1\n1 0 2", "0 1", "x 1 2" })
   Check(!GraphSimulator.TryParse(4, 0, invalid, out _), "invalid graph " + invalid);
+Check(GraphSimulator.TryParse(4, 0, "0 1 -99\n1 2 99", out _), "boundary negative and positive weights accepted");
 Check(GraphSimulator.TryParse(3, 0, "0 1 0", out var disconnected), "zero-weight graph");
-foreach (var algorithm in Enum.GetValues<GraphAlgorithm>())
+// TopologicalSort seeds every zero-in-degree node (not just Start-reachable ones), so an isolated
+// node still gets visited by Kahn's algorithm — it does not share the other algorithms' semantics.
+foreach (var algorithm in Enum.GetValues<GraphAlgorithm>().Where(a => a != GraphAlgorithm.TopologicalSort))
 {
   var last = GraphSimulator.Record(disconnected, algorithm)[^1];
   Check(last.Visited.SequenceEqual(new[] {true, true, false}) && last.Distances[2] == int.MaxValue, "disconnected " + algorithm);
 }
+Check(GraphSimulator.Record(disconnected, GraphAlgorithm.TopologicalSort)[^1].Visited.All(v => v), "topological sort visits every node regardless of reachability");
 // Independent Floyd-Warshall oracle on seeded weighted graphs.
 for (var iteration = 0; iteration < 30; iteration++)
 {
@@ -136,12 +140,116 @@ for (var iteration = 0; iteration < 30; iteration++)
     }
     var prim = GraphSimulator.Record(new(n, start, edges), GraphAlgorithm.Prim)[^1];
     Check(prim.SelectedEdges.Sum(i => edges[i].Weight) == weight, "Prim vs Kruskal");
+    var kruskal = GraphSimulator.Record(new(n, start, edges), GraphAlgorithm.Kruskal)[^1];
+    Check(kruskal.SelectedEdges.Sum(i => edges[i].Weight) == weight, "Kruskal matches Prim's MST weight");
+    Check(kruskal.SelectedEdges.Length == prim.SelectedEdges.Length, "Kruskal selects the same edge count as Prim");
   }
 }
+
+// Bellman-Ford: directed edges, known shortest paths on a small hand-built DAG-like graph.
+Check(GraphSimulator.TryParse(4, 0, "0 1 4\n0 2 1\n2 1 2\n1 3 1\n2 3 5", out var directedGraph), "valid directed graph for Bellman-Ford");
+var bellman = GraphSimulator.Record(directedGraph, GraphAlgorithm.BellmanFord)[^1];
+Check(bellman.Distances.SequenceEqual(new[] {0, 3, 1, 4}), "Bellman-Ford matches Dijkstra on nonnegative directed graph");
+Check(bellman.CaptionKey == "Complete", "Bellman-Ford completes without a negative cycle");
+Check(GraphSimulator.TryParse(3, 0, "0 1 4\n1 2 -2", out var negative), "graph with a negative edge");
+var relaxed = GraphSimulator.Record(negative, GraphAlgorithm.BellmanFord)[^1];
+Check(relaxed.Distances.SequenceEqual(new[] {0, 4, 2}), "Bellman-Ford handles a negative edge without a cycle");
+Check(relaxed.CaptionKey == "Complete", "Bellman-Ford reports completion for an acyclic negative-weight graph");
+// Directed cycle 0→1→2→0 summing to -1; edges use distinct undirected pairs so TryParse's
+// duplicate-edge check (which treats a↔b as the same pair regardless of direction) accepts it.
+Check(GraphSimulator.TryParse(3, 0, "0 1 1\n1 2 -3\n2 0 1", out var negCycleGraph), "graph containing a negative cycle");
+Check(GraphSimulator.Record(negCycleGraph, GraphAlgorithm.BellmanFord)[^1].CaptionKey == "NegativeCycle", "Bellman-Ford detects a negative cycle");
+
+// Topological Sort (Kahn's algorithm): a known DAG order, plus cycle detection.
+Check(GraphSimulator.TryParse(4, 0, "0 1 1\n0 2 1\n1 3 1\n2 3 1", out var dag), "valid DAG");
+var topo = GraphSimulator.Record(dag, GraphAlgorithm.TopologicalSort)[^1];
+Check(topo.CaptionKey == "Complete" && topo.Visited.All(v => v), "topological sort completes a DAG");
+Check(topo.Distances[0] < topo.Distances[1] && topo.Distances[0] < topo.Distances[2]
+  && topo.Distances[1] < topo.Distances[3] && topo.Distances[2] < topo.Distances[3], "topological sort respects edge order");
+Check(GraphSimulator.TryParse(3, 0, "0 1 1\n1 2 1\n2 0 1", out var cycle), "graph containing a cycle");
+Check(GraphSimulator.Record(cycle, GraphAlgorithm.TopologicalSort)[^1].CaptionKey == "CycleDetected", "topological sort detects a cycle");
 Check(DpSimulator.Fibonacci(0).Result == 0 && DpSimulator.Fibonacci(1).Result == 1 && DpSimulator.Fibonacci(30).Result == 832040, "Fibonacci boundaries");
 Check(DpSimulator.Knapsack([1,3,4,5], [1,4,5,7], 7).Result == 9, "knapsack known result");
 Check(DpSimulator.Knapsack([2], [3], 4).Result == 3, "0/1 prevents reuse");
 Check(DpSimulator.Lcs("ABCBDAB", "BDCABA").Result == 4 && DpSimulator.Lcs("", "ABC").Result == 0, "LCS known results");
+Check(DpSimulator.EditDistance("kitten", "sitting").Result == 3 && DpSimulator.EditDistance("", "abc").Result == 3
+  && DpSimulator.EditDistance("abc", "abc").Result == 0, "edit distance known results");
+Check(DpSimulator.CoinChange([1, 3, 4], 6).Result == 2 && DpSimulator.CoinChange([2], 3).Result == -1, "coin change known results");
+Check(DpSimulator.Lis([10, 9, 2, 5, 3, 7, 101, 18]).Result == 4 && DpSimulator.Lis([1, 2, 3, 4, 5]).Result == 5
+  && DpSimulator.Lis([5, 4, 3, 2, 1]).Result == 1, "LIS known results");
+
+// Recursive-with-memo oracle for edit distance, independent of the bottom-up table fill under test.
+int EditDistanceOracle(string a, string b)
+{
+  var memo = new Dictionary<(int, int), int>();
+  int Solve(int i, int j)
+  {
+    if (i == 0) return j;
+    if (j == 0) return i;
+    if (memo.TryGetValue((i, j), out var cached)) return cached;
+    var result = a[i - 1] == b[j - 1]
+      ? Solve(i - 1, j - 1)
+      : 1 + Math.Min(Solve(i - 1, j - 1), Math.Min(Solve(i - 1, j), Solve(i, j - 1)));
+    memo[(i, j)] = result;
+    return result;
+  }
+
+  return Solve(a.Length, b.Length);
+}
+
+// Recursive-with-memo oracle for coin change, independent of the bottom-up table fill under test.
+int CoinChangeOracle(int[] coins, int amount)
+{
+  var memo = new Dictionary<int, int>();
+  int Solve(int remaining)
+  {
+    if (remaining == 0) return 0;
+    if (remaining < 0) return int.MaxValue / 2;
+    if (memo.TryGetValue(remaining, out var cached)) return cached;
+    var best = coins.Min(coin => Solve(remaining - coin) + 1);
+    memo[remaining] = best;
+    return best;
+  }
+
+  var solved = Solve(amount);
+  return solved >= int.MaxValue / 2 ? -1 : solved;
+}
+
+// Bitmask oracle for LIS: enumerate every subsequence and keep the longest strictly increasing one.
+int LisOracle(int[] sequence)
+{
+  var best = 0;
+  for (var mask = 0; mask < 1 << sequence.Length; mask++)
+  {
+    var previous = int.MinValue;
+    var length = 0;
+    var increasing = true;
+    for (var i = 0; i < sequence.Length && increasing; i++)
+    {
+      if ((mask & (1 << i)) == 0)
+      {
+        continue;
+      }
+
+      if (sequence[i] <= previous)
+      {
+        increasing = false;
+        continue;
+      }
+
+      previous = sequence[i];
+      length++;
+    }
+
+    if (increasing)
+    {
+      best = Math.Max(best, length);
+    }
+  }
+
+  return best;
+}
+
 for (var iteration = 0; iteration < 40; iteration++)
 {
   var weights = Enumerable.Range(0, 6).Select(_ => random.Next(1, 8)).ToArray();
@@ -167,6 +275,12 @@ for (var iteration = 0; iteration < 40; iteration++)
     if (matched == candidate.Length) longest = Math.Max(longest, matched);
   }
   Check(DpSimulator.Lcs(first, second).Result == longest, "LCS brute-force oracle");
+  Check(DpSimulator.EditDistance(first, second).Result == EditDistanceOracle(first, second), "edit distance recursive oracle");
+  var coins = Enumerable.Range(0, random.Next(1, 5)).Select(_ => random.Next(1, 8)).Distinct().ToArray();
+  var amount = random.Next(1, 20);
+  Check(DpSimulator.CoinChange(coins, amount).Result == CoinChangeOracle(coins, amount), "coin change recursive oracle");
+  var sequence = Enumerable.Range(0, random.Next(1, 9)).Select(_ => random.Next(1, 10)).ToArray();
+  Check(DpSimulator.Lis(sequence).Result == LisOracle(sequence), "LIS bitmask oracle");
 }
 sort.Reset(); tree.Reset();
 sort.BreakAtIndex = 0; tree.BreakAtIndex = 0;
@@ -198,6 +312,100 @@ Check(!sort.State.IsPlaying && !tree.State.IsPlaying && sort.State.CurrentIndex 
     Check(recorded.Count < 400 || distinctSnapshots < recorded.Count * 0.9, algorithm.Name + " shares snapshots between steps");
   }
 }
+// Array search: every algorithm gets an ascending-sorted array (Linear Search included, for a fair comparison).
+{
+  foreach (var searchAlgorithm in SearchAlgorithms.All)
+  {
+    var cLineCount = searchAlgorithm.CodeByLanguage[CodeLanguage.C].Length;
+    Check(searchAlgorithm.CodeByLanguage.Count == CodeLanguages.All.Count, searchAlgorithm.Name + " has code for every language");
+    Check(searchAlgorithm.GetSubtitle(UiLanguage.En) != searchAlgorithm.ResourceKey + "_Subtitle"
+      && searchAlgorithm.GetHintCaption(UiLanguage.Vi) != searchAlgorithm.ResourceKey + "_Hint", searchAlgorithm.Name + " localized metadata");
+    Check(searchAlgorithm.Record([], 5, UiLanguage.En) is [{ Type: SearchStepType.NotFound }], searchAlgorithm.Name + " empty array");
+    foreach (var raw in cases)
+    {
+      var sortedInput = raw.Order().ToArray();
+      var n = sortedInput.Length;
+      foreach (var searchTarget in new[] { 1, 3, 20, 99999 }.Concat(sortedInput.Take(3)).Concat(sortedInput.TakeLast(2)))
+      {
+        foreach (var searchLanguage in UiLanguages.All)
+        {
+          var untouched = sortedInput.ToArray();
+          var recorded = searchAlgorithm.Record(sortedInput, searchTarget, searchLanguage);
+          var last = recorded[^1];
+          var name = searchAlgorithm.Name;
+          Check(sortedInput.SequenceEqual(untouched), name + " mutated input");
+          Check(recorded.Count(s => s.Type is SearchStepType.Found or SearchStepType.NotFound) == 1
+            && last.Type is SearchStepType.Found or SearchStepType.NotFound, name + " exactly one terminal step");
+          Check((last.Type == SearchStepType.Found) == sortedInput.Contains(searchTarget), name + " result matches Contains");
+          if (last.Type == SearchStepType.Found)
+          {
+            Check(last.FoundIndex is { } found && sortedInput[found] == searchTarget && last.CheckedIndex == found, name + " found index holds the target");
+            if (searchAlgorithm.Kind == SearchAlgorithmKind.Linear)
+            {
+              Check(last.FoundIndex == Array.IndexOf(sortedInput, searchTarget), name + " finds the first occurrence");
+            }
+          }
+          else
+          {
+            Check(last.FoundIndex is null && last.RangeStart > last.RangeEnd, name + " not-found leaves an empty range");
+          }
+
+          Check(recorded.All(s => ReferenceEquals(s.Snapshot, recorded[0].Snapshot)) && recorded[0].Snapshot.SequenceEqual(sortedInput), name + " shares one snapshot");
+          Check(recorded.All(s => s.CheckedIndex is not { } c || (c >= 0 && c < n)), name + " checked index in range");
+          Check(recorded.Zip(recorded.Skip(1)).All(p => p.Second.CompareCount >= p.First.CompareCount && p.Second.NarrowCount >= p.First.NarrowCount), name + " counters never decrease");
+          Check(recorded.All(s => s.Caption.Contains(' ')), name + " captions resolve in " + searchLanguage);
+          Check(recorded.All(s => s.ActiveCodeLines.Length > 0 && s.ActiveCodeLines.All(l => l >= 1 && l <= cLineCount)), name + " active lines within C listing");
+          if (searchAlgorithm.Kind == SearchAlgorithmKind.Binary)
+          {
+            Check(last.CompareCount <= Math.Floor(Math.Log2(Math.Max(n, 1))) + 1, name + " stays O(log n)");
+          }
+
+          if (searchAlgorithm.Kind == SearchAlgorithmKind.Jump)
+          {
+            Check(last.CompareCount <= (2 * (int)Math.Ceiling(Math.Sqrt(n))) + 2, name + " stays O(sqrt n)");
+          }
+        }
+      }
+    }
+  }
+
+  int[] searchSample = [1, 3, 5, 7, 9, 11];
+  var searchBinary = SearchAlgorithms.Get(SearchAlgorithmKind.Binary).Record(searchSample, 7, UiLanguage.En);
+  Check(searchBinary.Select(s => s.Type).SequenceEqual([SearchStepType.NarrowRight, SearchStepType.NarrowLeft, SearchStepType.Found])
+    && searchBinary[^1].FoundIndex == 3 && searchBinary[^1].CompareCount == 3, "binary search known trace");
+  var searchLinear = SearchAlgorithms.Get(SearchAlgorithmKind.Linear).Record([1, 3, 5, 7], 5, UiLanguage.En);
+  Check(searchLinear[^1].FoundIndex == 2 && searchLinear[^1].CompareCount == 3, "linear search known trace");
+  var searchJump = SearchAlgorithms.Get(SearchAlgorithmKind.Jump).Record([.. Enumerable.Range(1, 16)], 13, UiLanguage.En);
+  Check(searchJump[^1].FoundIndex == 12 && searchJump[^1].CompareCount == 5
+    && searchJump.Count(s => s.Type == SearchStepType.JumpBlock) == 3, "jump search known trace");
+  var searchInterpolation = SearchAlgorithms.Get(SearchAlgorithmKind.Interpolation).Record([.. Enumerable.Range(1, 10).Select(i => i * 10)], 70, UiLanguage.En);
+  Check(searchInterpolation.Count == 1 && searchInterpolation[0].FoundIndex == 6 && searchInterpolation[0].CompareCount == 1, "interpolation search hits evenly spread data in one probe");
+  var searchOutside = SearchAlgorithms.Get(SearchAlgorithmKind.Interpolation).Record([5, 5, 5], 3, UiLanguage.En);
+  Check(searchOutside[^1].Type == SearchStepType.NotFound && searchOutside[^1].Caption.Contains("outside"), "interpolation search stops when the target is out of range");
+  Check(SearchAlgorithms.All.All(a => a.Record([2, 2, 2, 9], 2, UiLanguage.En)[^1].Type == SearchStepType.Found), "duplicates still found");
+  Check(Res.Caption("Searching_InitialCaption", UiLanguage.En, 5, 7).Contains(' ') && Res.Caption("Searching_InitialCaption", UiLanguage.Vi, 5, 7).Contains(' '), "search initial caption localized");
+  Check(LearningText.Get("Searching", UiLanguage.En) != "Searching" && LearningText.Get("Searching", UiLanguage.Vi) != "Searching", "search nav label localized");
+  Check(UiText.Get(UiTextKey.SubSearching, UiLanguage.En).Length > 0 && UiText.Get(UiTextKey.ChipChecked, UiLanguage.Vi).Length > 0, "search ui text");
+}
+
+using var searchPlayer = new SearchAnimationPlayer();
+searchPlayer.SeekTo(100);
+Check(searchPlayer.State.CurrentIndex == -1, "search player empty seek");
+searchPlayer.Load([new(), new(), new()]);
+searchPlayer.SeekTo(100);
+Check(searchPlayer.IsAtEnd, "search player end clamping");
+searchPlayer.StepBack();
+Check(searchPlayer.State.CurrentIndex == 1, "search player rewind");
+searchPlayer.Reset(); searchPlayer.StepBack();
+Check(searchPlayer.Current == null, "search player initial boundary");
+searchPlayer.Play(); searchPlayer.SeekTo(1);
+await Task.Delay(800);
+Check(!searchPlayer.State.IsPlaying && searchPlayer.State.CurrentIndex == 1, "search player seek cancels timer");
+searchPlayer.Reset();
+searchPlayer.BreakAtIndex = 0;
+searchPlayer.Play();
+Check(!searchPlayer.State.IsPlaying && searchPlayer.State.CurrentIndex == 0, "search player breakpoint pauses");
+
 Check(GraphSimulator.TryParse(3, 0, "0 1 1\n0 2 1\n1 2 1", out var triangle), "triangle");
 Check(GraphSimulator.Record(triangle, GraphAlgorithm.Dfs)[^1].Distances.SequenceEqual(new[] {0,1,2}), "DFS tree depth");
 Console.WriteLine($"PASS: {assertions} assertions across all simulator families, input, playback, experiments and quiz.");

@@ -152,4 +152,18 @@
   <!-- TreeSearch page: initial-state caption -->
   <data name="TreeSearch_InitialCaption" xml:space="preserve"><value>Cây đã dựng xong với {0} node. Đang tìm giá trị {1}. Nhấn Play để bắt đầu.</value></data>
 
+
+  <!-- Array search (Linear / Binary / Jump / Interpolation) -->
+  <data name="Searching_InitialCaption" xml:space="preserve"><value>Mảng đã sắp tăng dần với {0} phần tử. Đang tìm giá trị {1}. Nhấn Play để bắt đầu.</value></data>
+  <data name="Search_Found" xml:space="preserve"><value>a[{0}] = {1} bằng mục tiêu {2}: tìm thấy tại chỉ số {0}.</value></data>
+  <data name="Search_NotFound" xml:space="preserve"><value>Không còn phần tử nào để xét: không tìm thấy {0}.</value></data>
+  <data name="Linear_Check" xml:space="preserve"><value>So sánh a[{0}] = {1} với mục tiêu {2}: khác nhau, sang phần tử kế tiếp.</value></data>
+  <data name="Binary_NarrowRight" xml:space="preserve"><value>Giữa: a[{0}] = {1} &lt; mục tiêu {2}, loại nửa trái. Tìm tiếp trong {3}.</value></data>
+  <data name="Binary_NarrowLeft" xml:space="preserve"><value>Giữa: a[{0}] = {1} &gt; mục tiêu {2}, loại nửa phải. Tìm tiếp trong {3}.</value></data>
+  <data name="Jump_Skip" xml:space="preserve"><value>Cuối khối: a[{0}] = {1} &lt; mục tiêu {2}, nhảy qua cả khối. Khối kế tiếp: {3}.</value></data>
+  <data name="Jump_BlockFound" xml:space="preserve"><value>Cuối khối: a[{0}] = {1} ≥ mục tiêu {2}, mục tiêu (nếu có) nằm trong khối {3}. Duyệt tuần tự trong khối.</value></data>
+  <data name="Jump_Scan" xml:space="preserve"><value>So sánh a[{0}] = {1} với mục tiêu {2}: khác nhau, sang phần tử kế tiếp trong khối.</value></data>
+  <data name="Interpolation_NarrowRight" xml:space="preserve"><value>Ước lượng vị trí {0}: a[{0}] = {1} &lt; mục tiêu {2}, loại phần bên trái. Tìm tiếp trong {3}.</value></data>
+  <data name="Interpolation_NarrowLeft" xml:space="preserve"><value>Ước lượng vị trí {0}: a[{0}] = {1} &gt; mục tiêu {2}, loại phần bên phải. Tìm tiếp trong {3}.</value></data>
+  <data name="Interpolation_OutOfRange" xml:space="preserve"><value>Mục tiêu {0} nằm ngoài khoảng [{1}, {2}] của phạm vi còn lại: không thể có trong mảng.</value></data>
 </root>

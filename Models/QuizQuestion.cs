@@ -11,7 +11,10 @@ public static class QuizBank
   public static readonly IReadOnlyList<QuizQuestion> All =
   [
     new("Bubble", 1), new("Binary", 0), new("Stable", 2), new("Bfs", 1),
-    new("Dijkstra", 2), new("Prim", 0), new("Knapsack", 1), new("Lcs", 2)
+    new("Dijkstra", 2), new("Prim", 0), new("Knapsack", 1), new("Lcs", 2),
+    new("Kruskal", 0), new("BellmanFord", 1), new("TopologicalSort", 0),
+    new("EditDistance", 0), new("CoinChange", 0), new("Lis", 1),
+    new("LinearSearch", 1), new("BinarySearch", 0), new("JumpSearch", 1), new("InterpolationSearch", 2)
   ];
 }
 

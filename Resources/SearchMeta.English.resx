@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="Common_Compare" xml:space="preserve"><value>COMPARE</value></data>
+  <data name="Common_Narrow" xml:space="preserve"><value>NARROW</value></data>
+
+  <data name="Linear_Subtitle" xml:space="preserve"><value>LINEAR SEARCH</value></data>
+  <data name="Linear_Hint" xml:space="preserve"><value>CHECKS EVERY ELEMENT IN ORDER: O(N)</value></data>
+
+  <data name="Binary_Subtitle" xml:space="preserve"><value>BINARY SEARCH</value></data>
+  <data name="Binary_Hint" xml:space="preserve"><value>EACH PROBE DISCARDS HALF THE RANGE: O(LOG N)</value></data>
+
+  <data name="Jump_Subtitle" xml:space="preserve"><value>JUMP SEARCH</value></data>
+  <data name="Jump_Hint" xml:space="preserve"><value>JUMPS IN BLOCKS OF √N, THEN SCANS ONE BLOCK: O(√N)</value></data>
+
+  <data name="Interpolation_Subtitle" xml:space="preserve"><value>INTERPOLATION SEARCH</value></data>
+  <data name="Interpolation_Hint" xml:space="preserve"><value>ESTIMATES THE POSITION FROM THE TARGET'S VALUE: O(LOG LOG N) ON EVEN DATA</value></data>
+</root>

@@ -43,11 +43,11 @@
   <data name="Incorrect" xml:space="preserve"><value>Chưa đúng</value></data>
   <data name="Complete" xml:space="preserve"><value>Hoàn thành</value></data>
   <data name="Submit" xml:space="preserve"><value>Kiểm tra</value></data>
-  <data name="GraphHelp" xml:space="preserve"><value>Đồ thị vô hướng. Mỗi dòng: đỉnh đầu, đỉnh cuối, trọng số. Đỉnh đánh số từ 0. BFS/DFS bỏ qua trọng số; Dijkstra yêu cầu trọng số không âm; Prim tìm cây khung nhỏ nhất của thành phần chứa đỉnh bắt đầu.</value></data>
+  <data name="GraphHelp" xml:space="preserve"><value>Đồ thị vô hướng. Mỗi dòng: đỉnh đầu, đỉnh cuối, trọng số. Đỉnh đánh số từ 0. BFS/DFS bỏ qua trọng số; Dijkstra yêu cầu trọng số không âm; Prim và Kruskal tìm cây khung nhỏ nhất của thành phần chứa đỉnh bắt đầu. Bellman-Ford và Sắp xếp tô-pô đọc cạnh có hướng (từ → đến) và cho phép trọng số âm; Bellman-Ford phát hiện chu trình âm, Sắp xếp tô-pô phát hiện chu trình.</value></data>
   <data name="Nodes" xml:space="preserve"><value>Số đỉnh (2–12)</value></data>
   <data name="Start" xml:space="preserve"><value>Đỉnh bắt đầu</value></data>
   <data name="Edges" xml:space="preserve"><value>Các cạnh</value></data>
-  <data name="InvalidGraph" xml:space="preserve"><value>Dùng 2–12 đỉnh, đỉnh bắt đầu hợp lệ và tối đa 40 cạnh. Mỗi dòng có 3 số nguyên: u v w; u khác v, không trùng cạnh, trọng số 0–99.</value></data>
+  <data name="InvalidGraph" xml:space="preserve"><value>Dùng 2–12 đỉnh, đỉnh bắt đầu hợp lệ và tối đa 40 cạnh. Mỗi dòng có 3 số nguyên: u v w; u khác v, không trùng cạnh, trọng số từ -99 đến 99.</value></data>
   <data name="Node" xml:space="preserve"><value>Đỉnh</value></data>
   <data name="Distance" xml:space="preserve"><value>Khoảng cách / khóa</value></data>
   <data name="Visited" xml:space="preserve"><value>Đã thăm</value></data>
@@ -61,12 +61,19 @@
   <data name="FibonacciHelp" xml:space="preserve"><value>F(0)=0, F(1)=1; F(i)=F(i−1)+F(i−2). Mỗi bước điền một ô từ hai ô trước.</value></data>
   <data name="KnapsackHelp" xml:space="preserve"><value>Balo 0/1: mỗi vật chỉ dùng một lần. dp[i,c] là giá trị tốt nhất với i vật đầu và sức chứa c. Chọn lớn hơn giữa bỏ vật và lấy vật nếu đủ chỗ.</value></data>
   <data name="LcsHelp" xml:space="preserve"><value>Dãy con chung dài nhất: ký tự bằng nhau → lấy ô chéo + 1; khác nhau → max(ô trên, ô trái). Dãy con không cần liên tiếp.</value></data>
+  <data name="EditDistanceHelp" xml:space="preserve"><value>Khoảng cách chỉnh sửa (Levenshtein): ký tự bằng nhau → lấy ô chéo; khác nhau → 1 + min(ô chéo, ô trên, ô trái) (thay thế/xóa/chèn). Hàng và cột đầu là số bước biến đổi từ/về chuỗi rỗng.</value></data>
+  <data name="CoinChangeHelp" xml:space="preserve"><value>Đổi tiền tối thiểu: dp[i,a] là số đồng xu ít nhất dùng i loại xu đầu để đạt tổng a. Không dùng xu i → dp[i−1,a]; dùng thêm xu i (được lặp lại) → dp[i,a−xu]+1. Không đạt được thì kết quả là "không thể".</value></data>
+  <data name="LisHelp" xml:space="preserve"><value>Dãy con tăng dài nhất: dp[i] là độ dài dãy tăng dài nhất kết thúc tại phần tử i. dp[i] = 1 + max(dp[j]) với mọi j &lt; i thỏa seq[j] &lt; seq[i]. Kết quả là giá trị lớn nhất trong toàn bộ dp, không nhất thiết ở ô cuối.</value></data>
   <data name="Capacity" xml:space="preserve"><value>Sức chứa (1–20)</value></data>
   <data name="Weights" xml:space="preserve"><value>Trọng lượng các vật</value></data>
   <data name="Values" xml:space="preserve"><value>Giá trị các vật</value></data>
   <data name="FirstString" xml:space="preserve"><value>Chuỗi thứ nhất</value></data>
   <data name="SecondString" xml:space="preserve"><value>Chuỗi thứ hai</value></data>
-  <data name="InvalidDP" xml:space="preserve"><value>Fibonacci: n từ 0–30. Balo: 1–8 vật, trọng lượng 1–20, giá trị 1–10000, sức chứa 1–20. LCS: mỗi chuỗi tối đa 12 ký tự.</value></data>
+  <data name="Coins" xml:space="preserve"><value>Các loại tiền xu</value></data>
+  <data name="Amount" xml:space="preserve"><value>Số tiền cần đổi (1–30)</value></data>
+  <data name="Sequence" xml:space="preserve"><value>Dãy số</value></data>
+  <data name="NoCoinSolution" xml:space="preserve"><value>Không thể đổi được với các loại xu đã cho</value></data>
+  <data name="InvalidDP" xml:space="preserve"><value>Fibonacci: n từ 0–30. Balo: 1–8 vật, trọng lượng 1–20, giá trị 1–10000, sức chứa 1–20. LCS / Khoảng cách chỉnh sửa: mỗi chuỗi tối đa 12 ký tự. Đổi tiền: 1–8 loại xu (mỗi loại 1–20), số tiền 1–30. LIS: 1–12 số.</value></data>
   <data name="Result" xml:space="preserve"><value>Kết quả</value></data>
   <data name="Initial" xml:space="preserve"><value>Trạng thái ban đầu</value></data>
   <data name="FillCell" xml:space="preserve"><value>Điền ô</value></data>
@@ -111,5 +118,60 @@
   <data name="LcsOption1" xml:space="preserve"><value>Chuỗi con ngắn nhất</value></data>
   <data name="LcsOption2" xml:space="preserve"><value>Dãy con chung dài nhất, không cần liên tiếp</value></data>
   <data name="LcsExplanation" xml:space="preserve"><value>Ví dụ AC là dãy con chung của ABC và ADC dù các ký tự không đứng cạnh nhau.</value></data>
-  <data name="GraphMetrics" xml:space="preserve"><value>BFS hiển thị số cạnh ngắn nhất; DFS hiển thị độ sâu cây duyệt, không phải đường ngắn nhất. Dijkstra hiển thị tổng trọng số đường đi; Prim hiển thị trọng số cạnh nối đỉnh vào cây.</value></data>
+  <data name="GraphMetrics" xml:space="preserve"><value>BFS hiển thị số cạnh ngắn nhất; DFS hiển thị độ sâu cây duyệt, không phải đường ngắn nhất. Dijkstra hiển thị tổng trọng số đường đi; Prim và Kruskal hiển thị trọng số cạnh nối đỉnh vào cây khung. Bellman-Ford hiển thị khoảng cách sau mỗi vòng lặp; Sắp xếp tô-pô hiển thị thứ tự xử lý đỉnh.</value></data>
+  <data name="RejectEdge" xml:space="preserve"><value>Bỏ qua cạnh (tạo chu trình)</value></data>
+  <data name="NegativeCycle" xml:space="preserve"><value>Phát hiện chu trình âm</value></data>
+  <data name="CycleDetected" xml:space="preserve"><value>Phát hiện chu trình (không thể sắp xếp tô-pô)</value></data>
+  <data name="Round" xml:space="preserve"><value>Vòng lặp</value></data>
+  <data name="KruskalQuestion" xml:space="preserve"><value>Kruskal dùng cấu trúc dữ liệu nào để tránh tạo chu trình?</value></data>
+  <data name="KruskalOption0" xml:space="preserve"><value>Union-Find (Disjoint Set)</value></data>
+  <data name="KruskalOption1" xml:space="preserve"><value>Hàng đợi ưu tiên</value></data>
+  <data name="KruskalOption2" xml:space="preserve"><value>Duyệt theo chiều sâu</value></data>
+  <data name="KruskalExplanation" xml:space="preserve"><value>Kruskal xét các cạnh theo thứ tự trọng số tăng dần, dùng Union-Find để kiểm tra hai đỉnh đã cùng thành phần liên thông hay chưa trước khi chọn cạnh.</value></data>
+  <data name="BellmanFordQuestion" xml:space="preserve"><value>Bellman-Ford lặp lại việc nới lỏng (relax) tất cả các cạnh tối đa bao nhiêu vòng?</value></data>
+  <data name="BellmanFordOption0" xml:space="preserve"><value>log n vòng</value></data>
+  <data name="BellmanFordOption1" xml:space="preserve"><value>n − 1 vòng</value></data>
+  <data name="BellmanFordOption2" xml:space="preserve"><value>n² vòng</value></data>
+  <data name="BellmanFordExplanation" xml:space="preserve"><value>Đường đi ngắn nhất không có chu trình có tối đa n − 1 cạnh, nên n − 1 vòng nới lỏng là đủ để hội tụ nếu không có chu trình âm.</value></data>
+  <data name="TopologicalSortQuestion" xml:space="preserve"><value>Sắp xếp tô-pô (thuật toán Kahn) yêu cầu đồ thị phải thỏa điều kiện gì?</value></data>
+  <data name="TopologicalSortOption0" xml:space="preserve"><value>Là đồ thị có hướng không chu trình (DAG)</value></data>
+  <data name="TopologicalSortOption1" xml:space="preserve"><value>Là đồ thị có trọng số</value></data>
+  <data name="TopologicalSortOption2" xml:space="preserve"><value>Là đồ thị vô hướng liên thông</value></data>
+  <data name="TopologicalSortExplanation" xml:space="preserve"><value>Nếu đồ thị có chu trình, một số đỉnh sẽ không bao giờ đạt bậc vào 0, nên thuật toán Kahn không thể xử lý hết mọi đỉnh.</value></data>
+  <data name="EditDistanceQuestion" xml:space="preserve"><value>Khoảng cách chỉnh sửa (Edit Distance) đo điều gì?</value></data>
+  <data name="EditDistanceOption0" xml:space="preserve"><value>Số phép chèn/xóa/thay thế tối thiểu để biến chuỗi A thành B</value></data>
+  <data name="EditDistanceOption1" xml:space="preserve"><value>Độ dài dãy con chung dài nhất giữa A và B</value></data>
+  <data name="EditDistanceOption2" xml:space="preserve"><value>Số ký tự khác nhau khi so hai chuỗi cùng độ dài theo vị trí</value></data>
+  <data name="EditDistanceExplanation" xml:space="preserve"><value>Mỗi ô dp[i,j] chọn chi phí nhỏ nhất trong ba phép: thay thế (ô chéo), xóa (ô trên) hoặc chèn (ô trái), cộng thêm 1 nếu ký tự khác nhau.</value></data>
+  <data name="CoinChangeQuestion" xml:space="preserve"><value>Trong đổi tiền tối thiểu, khi xét dùng thêm đồng xu i, ô dp[i,a] tham chiếu tới ô nào ở cùng hàng i?</value></data>
+  <data name="CoinChangeOption0" xml:space="preserve"><value>dp[i, a − coin[i]] (được dùng lại nhiều lần)</value></data>
+  <data name="CoinChangeOption1" xml:space="preserve"><value>dp[i − 1, a − 1]</value></data>
+  <data name="CoinChangeOption2" xml:space="preserve"><value>dp[i, a + coin[i]]</value></data>
+  <data name="CoinChangeExplanation" xml:space="preserve"><value>Không giống bài toán 0/1, mỗi loại xu có thể dùng nhiều lần nên dp[i,a] có thể tham chiếu lại chính hàng i sau khi trừ giá trị đồng xu.</value></data>
+  <data name="LisQuestion" xml:space="preserve"><value>Công thức tính dp[i] trong dãy con tăng dài nhất (LIS) là gì?</value></data>
+  <data name="LisOption0" xml:space="preserve"><value>1 + dp[i − 1]</value></data>
+  <data name="LisOption1" xml:space="preserve"><value>1 + max(dp[j]) với mọi j &lt; i mà seq[j] &lt; seq[i]</value></data>
+  <data name="LisOption2" xml:space="preserve"><value>max(dp[i − 1], dp[i − 2])</value></data>
+  <data name="LisExplanation" xml:space="preserve"><value>dp[i] phải xét mọi phần tử đứng trước có giá trị nhỏ hơn seq[i], không chỉ phần tử liền trước, vì dãy con không cần liên tiếp.</value></data>
+  <data name="Searching" xml:space="preserve"><value>Tìm kiếm trên mảng</value></data>
+  <data name="LinearSearchQuestion" xml:space="preserve"><value>Tìm kiếm tuần tự (Linear Search) có độ phức tạp thời gian xấu nhất là gì?</value></data>
+  <data name="LinearSearchOption0" xml:space="preserve"><value>O(1)</value></data>
+  <data name="LinearSearchOption1" xml:space="preserve"><value>O(n)</value></data>
+  <data name="LinearSearchOption2" xml:space="preserve"><value>O(log n)</value></data>
+  <data name="LinearSearchExplanation" xml:space="preserve"><value>Nếu mục tiêu ở cuối mảng hoặc không có trong mảng, thuật toán phải xét cả n phần tử.</value></data>
+  <data name="BinarySearchQuestion" xml:space="preserve"><value>Điều kiện bắt buộc để dùng tìm kiếm nhị phân trên một mảng là gì?</value></data>
+  <data name="BinarySearchOption0" xml:space="preserve"><value>Mảng đã được sắp xếp</value></data>
+  <data name="BinarySearchOption1" xml:space="preserve"><value>Mảng không có phần tử trùng nhau</value></data>
+  <data name="BinarySearchOption2" xml:space="preserve"><value>Số phần tử là lũy thừa của 2</value></data>
+  <data name="BinarySearchExplanation" xml:space="preserve"><value>Chỉ khi mảng đã sắp xếp, việc so sánh với phần tử giữa mới cho biết mục tiêu nằm ở nửa nào, nhờ đó loại được một nửa mỗi lần.</value></data>
+  <data name="JumpSearchQuestion" xml:space="preserve"><value>Với mảng n phần tử, bước nhảy tối ưu của Jump Search là bao nhiêu?</value></data>
+  <data name="JumpSearchOption0" xml:space="preserve"><value>n / 2</value></data>
+  <data name="JumpSearchOption1" xml:space="preserve"><value>√n</value></data>
+  <data name="JumpSearchOption2" xml:space="preserve"><value>log n</value></data>
+  <data name="JumpSearchExplanation" xml:space="preserve"><value>Bước √n cân bằng số lần nhảy (n / √n) với số phần tử duyệt tuần tự trong một khối (√n), cho tổng O(√n) phép so sánh.</value></data>
+  <data name="InterpolationSearchQuestion" xml:space="preserve"><value>Tìm kiếm nội suy (Interpolation Search) hoạt động tốt nhất với dữ liệu nào?</value></data>
+  <data name="InterpolationSearchOption0" xml:space="preserve"><value>Có rất nhiều phần tử trùng nhau</value></data>
+  <data name="InterpolationSearchOption1" xml:space="preserve"><value>Chưa được sắp xếp</value></data>
+  <data name="InterpolationSearchOption2" xml:space="preserve"><value>Đã sắp xếp và giá trị phân bố gần đều</value></data>
+  <data name="InterpolationSearchExplanation" xml:space="preserve"><value>Công thức nội suy giả định giá trị tăng đều giữa hai đầu; khi giả định đúng, vị trí ước lượng rất gần vị trí thật và chỉ cần khoảng O(log log n) lần thử.</value></data>
 </root>
