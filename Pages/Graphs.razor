@@ -1,0 +1,57 @@
+@page "/graphs"
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@using AlgoMotion.Components
+@inherits LearningPageBase
+
+<PageTitle>@L("Graph")</PageTitle>
+<section class="stage lesson">
+  <h1>@L("Graph")</h1>
+  <p>@L("GraphHelp")</p>
+  <div class="controls">
+    <label>@L("Algorithm") <select @bind="_algorithm" @bind:after="Reload">
+      @foreach (var a in Enum.GetValues<GraphAlgorithm>()) { <option value="@a">@a</option> }
+    </select></label>
+    <label>@L("Nodes") <input type="number" min="2" max="12" @bind="_count"/></label>
+    <label>@L("Start") <input type="number" min="0" max="@(_count - 1)" @bind="_start"/></label>
+  </div>
+  <label>@L("Edges") <textarea @bind="_text"></textarea></label>
+  <button class="btn" @onclick="Apply">@L("Apply")</button>
+  @if (_error) { <p role="alert" class="custom-error">@L("InvalidGraph")</p> }
+  <GraphDiagram Input="@_input" Step="@Current" Language="@Language"/>
+  <p role="status">@L(Current.CaptionKey) @Current.Current</p>
+  <p>@L("Frontier"): @string.Join(", ", Current.Frontier)</p>
+  @if (_algorithm == GraphAlgorithm.Prim)
+  {
+    <p>@L("Weight"): @Current.SelectedEdges.Sum(i => _input.Edges[i].Weight)</p>
+  }
+  <LessonPlayback @key="_revision" Count="@_steps.Count" IndexChanged="i => _index = i"/>
+  <p>@L("Disconnected") @L("GraphMetrics")</p>
+  <table>
+    <thead><tr><th>@L("Node")</th><th>@L("Distance")</th><th>@L("Visited")</th></tr></thead>
+    <tbody>@for (var i = 0; i < _input.NodeCount; i++) {
+      <tr><td>@i</td><td>@(Current.Distances[i] == int.MaxValue ? "∞" : Current.Distances[i].ToString())</td><td>@L(Current.Visited[i] ? "Visited" : "Unvisited")</td></tr>
+    }</tbody>
+  </table>
+</section>
+@code {
+  private GraphAlgorithm _algorithm = GraphAlgorithm.Bfs;
+  private int _count = 6;
+  private int _start;
+  private string _text = "0 1 4\n0 2 2\n1 2 1\n1 3 5\n2 3 8\n2 4 10\n3 4 2\n3 5 6\n4 5 3";
+  private GraphInput _input = new(2, 0, []);
+  private List<GraphStep> _steps = [];
+  private int _index = -1;
+  private int _revision;
+  private bool _error;
+  private GraphStep Current => _steps[Math.Max(0, _index)];
+  protected override void OnInitialized() { base.OnInitialized(); Apply(); }
+  private void Apply()
+  {
+    _error = !GraphSimulator.TryParse(_count, _start, _text, out var input);
+    if (_error) return;
+    _input = input;
+    Reload();
+  }
+  private void Reload() { _steps = GraphSimulator.Record(_input, _algorithm); _index = -1; _revision++; }
+}

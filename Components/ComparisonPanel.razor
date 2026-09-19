@@ -1,0 +1,20 @@
+@using AlgoMotion.Models
+<section class="comparison-panel">
+  <h2>@Algorithm.Name</h2>
+  <div class="chart-area"><SortBars Bars="@BuildBars()" MaxValue="@Input.Max()"/></div>
+  <p>@(Step?.Caption ?? UiText.Get(UiTextKey.InitialArrayCaption, Language))</p>
+  <p>@Algorithm.GetCompareLabel(Language): @(Step?.CompareCount ?? 0) · @Algorithm.GetActionLabel(Language): @(Step?.SwapCount ?? 0)</p>
+  <p>@Math.Min(Index + 1, Steps.Count)/@Steps.Count</p>
+</section>
+@code {
+  [Parameter, EditorRequired] public SortAlgorithmInfo Algorithm { get; set; } = null!;
+  [Parameter, EditorRequired] public int[] Input { get; set; } = [];
+  [Parameter, EditorRequired] public List<SortStep> Steps { get; set; } = [];
+  [Parameter] public int Index { get; set; } = -1;
+  [Parameter] public UiLanguage Language { get; set; }
+  private SortStep? Step => Index < 0 || Steps.Count == 0 ? null : Steps[Math.Min(Index, Steps.Count - 1)];
+  private List<BarItem> BuildBars() => (Step?.Snapshot ?? Input).Select((v, i) => new BarItem {
+    Value = v, SlotIndex = i, IsActive = Step?.LeftIndex == i || Step?.RightIndex == i,
+    IsSorted = Step?.SortedIndices.Contains(i) == true
+  }).ToList();
+}

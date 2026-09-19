@@ -1,0 +1,55 @@
+@page "/compare"
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@using AlgoMotion.Components
+@inherits LearningPageBase
+
+<PageTitle>@L("Compare")</PageTitle>
+<section class="stage lesson">
+  <h1>@L("Compare")</h1>
+  <p>@L("CompareNote")</p>
+  <div class="controls">
+    <label>@L("Left") <select @bind="_left" @bind:after="Reload">@foreach (var a in SortAlgorithms.All) { <option value="@a.Kind">@a.Name</option> }</select></label>
+    <label>@L("Right") <select @bind="_right" @bind:after="Reload">@foreach (var a in SortAlgorithms.All) { <option value="@a.Kind">@a.Name</option> }</select></label>
+    <label>@L("Input") <input @bind="_text"/></label>
+    <button class="btn" @onclick="Apply">@L("Apply")</button>
+  </div>
+  @if (_error) { <p role="alert" class="custom-error">@L("InvalidArray")</p> }
+  <div class="comparison-grid">
+    <ComparisonPanel Algorithm="@SortAlgorithms.Get(_left)" Input="@_input" Steps="@_leftSteps" Index="@_index" Language="@Language"/>
+    <ComparisonPanel Algorithm="@SortAlgorithms.Get(_right)" Input="@_input" Steps="@_rightSteps" Index="@_index" Language="@Language"/>
+  </div>
+  <LessonPlayback @key="_revision" Count="@Math.Max(_leftSteps.Count, _rightSteps.Count)" IndexChanged="i => _index = i"/>
+</section>
+@code {
+  private SortAlgorithmKind _left = SortAlgorithmKind.Bubble;
+  private SortAlgorithmKind _right = SortAlgorithmKind.Merge;
+  private string _text = "8, 3, 5, 1, 7, 2, 6, 4";
+  private int[] _input = [8, 3, 5, 1, 7, 2, 6, 4];
+  private List<SortStep> _leftSteps = [];
+  private List<SortStep> _rightSteps = [];
+  private bool _error;
+  private int _index = -1;
+  private int _revision;
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    LanguageState.Changed += Reload;
+    Reload();
+  }
+  private void Apply()
+  {
+    _error = !CustomInput.TryParse(_text, 4, 80, out var values);
+    if (_error) return;
+    _input = values;
+    Reload();
+  }
+  private void Reload()
+  {
+    _leftSteps = SortAlgorithms.Get(_left).Record(_input, Language);
+    _rightSteps = SortAlgorithms.Get(_right).Record(_input, Language);
+    _index = -1;
+    _revision++;
+  }
+  protected override void Dispose(bool disposing) { LanguageState.Changed -= Reload; base.Dispose(disposing); }
+}

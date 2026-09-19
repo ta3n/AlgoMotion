@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Complexity" xml:space="preserve"><value>Độ phức tạp</value></data>
+  <data name="Compare" xml:space="preserve"><value>So sánh</value></data>
+  <data name="Quiz" xml:space="preserve"><value>Tự kiểm tra</value></data>
+  <data name="Graph" xml:space="preserve"><value>Đồ thị</value></data>
+  <data name="DP" xml:space="preserve"><value>Quy hoạch động</value></data>
+  <data name="Algorithm" xml:space="preserve"><value>Thuật toán</value></data>
+  <data name="Input" xml:space="preserve"><value>Dữ liệu đầu vào</value></data>
+  <data name="Apply" xml:space="preserve"><value>Áp dụng</value></data>
+  <data name="InvalidArray" xml:space="preserve"><value>Nhập 4–80 số nguyên từ 1 đến 10000, cách nhau bằng dấu phẩy hoặc khoảng trắng.</value></data>
+  <data name="Run" xml:space="preserve"><value>Chạy thí nghiệm</value></data>
+  <data name="Pattern" xml:space="preserve"><value>Dạng dữ liệu</value></data>
+  <data name="Random" xml:space="preserve"><value>Trộn cố định</value></data>
+  <data name="Ascending" xml:space="preserve"><value>Tăng dần</value></data>
+  <data name="Descending" xml:space="preserve"><value>Giảm dần</value></data>
+  <data name="Measured" xml:space="preserve"><value>Bộ đếm thực đo</value></data>
+  <data name="Reference" xml:space="preserve"><value>Đường tham chiếu</value></data>
+  <data name="ComplexityNote" xml:space="preserve"><value>Đếm các phép so sánh/đọc và hoán đổi/ghi do simulator ghi nhận; không phải thời gian chạy hay toàn bộ phép toán CPU. Đường tham chiếu được chuẩn hóa tại n lớn nhất, không phải bằng chứng Big-O.</value></data>
+  <data name="Comparisons" xml:space="preserve"><value>So sánh / đọc</value></data>
+  <data name="Writes" xml:space="preserve"><value>Hoán đổi / ghi</value></data>
+  <data name="Total" xml:space="preserve"><value>Tổng bộ đếm</value></data>
+  <data name="Left" xml:space="preserve"><value>Thuật toán bên trái</value></data>
+  <data name="Right" xml:space="preserve"><value>Thuật toán bên phải</value></data>
+  <data name="CompareNote" xml:space="preserve"><value>Hai thuật toán dùng cùng dữ liệu. Mỗi nhịp tiến một bước ghi hình; số bước không tương đương thời gian CPU. Bên hoàn tất giữ nguyên kết quả.</value></data>
+  <data name="Play" xml:space="preserve"><value>Phát</value></data>
+  <data name="Pause" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="Back" xml:space="preserve"><value>Lùi</value></data>
+  <data name="Next" xml:space="preserve"><value>Tiếp</value></data>
+  <data name="Reset" xml:space="preserve"><value>Đặt lại</value></data>
+  <data name="Step" xml:space="preserve"><value>Bước</value></data>
+  <data name="Speed" xml:space="preserve"><value>Tốc độ</value></data>
+  <data name="Question" xml:space="preserve"><value>Câu hỏi</value></data>
+  <data name="Score" xml:space="preserve"><value>Điểm</value></data>
+  <data name="Restart" xml:space="preserve"><value>Làm lại</value></data>
+  <data name="Correct" xml:space="preserve"><value>Chính xác</value></data>
+  <data name="Incorrect" xml:space="preserve"><value>Chưa đúng</value></data>
+  <data name="Complete" xml:space="preserve"><value>Hoàn thành</value></data>
+  <data name="Submit" xml:space="preserve"><value>Kiểm tra</value></data>
+  <data name="GraphHelp" xml:space="preserve"><value>Đồ thị vô hướng. Mỗi dòng: đỉnh đầu, đỉnh cuối, trọng số. Đỉnh đánh số từ 0. BFS/DFS bỏ qua trọng số; Dijkstra yêu cầu trọng số không âm; Prim tìm cây khung nhỏ nhất của thành phần chứa đỉnh bắt đầu.</value></data>
+  <data name="Nodes" xml:space="preserve"><value>Số đỉnh (2–12)</value></data>
+  <data name="Start" xml:space="preserve"><value>Đỉnh bắt đầu</value></data>
+  <data name="Edges" xml:space="preserve"><value>Các cạnh</value></data>
+  <data name="InvalidGraph" xml:space="preserve"><value>Dùng 2–12 đỉnh, đỉnh bắt đầu hợp lệ và tối đa 40 cạnh. Mỗi dòng có 3 số nguyên: u v w; u khác v, không trùng cạnh, trọng số 0–99.</value></data>
+  <data name="Node" xml:space="preserve"><value>Đỉnh</value></data>
+  <data name="Distance" xml:space="preserve"><value>Khoảng cách / khóa</value></data>
+  <data name="Visited" xml:space="preserve"><value>Đã thăm</value></data>
+  <data name="Unvisited" xml:space="preserve"><value>Chưa thăm</value></data>
+  <data name="Frontier" xml:space="preserve"><value>Hàng đợi / ngăn xếp</value></data>
+  <data name="Visit" xml:space="preserve"><value>Thăm đỉnh</value></data>
+  <data name="Relax" xml:space="preserve"><value>Cập nhật đường đi</value></data>
+  <data name="SelectEdge" xml:space="preserve"><value>Chọn cạnh cây khung</value></data>
+  <data name="Disconnected" xml:space="preserve"><value>Các đỉnh không tới được giữ giá trị ∞.</value></data>
+  <data name="Weight" xml:space="preserve"><value>Tổng trọng số cạnh đã chọn</value></data>
+  <data name="FibonacciHelp" xml:space="preserve"><value>F(0)=0, F(1)=1; F(i)=F(i−1)+F(i−2). Mỗi bước điền một ô từ hai ô trước.</value></data>
+  <data name="KnapsackHelp" xml:space="preserve"><value>Balo 0/1: mỗi vật chỉ dùng một lần. dp[i,c] là giá trị tốt nhất với i vật đầu và sức chứa c. Chọn lớn hơn giữa bỏ vật và lấy vật nếu đủ chỗ.</value></data>
+  <data name="LcsHelp" xml:space="preserve"><value>Dãy con chung dài nhất: ký tự bằng nhau → lấy ô chéo + 1; khác nhau → max(ô trên, ô trái). Dãy con không cần liên tiếp.</value></data>
+  <data name="Capacity" xml:space="preserve"><value>Sức chứa (1–20)</value></data>
+  <data name="Weights" xml:space="preserve"><value>Trọng lượng các vật</value></data>
+  <data name="Values" xml:space="preserve"><value>Giá trị các vật</value></data>
+  <data name="FirstString" xml:space="preserve"><value>Chuỗi thứ nhất</value></data>
+  <data name="SecondString" xml:space="preserve"><value>Chuỗi thứ hai</value></data>
+  <data name="InvalidDP" xml:space="preserve"><value>Fibonacci: n từ 0–30. Balo: 1–8 vật, trọng lượng 1–20, giá trị 1–10000, sức chứa 1–20. LCS: mỗi chuỗi tối đa 12 ký tự.</value></data>
+  <data name="Result" xml:space="preserve"><value>Kết quả</value></data>
+  <data name="Initial" xml:space="preserve"><value>Trạng thái ban đầu</value></data>
+  <data name="FillCell" xml:space="preserve"><value>Điền ô</value></data>
+  <data name="BreakAt" xml:space="preserve"><value>Dừng tại bước (0 = tắt)</value></data>
+  <data name="BubbleQuestion" xml:space="preserve"><value>Bubble Sort có độ phức tạp thời gian xấu nhất là gì?</value></data>
+  <data name="BubbleOption0" xml:space="preserve"><value>O(n)</value></data>
+  <data name="BubbleOption1" xml:space="preserve"><value>O(n²)</value></data>
+  <data name="BubbleOption2" xml:space="preserve"><value>O(log n)</value></data>
+  <data name="BubbleExplanation" xml:space="preserve"><value>Mảng đảo ngược cần so sánh và hoán đổi qua nhiều lượt, tổng số phép toán tăng theo n².</value></data>
+  <data name="BinaryQuestion" xml:space="preserve"><value>BST suy biến thành một chuỗi có thời gian tìm kiếm xấu nhất là gì?</value></data>
+  <data name="BinaryOption0" xml:space="preserve"><value>O(n)</value></data>
+  <data name="BinaryOption1" xml:space="preserve"><value>O(log n)</value></data>
+  <data name="BinaryOption2" xml:space="preserve"><value>O(1)</value></data>
+  <data name="BinaryExplanation" xml:space="preserve"><value>Chiều cao cây có thể bằng n−1; tìm kiếm có thể thăm mọi đỉnh.</value></data>
+  <data name="StableQuestion" xml:space="preserve"><value>Sắp xếp ổn định giữ lại điều gì?</value></data>
+  <data name="StableOption0" xml:space="preserve"><value>Vị trí mọi phần tử</value></data>
+  <data name="StableOption1" xml:space="preserve"><value>Số phép hoán đổi</value></data>
+  <data name="StableOption2" xml:space="preserve"><value>Thứ tự tương đối của các phần tử bằng nhau</value></data>
+  <data name="StableExplanation" xml:space="preserve"><value>Nếu hai bản ghi có cùng khóa, bản ghi xuất hiện trước vẫn đứng trước sau khi sắp xếp.</value></data>
+  <data name="BfsQuestion" xml:space="preserve"><value>BFS dùng cấu trúc nào để duyệt theo từng lớp?</value></data>
+  <data name="BfsOption0" xml:space="preserve"><value>Ngăn xếp LIFO</value></data>
+  <data name="BfsOption1" xml:space="preserve"><value>Hàng đợi FIFO</value></data>
+  <data name="BfsOption2" xml:space="preserve"><value>Cây AVL</value></data>
+  <data name="BfsExplanation" xml:space="preserve"><value>FIFO xử lý các đỉnh được phát hiện trước, nên BFS tìm đường ít cạnh nhất trong đồ thị không trọng số.</value></data>
+  <data name="DijkstraQuestion" xml:space="preserve"><value>Điều kiện trọng số nào bảo đảm Dijkstra đúng?</value></data>
+  <data name="DijkstraOption0" xml:space="preserve"><value>Mọi cạnh có trọng số âm</value></data>
+  <data name="DijkstraOption1" xml:space="preserve"><value>Trọng số tùy ý</value></data>
+  <data name="DijkstraOption2" xml:space="preserve"><value>Mọi trọng số không âm</value></data>
+  <data name="DijkstraExplanation" xml:space="preserve"><value>Cạnh âm có thể làm giảm khoảng cách tới đỉnh đã chốt, phá vỡ giả thiết tham lam của Dijkstra.</value></data>
+  <data name="PrimQuestion" xml:space="preserve"><value>Prim tìm cấu trúc nào trong đồ thị liên thông vô hướng?</value></data>
+  <data name="PrimOption0" xml:space="preserve"><value>Cây khung nhỏ nhất</value></data>
+  <data name="PrimOption1" xml:space="preserve"><value>Đường đi ngắn nhất giữa mọi cặp</value></data>
+  <data name="PrimOption2" xml:space="preserve"><value>Chu trình Hamilton</value></data>
+  <data name="PrimExplanation" xml:space="preserve"><value>Prim chọn cạnh nhẹ nhất nối cây hiện tại với một đỉnh chưa thuộc cây.</value></data>
+  <data name="KnapsackQuestion" xml:space="preserve"><value>Trong balo 0/1, mỗi vật có thể được chọn bao nhiêu lần?</value></data>
+  <data name="KnapsackOption0" xml:space="preserve"><value>Không giới hạn</value></data>
+  <data name="KnapsackOption1" xml:space="preserve"><value>Tối đa một lần</value></data>
+  <data name="KnapsackOption2" xml:space="preserve"><value>Đúng hai lần</value></data>
+  <data name="KnapsackExplanation" xml:space="preserve"><value>Khi lấy vật i, ta dùng kết quả hàng i−1 để không lấy lại cùng vật.</value></data>
+  <data name="LcsQuestion" xml:space="preserve"><value>LCS là gì?</value></data>
+  <data name="LcsOption0" xml:space="preserve"><value>Đoạn liên tiếp chung dài nhất</value></data>
+  <data name="LcsOption1" xml:space="preserve"><value>Chuỗi con ngắn nhất</value></data>
+  <data name="LcsOption2" xml:space="preserve"><value>Dãy con chung dài nhất, không cần liên tiếp</value></data>
+  <data name="LcsExplanation" xml:space="preserve"><value>Ví dụ AC là dãy con chung của ABC và ADC dù các ký tự không đứng cạnh nhau.</value></data>
+  <data name="GraphMetrics" xml:space="preserve"><value>BFS hiển thị số cạnh ngắn nhất; DFS hiển thị độ sâu cây duyệt, không phải đường ngắn nhất. Dijkstra hiển thị tổng trọng số đường đi; Prim hiển thị trọng số cạnh nối đỉnh vào cây.</value></data>
+</root>

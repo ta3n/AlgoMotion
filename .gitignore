@@ -460,3 +460,8 @@ fabric.properties
 */*/*/obj/
 /.history
 .DS_Store
+
+# Local browser verification artifacts
+.playwright-cli/
+output/playwright/
+artifacts/

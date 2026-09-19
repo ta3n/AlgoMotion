@@ -114,6 +114,7 @@
       <button class="btn btn-play" @onclick="TogglePlay">
         @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
       </button>
+      <button class="btn" @onclick="() => _player.StepBack()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
@@ -125,6 +126,13 @@
       </div>
       <button class="btn" @onclick="NewArray" title="@UiText.Get(UiTextKey.NewArrayTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewArray, _uiLanguage)</button>
 
+      <div class="custom-control">
+        <input type="text" class="custom-input" placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
+               aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
+               value="@_customArrayText" @oninput="OnCustomArrayTextChanged" @onkeydown="OnCustomArrayKeyDown"/>
+        <button class="btn" @onclick="ApplyCustomArray">@UiText.Get(UiTextKey.CustomInputApply, _uiLanguage)</button>
+      </div>
+
       <div class="speed-control">
         <label for="speed-input">@UiText.Get(UiTextKey.SpeedLabel, _uiLanguage)</label>
         <input id="speed-input" type="range"
@@ -135,7 +143,25 @@
                @oninput="OnSpeedInput"/>
         <span class="speed-readout">@PlaybackSpeeds.Format(_player.State.Speed)</span>
       </div>
+
+      <div class="n-control">
+        <label>@LearningText.Get("BreakAt", _uiLanguage)
+          <input type="number" class="n-input" min="0" max="@_player.Steps.Count"
+                 value="@(_player.BreakAtIndex + 1)" @onchange="OnBreakpointChanged"/>
+        </label>
+      </div>
+      <div class="scrubber-control">
+        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)" title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+               min="-1" max="@(_player.Steps.Count - 1)"
+               value="@_player.State.CurrentIndex" @oninput="OnScrubberInput"/>
+        <span class="scrubber-readout">@(_player.State.CurrentIndex + 1)/@_player.Steps.Count</span>
+      </div>
     </div>
+
+    @if (_customArrayError)
+    {
+      <p class="custom-error" role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
+    }
 
     <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
   </section>
@@ -161,6 +187,8 @@
   private int _n = 8;
   private int[] _initial = [];
   private int _maxValue;
+  private string _customArrayText = "";
+  private bool _customArrayError;
   private int _lastLoggedIndex = -1;
   private SortStep _initialStep = new();
 
@@ -253,6 +281,22 @@
     }
   }
 
+  private void OnBreakpointChanged(ChangeEventArgs e)
+  {
+    if (int.TryParse(e.Value?.ToString(), out var step))
+      _player.BreakAtIndex = Math.Clamp(step, 0, _player.Steps.Count) - 1;
+  }
+
+  private void OnScrubberInput(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var index))
+    {
+      _player.SeekTo(index);
+    }
+  }
+
   private void OnNChanged(
     ChangeEventArgs e
   )
@@ -262,6 +306,38 @@
       _n = Math.Clamp(n, MinN, MaxN);
       NewArray();
     }
+  }
+
+  private void OnCustomArrayTextChanged(
+    ChangeEventArgs e
+  )
+  {
+    _customArrayText = e.Value?.ToString() ?? "";
+  }
+
+  private void OnCustomArrayKeyDown(
+    KeyboardEventArgs e
+  )
+  {
+    if (e.Key == "Enter") ApplyCustomArray();
+  }
+
+  /// <summary>Parses <see cref="_customArrayText"/> as comma/whitespace-separated integers and, if it
+  /// yields a valid array (all values within <see cref="MinN"/>..<see cref="MaxN"/> count, all positive
+  /// so bar-height scaling stays meaningful), replaces the current array with it. Otherwise flags
+  /// <see cref="_customArrayError"/> instead of touching the current run.</summary>
+  private void ApplyCustomArray()
+  {
+    if (!CustomInput.TryParse(_customArrayText, MinN, MaxN, out var values))
+    {
+      _customArrayError = true;
+      return;
+    }
+
+    _customArrayError = false;
+    _n = values.Length;
+    _initial = [.. values];
+    LoadCurrentArray();
   }
 
   private void ToggleAlgoMenu()

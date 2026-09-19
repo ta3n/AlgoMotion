@@ -130,6 +130,7 @@
       <button class="btn btn-play" @onclick="TogglePlay">
         @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
       </button>
+      <button class="btn" @onclick="() => _player.StepBack()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
@@ -140,6 +141,13 @@
                value="@_n" @onchange="OnNChanged"/>
       </div>
       <button class="btn" @onclick="NewTree" title="@UiText.Get(UiTextKey.NewTreeTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewTree, _uiLanguage)</button>
+
+      <div class="custom-control">
+        <input type="text" class="custom-input" placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderTree, _uiLanguage)"
+               aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderTree, _uiLanguage)"
+               value="@_customTreeText" @oninput="OnCustomTreeTextChanged" @onkeydown="OnCustomTreeKeyDown"/>
+        <button class="btn" @onclick="ApplyCustomTree">@UiText.Get(UiTextKey.CustomInputApply, _uiLanguage)</button>
+      </div>
 
       <div class="n-control">
         <label for="depth-input">@UiText.Get(UiTextKey.DepthLabel, _uiLanguage)</label>
@@ -162,7 +170,25 @@
                @oninput="OnSpeedInput"/>
         <span class="speed-readout">@PlaybackSpeeds.Format(_player.State.Speed)</span>
       </div>
+
+      <div class="n-control">
+        <label>@LearningText.Get("BreakAt", _uiLanguage)
+          <input type="number" class="n-input" min="0" max="@_player.Steps.Count"
+                 value="@(_player.BreakAtIndex + 1)" @onchange="OnBreakpointChanged"/>
+        </label>
+      </div>
+      <div class="scrubber-control">
+        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)" title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+               min="-1" max="@(_player.Steps.Count - 1)"
+               value="@_player.State.CurrentIndex" @oninput="OnScrubberInput"/>
+        <span class="scrubber-readout">@(_player.State.CurrentIndex + 1)/@_player.Steps.Count</span>
+      </div>
     </div>
+
+    @if (_customTreeError)
+    {
+      <p class="custom-error" role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
+    }
 
     <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
   </section>
@@ -218,6 +244,8 @@
   private int _depth = 10;
   private int[] _values = [];
   private int _target;
+  private string _customTreeText = "";
+  private bool _customTreeError;
   private List<TreeNode> _nodes = [];
   private double _zoom = TreeLayout.DefaultZoom;
   private int _lastLoggedIndex = -1;
@@ -316,6 +344,54 @@
     {
       _player.SetSpeed(speed);
     }
+  }
+
+  private void OnBreakpointChanged(ChangeEventArgs e)
+  {
+    if (int.TryParse(e.Value?.ToString(), out var step))
+      _player.BreakAtIndex = Math.Clamp(step, 0, _player.Steps.Count) - 1;
+  }
+
+  private void OnScrubberInput(
+    ChangeEventArgs e
+  )
+  {
+    if (int.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var index))
+    {
+      _player.SeekTo(index);
+    }
+  }
+
+  private void OnCustomTreeTextChanged(
+    ChangeEventArgs e
+  )
+  {
+    _customTreeText = e.Value?.ToString() ?? "";
+  }
+
+  private void OnCustomTreeKeyDown(
+    KeyboardEventArgs e
+  )
+  {
+    if (e.Key == "Enter") ApplyCustomTree();
+  }
+
+  /// <summary>Parses <see cref="_customTreeText"/> as comma/whitespace-separated positive integers,
+  /// then uses the resulting insertion order as the exact tree input. The existing depth control is
+  /// intentionally left unchanged because custom input, unlike generated input, is authoritative.</summary>
+  private void ApplyCustomTree()
+  {
+    if (!CustomInput.TryParse(_customTreeText, MinN, MaxN, out var values))
+    {
+      _customTreeError = true;
+      return;
+    }
+
+    _customTreeError = false;
+    _n = values.Length;
+    _values = [.. values];
+    LoadCurrentTree();
+    FitZoom();
   }
 
   private void OnZoomInput(

@@ -19,13 +19,19 @@
   <data name="UiLanguageLabel" xml:space="preserve"><value>Interface</value></data>
   <data name="Play" xml:space="preserve"><value>▶ Play</value></data>
   <data name="Pause" xml:space="preserve"><value>⏸ Pause</value></data>
+  <data name="StepBack" xml:space="preserve"><value>⏮ Back</value></data>
   <data name="Step" xml:space="preserve"><value>⏭ Step</value></data>
   <data name="Reset" xml:space="preserve"><value>⟲ Reset</value></data>
   <data name="Replay" xml:space="preserve"><value>↻ Replay</value></data>
+  <data name="ScrubberLabel" xml:space="preserve"><value>Scrub to step</value></data>
   <data name="NewArray" xml:space="preserve"><value>🔀 New array</value></data>
   <data name="NewArrayTitle" xml:space="preserve"><value>Generate a new random array of the same size</value></data>
   <data name="NewTree" xml:space="preserve"><value>🔀 New tree</value></data>
   <data name="NewTreeTitle" xml:space="preserve"><value>Generate a new random tree of the same size</value></data>
+  <data name="CustomInputPlaceholderArray" xml:space="preserve"><value>e.g. 5, 2, 8, 1, 9</value></data>
+  <data name="CustomInputPlaceholderTree" xml:space="preserve"><value>e.g. 5, 2, 8, 1, 9</value></data>
+  <data name="CustomInputApply" xml:space="preserve"><value>Apply</value></data>
+  <data name="CustomInputError" xml:space="preserve"><value>Enter {0}–{1} integers from 1 to 10000, separated by commas, semicolons, or whitespace.</value></data>
   <data name="DepthLabel" xml:space="preserve"><value>Depth</value></data>
   <data name="TargetLabel" xml:space="preserve"><value>Target</value></data>
   <data name="SpeedLabel" xml:space="preserve"><value>Speed</value></data>

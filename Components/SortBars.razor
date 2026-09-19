@@ -10,7 +10,7 @@
   }
   @foreach (var bar in Bars)
   {
-    <div @key="bar.Value"
+    <div @key="(bar.Value, Bars.Take(bar.SlotIndex).Count(item => item.Value == bar.Value))"
          class="bar @(bar.IsActive ? "bar-active" : "") @(bar.IsSwapping ? "bar-swapping" : "") @(bar.IsSorted ? "bar-sorted" : "") @(bar.IsPivot ? "bar-pivot" : "") @(bar.IsDimmed ? "bar-dimmed" : "")"
          style="left:@(ChartLayout.Pct(ChartLayout.LeftPercent(bar.SlotIndex, n))); width:@(ChartLayout.Pct(ChartLayout.BarWidthPercent(n))); height:@(ChartLayout.BarHeight(bar.Value, MaxValue))px; font-size:@(fontSize)px;"
          title="@bar.Value">

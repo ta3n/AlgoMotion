@@ -34,14 +34,14 @@ namespace AlgoMotion.Services;
 ///  6              if (a[i] &lt; a[start]) pos++;
 ///  7          }
 ///  8          if (pos == start) continue;
-///  9          swap(&amp;a[start], &amp;a[pos]);
+///  9          while (a[pos] == a[start]) pos++; swap(&amp;a[start], &amp;a[pos]);
 /// 10          while (pos != start) {
 /// 11              pos = start;
 /// 12              for (size_t i = start + 1; i &lt; n; i++) {
 /// 13                  if (a[i] &lt; a[start]) pos++;
 /// 14              }
 /// 15              if (pos != start) {
-/// 16                  swap(&amp;a[start], &amp;a[pos]);
+/// 16                  while (a[pos] == a[start]) pos++; swap(&amp;a[start], &amp;a[pos]);
 /// 17              }
 /// 18          }
 /// 19      }
@@ -62,14 +62,14 @@ public static class CycleSortSimulator
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[i] &lt; a[start]) pos++;",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (pos == start) <span class=\"tok-kw\">continue</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[start], &amp;a[pos]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (a[pos] == a[start]) pos++; swap(&amp;a[start], &amp;a[pos]);",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (pos != start) {",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos = start;",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">size_t</span> i = start + 1; i &lt; n; i++) {",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (a[i] &lt; a[start]) pos++;",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (pos != start) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[start], &amp;a[pos]);",
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (a[pos] == a[start]) pos++; swap(&amp;a[start], &amp;a[pos]);",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}",
       "&nbsp;&nbsp;&nbsp;&nbsp;}",
@@ -212,6 +212,7 @@ public static class CycleSortSimulator
         continue;
       }
 
+      while (a[pos] == a[start]) pos++;
       (a[start], a[pos]) = (a[pos], a[start]);
       swapCount++;
       sorted.Add(pos);
@@ -239,6 +240,7 @@ public static class CycleSortSimulator
 
         if (pos != start)
         {
+          while (a[pos] == a[start]) pos++;
           (a[start], a[pos]) = (a[pos], a[start]);
           swapCount++;
           sorted.Add(pos);

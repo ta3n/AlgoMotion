@@ -1,0 +1,19 @@
+name: Verify AlgoMotion
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Simulator regression checks
+        run: dotnet run --project tests/AlgoMotion.Checks -c Release
+      - name: Publish WebAssembly and offline assets
+        run: dotnet publish AlgoMotion.csproj -c Release -o artifacts/publish

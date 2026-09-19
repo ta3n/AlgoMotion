@@ -19,13 +19,19 @@
   <data name="UiLanguageLabel" xml:space="preserve"><value>Giao diện</value></data>
   <data name="Play" xml:space="preserve"><value>▶ Phát</value></data>
   <data name="Pause" xml:space="preserve"><value>⏸ Tạm dừng</value></data>
+  <data name="StepBack" xml:space="preserve"><value>⏮ Lùi</value></data>
   <data name="Step" xml:space="preserve"><value>⏭ Bước</value></data>
   <data name="Reset" xml:space="preserve"><value>⟲ Đặt lại</value></data>
   <data name="Replay" xml:space="preserve"><value>↻ Phát lại</value></data>
+  <data name="ScrubberLabel" xml:space="preserve"><value>Tua tới bước</value></data>
   <data name="NewArray" xml:space="preserve"><value>🔀 Mảng mới</value></data>
   <data name="NewArrayTitle" xml:space="preserve"><value>Tạo mảng ngẫu nhiên mới cùng kích thước</value></data>
   <data name="NewTree" xml:space="preserve"><value>🔀 Cây mới</value></data>
   <data name="NewTreeTitle" xml:space="preserve"><value>Tạo cây ngẫu nhiên mới cùng kích thước</value></data>
+  <data name="CustomInputPlaceholderArray" xml:space="preserve"><value>vd: 5, 2, 8, 1, 9</value></data>
+  <data name="CustomInputPlaceholderTree" xml:space="preserve"><value>vd: 5, 2, 8, 1, 9</value></data>
+  <data name="CustomInputApply" xml:space="preserve"><value>Áp dụng</value></data>
+  <data name="CustomInputError" xml:space="preserve"><value>Nhập từ {0} đến {1} số nguyên trong khoảng 1–10000, cách nhau bằng dấu phẩy, dấu chấm phẩy hoặc khoảng trắng.</value></data>
   <data name="DepthLabel" xml:space="preserve"><value>Độ sâu</value></data>
   <data name="TargetLabel" xml:space="preserve"><value>Mục tiêu</value></data>
   <data name="SpeedLabel" xml:space="preserve"><value>Tốc độ</value></data>

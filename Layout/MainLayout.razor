@@ -11,6 +11,12 @@
     <nav class="top-nav">
       <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">@UiText.Get(UiTextKey.NavSort, LangState.Current)</NavLink>
       <NavLink href="/tree-search" class="top-nav-link">@UiText.Get(UiTextKey.NavTreeSearch, LangState.Current)</NavLink>
+      <NavLink href="/complexity" class="top-nav-link">@LearningText.Get("Complexity", LangState.Current)</NavLink>
+      <NavLink href="/compare" class="top-nav-link">@LearningText.Get("Compare", LangState.Current)</NavLink>
+      <NavLink href="/quiz" class="top-nav-link">@LearningText.Get("Quiz", LangState.Current)</NavLink>
+      <NavLink href="/graphs" class="top-nav-link">@LearningText.Get("Graph", LangState.Current)</NavLink>
+      <NavLink href="/dynamic-programming" class="top-nav-link">@LearningText.Get("DP", LangState.Current)</NavLink>
+      <select aria-label="Language" value="@LangState.Current" @onchange="ChangeLanguage"><option value="Vi">Tiếng Việt</option><option value="En">English</option></select>
       <InstallAppButton Language="@LangState.Current"/>
     </nav>
     @Body
@@ -18,6 +24,11 @@
 </main>
 
 @code {
+
+  private void ChangeLanguage(ChangeEventArgs args)
+  {
+    if (Enum.TryParse<UiLanguage>(args.Value?.ToString(), out var language)) LangState.Set(language);
+  }
 
   protected override void OnInitialized()
   {

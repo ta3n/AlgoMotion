@@ -17,14 +17,21 @@ public enum UiTextKey
 
   Play,
   Pause,
+  StepBack,
   Step,
   Reset,
   Replay,
+  ScrubberLabel,
 
   NewArray,
   NewArrayTitle,
   NewTree,
   NewTreeTitle,
+
+  CustomInputPlaceholderArray,
+  CustomInputPlaceholderTree,
+  CustomInputApply,
+  CustomInputError,
 
   DepthLabel,
   TargetLabel,
@@ -76,14 +83,21 @@ public static class UiText
 
     [UiTextKey.Play] = ("▶ Phát", "▶ Play"),
     [UiTextKey.Pause] = ("⏸ Tạm dừng", "⏸ Pause"),
+    [UiTextKey.StepBack] = ("⏮ Lùi", "⏮ Back"),
     [UiTextKey.Step] = ("⏭ Bước", "⏭ Step"),
     [UiTextKey.Reset] = ("⟲ Đặt lại", "⟲ Reset"),
     [UiTextKey.Replay] = ("↻ Phát lại", "↻ Replay"),
+    [UiTextKey.ScrubberLabel] = ("Tua tới bước", "Scrub to step"),
 
     [UiTextKey.NewArray] = ("🔀 Mảng mới", "🔀 New array"),
     [UiTextKey.NewArrayTitle] = ("Tạo mảng ngẫu nhiên mới cùng kích thước", "Generate a new random array of the same size"),
     [UiTextKey.NewTree] = ("🔀 Cây mới", "🔀 New tree"),
     [UiTextKey.NewTreeTitle] = ("Tạo cây ngẫu nhiên mới cùng kích thước", "Generate a new random tree of the same size"),
+
+    [UiTextKey.CustomInputPlaceholderArray] = ("vd: 5, 2, 8, 1, 9", "e.g. 5, 2, 8, 1, 9"),
+    [UiTextKey.CustomInputPlaceholderTree] = ("vd: 5, 2, 8, 1, 9", "e.g. 5, 2, 8, 1, 9"),
+    [UiTextKey.CustomInputApply] = ("Áp dụng", "Apply"),
+    [UiTextKey.CustomInputError] = ("Nhập từ {0} đến {1} số nguyên trong khoảng 1–10000, cách nhau bằng dấu phẩy, dấu chấm phẩy hoặc khoảng trắng.", "Enter {0}–{1} integers from 1 to 10000, separated by commas, semicolons, or whitespace."),
 
     [UiTextKey.DepthLabel] = ("Độ sâu", "Depth"),
     [UiTextKey.TargetLabel] = ("Mục tiêu", "Target"),

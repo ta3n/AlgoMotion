@@ -1,0 +1,41 @@
+@page "/quiz"
+@using AlgoMotion.Models
+@using AlgoMotion.Components
+@inherits LearningPageBase
+
+<PageTitle>@L("Quiz")</PageTitle>
+<section class="stage lesson quiz">
+  <h1>@L("Quiz")</h1>
+  <p>@L("Score"): @_attempt.Score / @QuizBank.All.Count</p>
+  @if (_attempt.Finished)
+  {
+    <h2>@L("Complete")</h2>
+    <button class="btn" @onclick="_attempt.Reset">@L("Restart")</button>
+  }
+  else
+  {
+    <h2>@L("Question") @(_attempt.Index + 1)/@QuizBank.All.Count</h2>
+    <p>@L(_attempt.Current.Id + "Question")</p>
+    <div class="quiz-options">
+      @for (var i = 0; i < _attempt.Current.OptionCount; i++)
+      {
+        var option = i;
+        <button class="btn @(_attempt.Selected == option ? "selected-answer" : "")"
+                disabled="@_attempt.Selected.HasValue" @onclick="() => _attempt.Answer(option)">
+          @L(_attempt.Current.Id + "Option" + i)
+        </button>
+      }
+    </div>
+    @if (_attempt.Selected.HasValue)
+    {
+      <div role="status" class="quiz-explanation">
+        <strong>@L(_attempt.Selected == _attempt.Current.Answer ? "Correct" : "Incorrect")</strong>
+        <p>@L(_attempt.Current.Id + "Explanation")</p>
+      </div>
+      <button class="btn" @onclick="_attempt.Next">@L("Next")</button>
+    }
+  }
+</section>
+@code {
+  private readonly QuizAttempt _attempt = new();
+}

@@ -17,6 +17,9 @@ public sealed class TreeAnimationPlayer : IDisposable
 
   public PlaybackState State { get; } = new();
 
+  /// <summary>Zero-based pause point; -1 disables the breakpoint.</summary>
+  public int BreakAtIndex { get; set; } = -1;
+
   /// <summary>Raised whenever the current step index (or play state) changes.</summary>
   public event Action? Changed;
 
@@ -75,6 +78,33 @@ public sealed class TreeAnimationPlayer : IDisposable
     }
   }
 
+  /// <summary>Rewinds one step. Symmetric with <see cref="StepForward"/> — index -1 means
+  /// "before the first step", so this bottoms out there instead of going negative.</summary>
+  public void StepBack()
+  {
+    if (_steps.Count == 0)
+    {
+      return;
+    }
+
+    if (State.CurrentIndex > -1)
+    {
+      State.CurrentIndex--;
+      Changed?.Invoke();
+    }
+  }
+
+  /// <summary>Jumps straight to an arbitrary step — the scrubber's operation. Pauses first so
+  /// dragging the scrubber always wins over an in-progress autoplay instead of racing it.</summary>
+  public void SeekTo(
+    int index
+  )
+  {
+    Pause();
+    State.CurrentIndex = Math.Clamp(index, -1, _steps.Count - 1);
+    Changed?.Invoke();
+  }
+
   public void Play()
   {
     if (State.IsPlaying || _steps.Count == 0)
@@ -116,6 +146,12 @@ public sealed class TreeAnimationPlayer : IDisposable
       {
         State.CurrentIndex++;
         Changed?.Invoke();
+
+        if (State.CurrentIndex == BreakAtIndex)
+        {
+          Pause();
+          break;
+        }
 
         var dwellMs = BaseDwellMs(_steps[State.CurrentIndex].Type) / State.Speed;
         await Task.Delay(TimeSpan.FromMilliseconds(dwellMs), token);

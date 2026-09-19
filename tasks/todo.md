@@ -1,0 +1,11 @@
+# Work items
+- [ ] Custom input: accept bounded integers, reject invalid input without changing run; duplicates render. Verify parser and browser.
+- [ ] Tests/CI: all 14 sorting and 6 tree simulators, seeded cases and playback boundaries; run checks and publish.
+- [ ] Complexity: deterministic counters and growth curves with numeric table; verify known counts and browser.
+- [ ] Comparison: identical initial input, shared timeline, stable finished side, reset/change handling; verify browser.
+- [ ] Quiz: bilingual questions, scoring once, explanations and restart; verify checks and browser.
+- [ ] Graph simulation: BFS/DFS/Dijkstra/Prim correctness, cycles, disconnected nodes and validation; verify regression checks.
+- [ ] Graph UI: labeled weighted edges, playback and result table; verify browser.
+- [ ] DP simulation: Fibonacci, knapsack and LCS recurrence correctness, bounded inputs; verify reference results.
+- [ ] DP UI: table playback and explanations; verify browser.
+- [ ] Final checkpoint: release publish, all checks, responsive browser smoke, README and status.

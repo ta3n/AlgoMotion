@@ -1,0 +1,96 @@
+@page "/dynamic-programming"
+@using AlgoMotion.Models
+@using AlgoMotion.Services
+@using AlgoMotion.Components
+@inherits LearningPageBase
+
+<PageTitle>@L("DP")</PageTitle>
+<section class="stage lesson">
+  <h1>@L("DP")</h1>
+  <div class="controls">
+    <label>@L("Algorithm")
+      <select @bind="_algorithm" @bind:after="Apply">@foreach (var a in Enum.GetValues<DpAlgorithm>()) { <option value="@a">@a</option> }</select>
+    </label>
+    @if (_algorithm == DpAlgorithm.Fibonacci)
+    {
+      <label>n (0–30) <input type="number" min="0" max="30" @bind="_n"/></label>
+    }
+    else if (_algorithm == DpAlgorithm.Knapsack)
+    {
+      <label>@L("Weights") <input @bind="_weights"/></label>
+      <label>@L("Values") <input @bind="_values"/></label>
+      <label>@L("Capacity") <input type="number" min="1" max="20" @bind="_capacity"/></label>
+    }
+    else
+    {
+      <label>@L("FirstString") <input maxlength="12" @bind="_first"/></label>
+      <label>@L("SecondString") <input maxlength="12" @bind="_second"/></label>
+    }
+    <button class="btn" @onclick="Apply">@L("Apply")</button>
+  </div>
+  @if (_error) { <p role="alert" class="custom-error">@L("InvalidDP")</p> }
+  <p>@L(_recordedAlgorithm + "Help")</p>
+  <p role="status">@(Current.Row < 0 ? L("Initial") : $"{L("FillCell")} [{Current.Row}, {Current.Column}] = {Current.Table[Current.Row][Current.Column]}")</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>i / j</th>@foreach (var column in _recording.Columns) { <th>@column</th> }</tr></thead>
+      <tbody>
+        @for (var r = 0; r < Current.Table.Count; r++)
+        {
+          <tr><th>@_recording.Rows[r]</th>
+            @for (var c = 0; c < Current.Table[r].Length; c++)
+            {
+              <td class="@CellClass(r, c)">@Current.Table[r][c]</td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <LessonPlayback @key="_revision" Count="@_recording.Steps.Count" IndexChanged="i => _index = i"/>
+  @if (_index == _recording.Steps.Count - 1) { <p><strong>@L("Result"): @_recording.Result</strong></p> }
+</section>
+@code {
+  private DpAlgorithm _algorithm;
+  private DpAlgorithm _recordedAlgorithm;
+  private int _n = 8;
+  private int _capacity = 7;
+  private string _weights = "1, 3, 4, 5";
+  private string _values = "1, 4, 5, 7";
+  private string _first = "ABCBDAB";
+  private string _second = "BDCABA";
+  private DpRecording _recording = DpSimulator.Fibonacci(8);
+  private int _index = -1;
+  private int _revision;
+  private bool _error;
+  private DpStep Current => _recording.Steps[Math.Max(0, _index)];
+  private string CellClass(int row, int column)
+  {
+    if (Current.Row == row && Current.Column == column) return "active-cell";
+    return Current.Dependencies.Contains((row, column)) ? "dependency-cell" : "";
+  }
+  private void Apply()
+  {
+    _error = false;
+    if (_algorithm == DpAlgorithm.Fibonacci)
+    {
+      if (_n is < 0 or > 30) { _error = true; return; }
+      _recording = DpSimulator.Fibonacci(_n);
+    }
+    else if (_algorithm == DpAlgorithm.Knapsack)
+    {
+      if (!CustomInput.TryParse(_weights, 1, 8, out var weights) ||
+          !CustomInput.TryParse(_values, 1, 8, out var values) || weights.Length != values.Length ||
+          weights.Any(w => w > 20) || _capacity is < 1 or > 20) { _error = true; return; }
+      _recording = DpSimulator.Knapsack(weights, values, _capacity);
+    }
+    else
+    {
+      if (_first.Length > 12 || _second.Length > 12) { _error = true; return; }
+      _recording = DpSimulator.Lcs(_first, _second);
+    }
+    _recordedAlgorithm = _algorithm;
+    _index = -1;
+    _revision++;
+  }
+}
