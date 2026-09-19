@@ -1,13 +1,17 @@
 @using AlgoMotion.Models
 
 <div class="status-bar">
-  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, Language)</span><span class="status-eq">=</span><span
+  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, Language)</span><span
+      class="status-eq">=</span><span
       class="status-val">@N</span></div>
-  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipI, Language)</span><span class="status-eq">=</span><span
+  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipI, Language)</span><span
+      class="status-eq">=</span><span
       class="status-val">@(I >= 0 ? I.ToString() : "-")</span></div>
-  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipJ, Language)</span><span class="status-eq">=</span><span
+  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipJ, Language)</span><span
+      class="status-eq">=</span><span
       class="status-val">@(J >= 0 ? J.ToString() : "-")</span></div>
-  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipSwapped, Language)</span><span class="status-eq">=</span><span
+  <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipSwapped, Language)</span><span
+      class="status-eq">=</span><span
       class="status-val status-bool-@Swapped.ToString().ToLowerInvariant()">@UiText.Bool(Swapped, Language)</span>
   </div>
 </div>

@@ -4,41 +4,44 @@
 
 @if (_isUpdateAvailable)
 {
-    <div class="pwa-update-banner">
-        <span>@UiText.Get(UiTextKey.PwaUpdateAvailable, Language)</span>
-        <button type="button" class="btn" @onclick="ApplyUpdate">
-            @UiText.Get(UiTextKey.PwaUpdateAction, Language)
-        </button>
-    </div>
+  <div class="pwa-update-banner">
+    <span>@UiText.Get(UiTextKey.PwaUpdateAvailable, Language)</span>
+    <button type="button" class="btn" @onclick="ApplyUpdate">
+      @UiText.Get(UiTextKey.PwaUpdateAction, Language)
+    </button>
+  </div>
 }
 
 @code {
-    [Parameter] public UiLanguage Language { get; set; } = UiLanguage.Vi;
 
-    private DotNetObjectReference<UpdateBanner>? _selfRef;
-    private bool _isUpdateAvailable;
+  [Parameter]
+  public UiLanguage Language { get; set; } = UiLanguage.Vi;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _selfRef = DotNetObjectReference.Create(this);
-        await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeUpdate", _selfRef);
-    }
+  private DotNetObjectReference<UpdateBanner>? _selfRef;
+  private bool _isUpdateAvailable;
 
-    [JSInvokable]
-    public void OnUpdateAvailable()
-    {
-        _isUpdateAvailable = true;
-        InvokeAsync(StateHasChanged);
-    }
+  protected override async Task OnInitializedAsync()
+  {
+    _selfRef = DotNetObjectReference.Create(this);
+    await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeUpdate", _selfRef);
+  }
 
-    private async Task ApplyUpdate()
-    {
-        await JsRuntime.InvokeVoidAsync("algoMotionPwa.applyUpdate");
-    }
+  [JSInvokable]
+  public void OnUpdateAvailable()
+  {
+    _isUpdateAvailable = true;
+    InvokeAsync(StateHasChanged);
+  }
 
-    public ValueTask DisposeAsync()
-    {
-        _selfRef?.Dispose();
-        return ValueTask.CompletedTask;
-    }
+  private async Task ApplyUpdate()
+  {
+    await JsRuntime.InvokeVoidAsync("algoMotionPwa.applyUpdate");
+  }
+
+  public ValueTask DisposeAsync()
+  {
+    _selfRef?.Dispose();
+    return ValueTask.CompletedTask;
+  }
+
 }

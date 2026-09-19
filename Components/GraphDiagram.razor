@@ -7,30 +7,68 @@
     var selected = Step?.SelectedEdges.Contains(i) == true;
     <line x1="@F(X(edge.From))" y1="@F(Y(edge.From))" x2="@F(X(edge.To))" y2="@F(Y(edge.To))"
           stroke="@EdgeColor(i, selected)" stroke-width="@(selected ? 4 : 2)"/>
-    <g><text class="edge-label" text-anchor="middle" x="@F((X(edge.From) + X(edge.To)) / 2)" y="@F((Y(edge.From) + Y(edge.To)) / 2 - 6)">@edge.Weight</text></g>
+    <g>
+      <text class="edge-label" text-anchor="middle" x="@F((X(edge.From) + X(edge.To)) / 2)"
+            y="@F((Y(edge.From) + Y(edge.To)) / 2 - 6)">@edge.Weight</text>
+    </g>
   }
   @for (var node = 0; node < Input.NodeCount; node++)
   {
     <circle cx="@F(X(node))" cy="@F(Y(node))" r="21" stroke="#33d9ff" stroke-width="2"
             fill="@NodeColor(node)"/>
-    <g><text x="@F(X(node))" y="@F(Y(node) + 5)" text-anchor="middle">@node</text></g>
+    <g>
+      <text x="@F(X(node))" y="@F(Y(node) + 5)" text-anchor="middle">@node</text>
+    </g>
   }
 </svg>
+
 @code {
-  [Parameter, EditorRequired] public GraphInput Input { get; set; } = null!;
-  [Parameter] public GraphStep? Step { get; set; }
-  [Parameter] public UiLanguage Language { get; set; }
-  private string EdgeColor(int index, bool selected)
+
+  [Parameter][EditorRequired]
+  public GraphInput Input { get; set; } = null!;
+
+  [Parameter]
+  public GraphStep? Step { get; set; }
+
+  [Parameter]
+  public UiLanguage Language { get; set; }
+
+  private string EdgeColor(
+    int index,
+    bool selected
+  )
   {
     if (Step?.EdgeIndex == index) return "#ffc857";
     return selected ? "#55e6a5" : "#667088";
   }
-  private string NodeColor(int node)
+
+  private string NodeColor(
+    int node
+  )
   {
     if (Step?.Current == node) return "#74550b";
     return Step?.Visited[node] == true ? "#145539" : "#182334";
   }
-  private double X(int node) => 300 + 240 * Math.Cos(2 * Math.PI * node / Input.NodeCount - Math.PI / 2);
-  private double Y(int node) => 210 + 170 * Math.Sin(2 * Math.PI * node / Input.NodeCount - Math.PI / 2);
-  private static string F(double value) => value.ToString("0.##", CultureInfo.InvariantCulture);
+
+  private double X(
+    int node
+  )
+  {
+    return 300 + 240 * Math.Cos(2 * Math.PI * node / Input.NodeCount - Math.PI / 2);
+  }
+
+  private double Y(
+    int node
+  )
+  {
+    return 210 + 170 * Math.Sin(2 * Math.PI * node / Input.NodeCount - Math.PI / 2);
+  }
+
+  private static string F(
+    double value
+  )
+  {
+    return value.ToString("0.##", CultureInfo.InvariantCulture);
+  }
+
 }

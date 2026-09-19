@@ -11,13 +11,23 @@
   <p>@L("ComplexityNote")</p>
   <div class="controls">
     <label>@L("Algorithm")
-      <select @bind="_algorithm">@foreach (var a in SortAlgorithms.All) { <option value="@a.Kind">@a.Name</option> }</select>
+      <select @bind="_algorithm">@foreach (var a in SortAlgorithms.All)
+        {
+          <option value="@a.Kind">@a.Name</option>
+        }</select>
     </label>
     <label>@L("Pattern")
-      <select @bind="_pattern">@foreach (var p in new[] { "Random", "Ascending", "Descending" }) { <option value="@p">@L(p)</option> }</select>
+      <select @bind="_pattern">@foreach (var p in new[] { "Random", "Ascending", "Descending" })
+        {
+          <option value="@p">@L(p)</option>
+        }</select>
     </label>
     <label>@L("Reference")
-      <select @bind="_curve"><option>n</option><option>n log n</option><option>n²</option></select>
+      <select @bind="_curve">
+        <option>n</option>
+        <option>n log n</option>
+        <option>n²</option>
+      </select>
     </label>
     <button class="btn" @onclick="Run" disabled="@_busy">@L("Run")</button>
   </div>
@@ -31,16 +41,40 @@
       <polyline points="@Points(true)" fill="none" stroke="#ffc857" stroke-width="2" stroke-dasharray="7 5"/>
       @foreach (var n in _samples.Select(sample => sample.N))
       {
-        <g><text x="@X(n)" y="285" fill="currentColor" text-anchor="middle">@n</text></g>
+        <g>
+          <text x="@X(n)" y="285" fill="currentColor" text-anchor="middle">@n</text>
+        </g>
       }
-      <g><text x="12" y="24" fill="currentColor">@MaxTotal</text><text x="16" y="262" fill="currentColor">0</text></g>
+      <g>
+        <text x="12" y="24" fill="currentColor">@MaxTotal</text>
+        <text x="16" y="262" fill="currentColor">0</text>
+      </g>
     </svg>
-    <p><span class="legend-measured">● @L("Measured")</span> · <span class="legend-reference">— @L("Reference"): @_curve</span></p>
-    <table><thead><tr><th>n</th><th>@L("Comparisons")</th><th>@L("Writes")</th><th>@L("Total")</th></tr></thead>
-      <tbody>@foreach (var s in _samples) { <tr><td>@s.N</td><td>@s.Comparisons</td><td>@s.Writes</td><td>@s.Total</td></tr> }</tbody>
+    <p><span class="legend-measured">● @L("Measured")</span> · <span
+        class="legend-reference">— @L("Reference"): @_curve</span></p>
+    <table>
+      <thead>
+      <tr>
+        <th>n</th>
+        <th>@L("Comparisons")</th>
+        <th>@L("Writes")</th>
+        <th>@L("Total")</th>
+      </tr>
+      </thead>
+      <tbody>@foreach (var s in _samples)
+      {
+        <tr>
+          <td>@s.N</td>
+          <td>@s.Comparisons</td>
+          <td>@s.Writes</td>
+          <td>@s.Total</td>
+        </tr>
+      }
+      </tbody>
     </table>
   }
 </section>
+
 @code {
   private SortAlgorithmKind _algorithm = SortAlgorithmKind.Bubble;
   private SortAlgorithmKind _measuredAlgorithm;
@@ -51,12 +85,30 @@
   private bool _disposed;
   private readonly List<ComplexitySample> _samples = [];
   private int MaxTotal => Math.Max(1, _samples.Max(s => s.Total));
-  private static string X(int n) => (45 + n / 64.0 * 560).ToString("0.##", CultureInfo.InvariantCulture);
-  private string Points(bool reference) => string.Join(" ", _samples.Select(s =>
+
+  private static string X(
+    int n
+  )
   {
-    var y = reference ? ComplexityExperiment.Growth(_curve, s.N) / ComplexityExperiment.Growth(_curve, _samples[^1].N) * _samples[^1].Total : s.Total;
-    return $"{X(s.N)},{(260 - y / MaxTotal * 230).ToString("0.##", CultureInfo.InvariantCulture)}";
-  }));
+    return (45 + n / 64.0 * 560).ToString("0.##", CultureInfo.InvariantCulture);
+  }
+
+  private string Points(
+    bool reference
+  )
+  {
+    return string.Join(
+      " ",
+      _samples.Select(
+        s =>
+        {
+          var y = reference ? ComplexityExperiment.Growth(_curve, s.N) / ComplexityExperiment.Growth(_curve, _samples[^1].N) * _samples[^1].Total : s.Total;
+          return $"{X(s.N)},{(260 - y / MaxTotal * 230).ToString("0.##", CultureInfo.InvariantCulture)}";
+        }
+      )
+    );
+  }
+
   private async Task Run()
   {
     _busy = true;
@@ -70,7 +122,16 @@
       _samples.Add(ComplexityExperiment.Measure(_measuredAlgorithm, n, _measuredPattern));
       StateHasChanged();
     }
+
     _busy = false;
   }
-  protected override void Dispose(bool disposing) { _disposed = true; base.Dispose(disposing); }
+
+  protected override void Dispose(
+    bool disposing
+  )
+  {
+    _disposed = true;
+    base.Dispose(disposing);
+  }
+
 }

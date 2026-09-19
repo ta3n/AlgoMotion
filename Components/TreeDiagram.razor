@@ -1,7 +1,8 @@
 @using AlgoMotion.Models
 
 <div class="tree-zoom-sizer" style="width:@(ScaledWidthPx)px; height:@(ScaledHeightPx)px;">
-  <div class="tree-area" style="width:@(DiagramWidthPx)px; height:@(AreaHeightPx)px; transform:scale(@(TreeLayout.Num(Zoom))); transform-origin:top left;">
+  <div class="tree-area"
+       style="width:@(DiagramWidthPx)px; height:@(AreaHeightPx)px; transform:scale(@(TreeLayout.Num(Zoom))); transform-origin:top left;">
     <svg class="tree-edges" viewBox="0 0 1000 @AreaHeightPx" preserveAspectRatio="none">
       @foreach (var node in Nodes)
       {
@@ -9,9 +10,9 @@
         {
           var parent = Nodes[parentId];
           var x1 = TreeLayout.CenterPercent(parent.InorderIndex, Nodes.Count) * 10;
-          var y1 = TreeLayout.TopFor(parent.Depth) + (NodeRadius);
+          var y1 = TreeLayout.TopFor(parent.Depth) + NodeRadius;
           var x2 = TreeLayout.CenterPercent(node.InorderIndex, Nodes.Count) * 10;
-          var y2 = TreeLayout.TopFor(node.Depth) + (NodeRadius);
+          var y2 = TreeLayout.TopFor(node.Depth) + NodeRadius;
           <line @key="node.Id" class="tree-edge @(node.Id == CurrentNodeId ? "tree-edge-active" : "")"
                 x1="@(TreeLayout.Num(x1))" y1="@(TreeLayout.Num(y1))"
                 x2="@(TreeLayout.Num(x2))" y2="@(TreeLayout.Num(y2))"/>

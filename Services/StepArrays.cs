@@ -17,10 +17,17 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class StepArrays
 {
-  [ThreadStatic] private static int[]? _snapshot;
-  [ThreadStatic] private static SortedSet<int>? _sortedSource;
-  [ThreadStatic] private static int[]? _sorted;
-  [ThreadStatic] private static int[]? _prefix;
+  [ThreadStatic]
+  private static int[]? _snapshot;
+
+  [ThreadStatic]
+  private static SortedSet<int>? _sortedSource;
+
+  [ThreadStatic]
+  private static int[]? _sorted;
+
+  [ThreadStatic]
+  private static int[]? _prefix;
 
   /// <summary>A read-only copy of <paramref name="live"/>, reusing the previous copy while the contents are unchanged.</summary>
   public static int[] Snapshot(

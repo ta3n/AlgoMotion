@@ -10,14 +10,20 @@
   <p>@L("GraphHelp")</p>
   <div class="controls">
     <label>@L("Algorithm") <select @bind="_algorithm" @bind:after="Reload">
-      @foreach (var a in Enum.GetValues<GraphAlgorithm>()) { <option value="@a">@a</option> }
-    </select></label>
+        @foreach (var a in Enum.GetValues<GraphAlgorithm>())
+        {
+          <option value="@a">@a</option>
+        }
+      </select></label>
     <label>@L("Nodes") <input type="number" min="2" max="12" @bind="_count"/></label>
     <label>@L("Start") <input type="number" min="0" max="@(_count - 1)" @bind="_start"/></label>
   </div>
   <label>@L("Edges") <textarea @bind="_text"></textarea></label>
   <button class="btn" @onclick="Apply">@L("Apply")</button>
-  @if (_error) { <p role="alert" class="custom-error">@L("InvalidGraph")</p> }
+  @if (_error)
+  {
+    <p role="alert" class="custom-error">@L("InvalidGraph")</p>
+  }
   <GraphDiagram Input="@_input" Step="@Current" Language="@Language"/>
   <p role="status">@L(Current.CaptionKey) @Current.Current</p>
   <p>@L("Frontier"): @string.Join(", ", Current.Frontier)</p>
@@ -28,12 +34,25 @@
   <LessonPlayback @key="_revision" Count="@_steps.Count" IndexChanged="i => _index = i"/>
   <p>@L("Disconnected") @L("GraphMetrics")</p>
   <table>
-    <thead><tr><th>@L("Node")</th><th>@L("Distance")</th><th>@L("Visited")</th></tr></thead>
-    <tbody>@for (var i = 0; i < _input.NodeCount; i++) {
-      <tr><td>@i</td><td>@(Current.Distances[i] == int.MaxValue ? "∞" : Current.Distances[i].ToString())</td><td>@L(Current.Visited[i] ? "Visited" : "Unvisited")</td></tr>
-    }</tbody>
+    <thead>
+    <tr>
+      <th>@L("Node")</th>
+      <th>@L("Distance")</th>
+      <th>@L("Visited")</th>
+    </tr>
+    </thead>
+    <tbody>@for (var i = 0; i < _input.NodeCount; i++)
+    {
+      <tr>
+        <td>@i</td>
+        <td>@(Current.Distances[i] == int.MaxValue ? "∞" : Current.Distances[i].ToString())</td>
+        <td>@L(Current.Visited[i] ? "Visited" : "Unvisited")</td>
+      </tr>
+    }
+    </tbody>
   </table>
 </section>
+
 @code {
   private GraphAlgorithm _algorithm = GraphAlgorithm.Bfs;
   private int _count = 6;
@@ -45,7 +64,13 @@
   private int _revision;
   private bool _error;
   private GraphStep Current => _steps[Math.Max(0, _index)];
-  protected override void OnInitialized() { base.OnInitialized(); Apply(); }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    Apply();
+  }
+
   private void Apply()
   {
     _error = !GraphSimulator.TryParse(_count, _start, _text, out var input);
@@ -53,5 +78,12 @@
     _input = input;
     Reload();
   }
-  private void Reload() { _steps = GraphSimulator.Record(_input, _algorithm); _index = -1; _revision++; }
+
+  private void Reload()
+  {
+    _steps = GraphSimulator.Record(_input, _algorithm);
+    _index = -1;
+    _revision++;
+  }
+
 }

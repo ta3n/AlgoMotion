@@ -24,11 +24,16 @@
   <section class="chart-area tree-chart-area">
     <div class="tree-toolbar">
       <div class="tree-legend">
-        <span class="tree-legend-item"><span class="tree-swatch"></span>@UiText.Get(UiTextKey.LegendUnvisited, _uiLanguage)</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-active"></span>@UiText.Get(UiTextKey.LegendActive, _uiLanguage)</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-visited"></span>@UiText.Get(UiTextKey.LegendVisited, _uiLanguage)</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-queued"></span>@UiText.Get(UiTextKey.LegendQueued, _uiLanguage)</span>
-        <span class="tree-legend-item"><span class="tree-swatch tree-swatch-found"></span>@UiText.Get(UiTextKey.LegendFound, _uiLanguage)</span>
+        <span class="tree-legend-item"><span
+            class="tree-swatch"></span>@UiText.Get(UiTextKey.LegendUnvisited, _uiLanguage)</span>
+        <span class="tree-legend-item"><span
+            class="tree-swatch tree-swatch-active"></span>@UiText.Get(UiTextKey.LegendActive, _uiLanguage)</span>
+        <span class="tree-legend-item"><span
+            class="tree-swatch tree-swatch-visited"></span>@UiText.Get(UiTextKey.LegendVisited, _uiLanguage)</span>
+        <span class="tree-legend-item"><span
+            class="tree-swatch tree-swatch-queued"></span>@UiText.Get(UiTextKey.LegendQueued, _uiLanguage)</span>
+        <span class="tree-legend-item"><span
+            class="tree-swatch tree-swatch-found"></span>@UiText.Get(UiTextKey.LegendFound, _uiLanguage)</span>
       </div>
       <div class="zoom-control">
         <button class="btn btn-zoom" @onclick="ZoomOut" title="@UiText.Get(UiTextKey.ZoomOut, _uiLanguage)">−</button>
@@ -38,7 +43,8 @@
                value="@(_zoom.ToString(CultureInfo.InvariantCulture))" @oninput="OnZoomInput"/>
         <button class="btn btn-zoom" @onclick="ZoomIn" title="@UiText.Get(UiTextKey.ZoomIn, _uiLanguage)">+</button>
         <span class="zoom-readout">@((_zoom * 100).ToString("0")) %</span>
-        <button class="btn" @onclick="FitZoom" title="@UiText.Get(UiTextKey.FitViewTitle, _uiLanguage)">@UiText.Get(UiTextKey.FitView, _uiLanguage)</button>
+        <button class="btn" @onclick="FitZoom"
+                title="@UiText.Get(UiTextKey.FitViewTitle, _uiLanguage)">@UiText.Get(UiTextKey.FitView, _uiLanguage)</button>
       </div>
     </div>
 
@@ -130,8 +136,10 @@
       <button class="btn btn-play" @onclick="TogglePlay">
         @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
       </button>
-      <button class="btn" @onclick="() => _player.StepBack()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
-      <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.StepBack()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.StepForward()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
       <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
 
@@ -140,10 +148,12 @@
         <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
                value="@_n" @onchange="OnNChanged"/>
       </div>
-      <button class="btn" @onclick="NewTree" title="@UiText.Get(UiTextKey.NewTreeTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewTree, _uiLanguage)</button>
+      <button class="btn" @onclick="NewTree"
+              title="@UiText.Get(UiTextKey.NewTreeTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewTree, _uiLanguage)</button>
 
       <div class="custom-control">
-        <input type="text" class="custom-input" placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderTree, _uiLanguage)"
+        <input type="text" class="custom-input"
+               placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderTree, _uiLanguage)"
                aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderTree, _uiLanguage)"
                value="@_customTreeText" @oninput="OnCustomTreeTextChanged" @onkeydown="OnCustomTreeKeyDown"/>
         <button class="btn" @onclick="ApplyCustomTree">@UiText.Get(UiTextKey.CustomInputApply, _uiLanguage)</button>
@@ -178,7 +188,8 @@
         </label>
       </div>
       <div class="scrubber-control">
-        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)" title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+               title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
                min="-1" max="@(_player.Steps.Count - 1)"
                value="@_player.State.CurrentIndex" @oninput="OnScrubberInput"/>
         <span class="scrubber-readout">@(_player.State.CurrentIndex + 1)/@_player.Steps.Count</span>
@@ -187,20 +198,25 @@
 
     @if (_customTreeError)
     {
-      <p class="custom-error" role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
+      <p class="custom-error"
+         role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
     }
 
     <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
   </section>
 
   <div class="status-bar">
-    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</span><span
+        class="status-eq">=</span><span
         class="status-val">@_nodes.Count</span></div>
-    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipTarget, _uiLanguage)</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipTarget, _uiLanguage)</span><span
+        class="status-eq">=</span><span
         class="status-val">@_target</span></div>
-    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipCurrentNode, _uiLanguage)</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipCurrentNode, _uiLanguage)</span><span
+        class="status-eq">=</span><span
         class="status-val">@(Step.CurrentNodeId is { } id ? _nodes[id].Value.ToString() : "-")</span></div>
-    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipFound, _uiLanguage)</span><span class="status-eq">=</span><span
+    <div class="status-chip"><span class="status-key">@UiText.Get(UiTextKey.ChipFound, _uiLanguage)</span><span
+        class="status-eq">=</span><span
         class="status-val status-bool-@((Step.Type == TreeSearchStepType.Found).ToString().ToLowerInvariant())">@UiText.Bool(Step.Type == TreeSearchStepType.Found, _uiLanguage)</span>
     </div>
   </div>
@@ -346,7 +362,9 @@
     }
   }
 
-  private void OnBreakpointChanged(ChangeEventArgs e)
+  private void OnBreakpointChanged(
+    ChangeEventArgs e
+  )
   {
     if (int.TryParse(e.Value?.ToString(), out var step))
       _player.BreakAtIndex = Math.Clamp(step, 0, _player.Steps.Count) - 1;

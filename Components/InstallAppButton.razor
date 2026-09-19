@@ -4,48 +4,51 @@
 
 @if (_isAvailable)
 {
-    var label = UiText.Get(UiTextKey.PwaInstall, Language);
-    <button type="button" class="btn btn-install" aria-label="@label" title="@label" @onclick="PromptInstall">
-        <NavIcon Name="download" Size="16"/>
-        <span class="btn-label">@label</span>
-    </button>
+  var label = UiText.Get(UiTextKey.PwaInstall, Language);
+  <button type="button" class="btn btn-install" aria-label="@label" title="@label" @onclick="PromptInstall">
+    <NavIcon Name="download" Size="16"/>
+    <span class="btn-label">@label</span>
+  </button>
 }
 
 @code {
-    [Parameter] public UiLanguage Language { get; set; } = UiLanguage.Vi;
 
-    private DotNetObjectReference<InstallAppButton>? _selfRef;
-    private bool _isAvailable;
+  [Parameter]
+  public UiLanguage Language { get; set; } = UiLanguage.Vi;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _selfRef = DotNetObjectReference.Create(this);
-        await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeInstall", _selfRef);
-        _isAvailable = await JsRuntime.InvokeAsync<bool>("algoMotionPwa.isInstallAvailable");
-    }
+  private DotNetObjectReference<InstallAppButton>? _selfRef;
+  private bool _isAvailable;
 
-    [JSInvokable]
-    public void OnInstallAvailable()
-    {
-        _isAvailable = true;
-        InvokeAsync(StateHasChanged);
-    }
+  protected override async Task OnInitializedAsync()
+  {
+    _selfRef = DotNetObjectReference.Create(this);
+    await JsRuntime.InvokeVoidAsync("algoMotionPwa.subscribeInstall", _selfRef);
+    _isAvailable = await JsRuntime.InvokeAsync<bool>("algoMotionPwa.isInstallAvailable");
+  }
 
-    [JSInvokable]
-    public void OnInstallDone()
-    {
-        _isAvailable = false;
-        InvokeAsync(StateHasChanged);
-    }
+  [JSInvokable]
+  public void OnInstallAvailable()
+  {
+    _isAvailable = true;
+    InvokeAsync(StateHasChanged);
+  }
 
-    private async Task PromptInstall()
-    {
-        await JsRuntime.InvokeVoidAsync("algoMotionPwa.promptInstall");
-    }
+  [JSInvokable]
+  public void OnInstallDone()
+  {
+    _isAvailable = false;
+    InvokeAsync(StateHasChanged);
+  }
 
-    public ValueTask DisposeAsync()
-    {
-        _selfRef?.Dispose();
-        return ValueTask.CompletedTask;
-    }
+  private async Task PromptInstall()
+  {
+    await JsRuntime.InvokeVoidAsync("algoMotionPwa.promptInstall");
+  }
+
+  public ValueTask DisposeAsync()
+  {
+    _selfRef?.Dispose();
+    return ValueTask.CompletedTask;
+  }
+
 }

@@ -1588,45 +1588,198 @@ h1[tabindex="-1"]:focus-visible {
   border-radius: 14px;
   font-size: 14px;
 }
-.lesson h1 { color: var(--text-bright); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; }
-.lesson h2 { font-size: 1.1rem; font-weight: 600; margin: 20px 0 12px; }
-.lesson p { margin: 0 0 12px; line-height: 1.65; color: var(--text-dim); overflow-wrap: anywhere; }
-.lesson .controls { align-items: flex-end; margin: 18px 0; }
-.lesson label { display: flex; flex-direction: column; gap: 6px; color: var(--text-dim); font-size: 13px; }
+
+.lesson h1 {
+  color: var(--text-bright);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.lesson h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 20px 0 12px;
+}
+
+.lesson p {
+  margin: 0 0 12px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
+.lesson .controls {
+  align-items: flex-end;
+  margin: 18px 0;
+}
+
+.lesson label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
 .lesson input, .lesson select, .lesson textarea {
-  color: var(--text-bright); background: var(--bg-panel-2); border: 1px solid var(--border-soft);
-  border-radius: 10px; padding: 8px 10px; max-width: 100%; font: inherit;
+  color: var(--text-bright);
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 8px 10px;
+  max-width: 100%;
+  font: inherit;
 }
-.lesson input:not([type=range]), .lesson select { height: 38px; padding-block: 0; }
-.lesson input:hover, .lesson select:hover, .lesson textarea:hover { border-color: var(--border-strong); }
-.lesson input:focus-visible, .lesson select:focus-visible, .lesson textarea:focus-visible { outline: none; border-color: var(--accent); }
-.lesson input[type=range] { height: 38px; padding: 0; border: none; background: transparent; accent-color: var(--accent); }
-.lesson input[type=number] { width: 110px; }
-.lesson textarea { min-height: 140px; width: 100%; font-family: var(--font-mono); }
-.lesson table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-.lesson th, .lesson td { border: 1px solid var(--border-soft); padding: 9px; text-align: center; }
-.lesson th { color: var(--text-bright); background: var(--bg-panel-2); }
-.lesson .table-scroll { overflow: auto; margin: 18px 0; }
-.lesson .table-scroll table { min-width: 400px; }
-.lesson-timeline { flex: 1 1 100%; }
-.growth-chart { width: 100%; max-height: 380px; color: var(--text-bright); }
-.legend-measured { color: #33d9ff; }
-.legend-reference { color: #ffc857; }
-.comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.comparison-panel { min-width: 0; }
-.comparison-panel .chart-area { padding: 18px 5px; }
-.quiz { max-width: 900px; margin: auto; }
-.quiz-options { display: grid; gap: 12px; }
-.quiz-options .btn { white-space: normal; text-align: left; height: auto; padding: 14px; }
-.selected-answer, .lesson .active-cell { outline: 2px solid var(--accent); }
-.quiz-explanation { padding: 16px; border-left: 3px solid var(--accent); margin: 20px 0; }
-.graph-canvas { width: 100%; max-height: 430px; background: var(--bg-panel-2); border-radius: 12px; }
-.graph-canvas text { fill: var(--text-bright); font-size: 15px; font-family: var(--font-mono); }
-.graph-canvas .edge-label { fill: #ffc857; paint-order: stroke; stroke: #10151f; stroke-width: 5px; }
+
+.lesson input:not([type=range]), .lesson select {
+  height: 38px;
+  padding-block: 0;
+}
+
+.lesson input:hover, .lesson select:hover, .lesson textarea:hover {
+  border-color: var(--border-strong);
+}
+
+.lesson input:focus-visible, .lesson select:focus-visible, .lesson textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.lesson input[type=range] {
+  height: 38px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: var(--accent);
+}
+
+.lesson input[type=number] {
+  width: 110px;
+}
+
+.lesson textarea {
+  min-height: 140px;
+  width: 100%;
+  font-family: var(--font-mono);
+}
+
+.lesson table {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson th, .lesson td {
+  border: 1px solid var(--border-soft);
+  padding: 9px;
+  text-align: center;
+}
+
+.lesson th {
+  color: var(--text-bright);
+  background: var(--bg-panel-2);
+}
+
+.lesson .table-scroll {
+  overflow: auto;
+  margin: 18px 0;
+}
+
+.lesson .table-scroll table {
+  min-width: 400px;
+}
+
+.lesson-timeline {
+  flex: 1 1 100%;
+}
+
+.growth-chart {
+  width: 100%;
+  max-height: 380px;
+  color: var(--text-bright);
+}
+
+.legend-measured {
+  color: #33d9ff;
+}
+
+.legend-reference {
+  color: #ffc857;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.comparison-panel {
+  min-width: 0;
+}
+
+.comparison-panel .chart-area {
+  padding: 18px 5px;
+}
+
+.quiz {
+  max-width: 900px;
+  margin: auto;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+.quiz-options .btn {
+  white-space: normal;
+  text-align: left;
+  height: auto;
+  padding: 14px;
+}
+
+.selected-answer, .lesson .active-cell {
+  outline: 2px solid var(--accent);
+}
+
+.quiz-explanation {
+  padding: 16px;
+  border-left: 3px solid var(--accent);
+  margin: 20px 0;
+}
+
+.graph-canvas {
+  width: 100%;
+  max-height: 430px;
+  background: var(--bg-panel-2);
+  border-radius: 12px;
+}
+
+.graph-canvas text {
+  fill: var(--text-bright);
+  font-size: 15px;
+  font-family: var(--font-mono);
+}
+
+.graph-canvas .edge-label {
+  fill: #ffc857;
+  paint-order: stroke;
+  stroke: #10151f;
+  stroke-width: 5px;
+}
+
 @media (max-width: 720px) {
-  .comparison-grid { grid-template-columns: 1fr; }
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
 }
-.lesson .dependency-cell { background: #403516; color: #ffc857; }
+
+.lesson .dependency-cell {
+  background: #403516;
+  color: #ffc857;
+}
 
 /* ---------- responsive shell: sidebar becomes a drawer ---------- */
 

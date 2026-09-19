@@ -34,26 +34,26 @@ public enum TreeSearchStepType
 /// </summary>
 public sealed class TreeSearchStep
 {
-  public TreeSearchStepType Type { get; set; }
+  public TreeSearchStepType Type { get; init; }
 
   /// <summary>The node currently under the spotlight, or null once the search has ended without
   /// landing on a specific node (e.g. <see cref="TreeSearchStepType.NotFound"/>).</summary>
-  public int? CurrentNodeId { get; set; }
+  public int? CurrentNodeId { get; init; }
 
   /// <summary>Every node visited so far, including this step's — dimmed/checked-off in the UI.</summary>
-  public int[] VisitedNodeIds { get; set; } = [];
+  public int[] VisitedNodeIds { get; init; } = [];
 
   /// <summary>BFS only: nodes currently waiting in the queue, not yet visited.</summary>
-  public int[] QueuedNodeIds { get; set; } = [];
+  public int[] QueuedNodeIds { get; init; } = [];
 
-  public int CompareCount { get; set; }
+  public int CompareCount { get; init; }
 
   /// <summary>How many nodes have been visited so far (including this step's).</summary>
-  public int VisitCount { get; set; }
+  public int VisitCount { get; init; }
 
   /// <summary>1-based source line numbers to highlight in the code panel.</summary>
-  public int[] ActiveCodeLines { get; set; } = [];
+  public int[] ActiveCodeLines { get; init; } = [];
 
   /// <summary>Human readable caption shown under the code panel.</summary>
-  public string Caption { get; set; } = "";
+  public string Caption { get; init; } = "";
 }

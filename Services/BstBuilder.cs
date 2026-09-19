@@ -22,7 +22,7 @@ public static class BstBuilder
     {
       if (rootId is null)
       {
-        rootId = AddNode(nodes, value, parentId: null, depth: 0);
+        rootId = AddNode(nodes, value, null, 0);
         continue;
       }
 
@@ -66,7 +66,15 @@ public static class BstBuilder
   )
   {
     var id = nodes.Count;
-    nodes.Add(new TreeNode { Id = id, Value = value, ParentId = parentId, Depth = depth });
+    nodes.Add(
+      new TreeNode
+      {
+        Id = id,
+        Value = value,
+        ParentId = parentId,
+        Depth = depth
+      }
+    );
     return id;
   }
 

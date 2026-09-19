@@ -59,45 +59,45 @@ public enum StepType
 /// </summary>
 public sealed class SortStep
 {
-  public StepType Type { get; set; }
+  public StepType Type { get; init; }
 
   /// <summary>The full array state *after* this step is applied.</summary>
-  public int[] Snapshot { get; set; } = [];
+  public int[] Snapshot { get; init; } = [];
 
   /// <summary>Outer loop index (pass number), -1 when not applicable.</summary>
-  public int I { get; set; } = -1;
+  public int I { get; init; } = -1;
 
   /// <summary>Inner loop index (comparison position), -1 when not applicable.</summary>
-  public int J { get; set; } = -1;
+  public int J { get; init; } = -1;
 
-  public int CompareCount { get; set; }
+  public int CompareCount { get; init; }
 
-  public int SwapCount { get; set; }
+  public int SwapCount { get; init; }
 
-  public bool Swapped { get; set; }
+  public bool Swapped { get; init; }
 
   /// <summary>Index of the left element of the pair being compared/swapped.</summary>
-  public int? LeftIndex { get; set; }
+  public int? LeftIndex { get; init; }
 
   /// <summary>Index of the right element of the pair being compared/swapped.</summary>
-  public int? RightIndex { get; set; }
+  public int? RightIndex { get; init; }
 
   /// <summary>Selection Sort's running-minimum index, Quick Sort's pivot index, or Heap Sort's
   /// subtree root currently being sifted down.</summary>
-  public int? PivotIndex { get; set; }
+  public int? PivotIndex { get; init; }
 
   /// <summary>Quick/Merge Sort: start of the sub-array currently being worked on. Bars outside [Start,End] are dimmed.</summary>
-  public int? RangeStart { get; set; }
+  public int? RangeStart { get; init; }
 
   /// <summary>Quick/Merge Sort: end (inclusive) of the sub-array currently being worked on.</summary>
-  public int? RangeEnd { get; set; }
+  public int? RangeEnd { get; init; }
 
   /// <summary>1-based source line numbers to highlight in the code panel.</summary>
-  public int[] ActiveCodeLines { get; set; } = [];
+  public int[] ActiveCodeLines { get; init; } = [];
 
   /// <summary>Indices that have already settled into their final, sorted position.</summary>
-  public int[] SortedIndices { get; set; } = [];
+  public int[] SortedIndices { get; init; } = [];
 
   /// <summary>Human readable caption shown under the code panel.</summary>
-  public string Caption { get; set; } = "";
+  public string Caption { get; init; } = "";
 }

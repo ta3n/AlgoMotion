@@ -13,11 +13,11 @@
   <header class="app-header">
     <div class="title-block">
       <h1 class="app-title">@_algorithm.Name</h1>
-      <p class="app-subtitle">@_algorithm.GetSubtitle(_uiLanguage)</p>
+      <p class="app-subtitle">@_algorithm.GetSubtitle(UiLanguage)</p>
     </div>
     <div class="counters">
-      <StatCounter Label="@_algorithm.GetCompareLabel(_uiLanguage)" Value="@Step.CompareCount"/>
-      <StatCounter Label="@_algorithm.GetActionLabel(_uiLanguage)" Value="@Step.SwapCount"/>
+      <StatCounter Label="@_algorithm.GetCompareLabel(UiLanguage)" Value="@Step.CompareCount"/>
+      <StatCounter Label="@_algorithm.GetActionLabel(UiLanguage)" Value="@Step.SwapCount"/>
     </div>
   </header>
 
@@ -40,7 +40,7 @@
 
     <div class="controls">
       <div class="algo-control @(_algoMenuOpen ? "is-open" : "")">
-        <label id="algo-label">@UiText.Get(UiTextKey.AlgorithmLabel, _uiLanguage)</label>
+        <label id="algo-label">@UiText.Get(UiTextKey.AlgorithmLabel, UiLanguage)</label>
         <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_algoMenuOpen"
                 aria-labelledby="algo-label" @onclick="ToggleAlgoMenu">
           <span>@_algorithm.Name</span>
@@ -64,7 +64,7 @@
       </div>
 
       <div class="algo-control @(_codeLangMenuOpen ? "is-open" : "")">
-        <label id="code-lang-label">@UiText.Get(UiTextKey.CodeLanguageLabel, _uiLanguage)</label>
+        <label id="code-lang-label">@UiText.Get(UiTextKey.CodeLanguageLabel, UiLanguage)</label>
         <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_codeLangMenuOpen"
                 aria-labelledby="code-lang-label" @onclick="ToggleCodeLangMenu">
           <span>@CodeLanguages.Label(_codeLanguage)</span>
@@ -88,10 +88,10 @@
       </div>
 
       <div class="algo-control @(_uiLangMenuOpen ? "is-open" : "")">
-        <label id="ui-lang-label">@UiText.Get(UiTextKey.UiLanguageLabel, _uiLanguage)</label>
+        <label id="ui-lang-label">@UiText.Get(UiTextKey.UiLanguageLabel, UiLanguage)</label>
         <button type="button" class="algo-trigger" aria-haspopup="listbox" aria-expanded="@_uiLangMenuOpen"
                 aria-labelledby="ui-lang-label" @onclick="ToggleUiLangMenu">
-          <span>@UiLanguages.Code(_uiLanguage)</span>
+          <span>@UiLanguages.Code(UiLanguage)</span>
           <span class="algo-caret">▾</span>
         </button>
 
@@ -101,8 +101,8 @@
           <ul class="algo-menu" role="listbox">
             @foreach (var lang in UiLanguages.All)
             {
-              <li role="option" aria-selected="@(lang == _uiLanguage)"
-                  class="algo-menu-item @(lang == _uiLanguage ? "is-selected" : "")"
+              <li role="option" aria-selected="@(lang == UiLanguage)"
+                  class="algo-menu-item @(lang == UiLanguage ? "is-selected" : "")"
                   @onclick="() => SelectUiLanguage(lang)">
                 @UiLanguages.Label(lang)
               </li>
@@ -112,29 +112,33 @@
       </div>
 
       <button class="btn btn-play" @onclick="TogglePlay">
-        @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, _uiLanguage) : UiText.Get(UiTextKey.Play, _uiLanguage))
+        @(_player.State.IsPlaying ? UiText.Get(UiTextKey.Pause, UiLanguage) : UiText.Get(UiTextKey.Play, UiLanguage))
       </button>
-      <button class="btn" @onclick="() => _player.StepBack()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, _uiLanguage)</button>
-      <button class="btn" @onclick="() => _player.StepForward()" disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, _uiLanguage)</button>
-      <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, _uiLanguage)</button>
-      <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, _uiLanguage)</button>
+      <button class="btn" @onclick="() => _player.StepBack()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.StepBack, UiLanguage)</button>
+      <button class="btn" @onclick="() => _player.StepForward()"
+              disabled="@_player.State.IsPlaying">@UiText.Get(UiTextKey.Step, UiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Reset()">@UiText.Get(UiTextKey.Reset, UiLanguage)</button>
+      <button class="btn" @onclick="() => _player.Replay()">@UiText.Get(UiTextKey.Replay, UiLanguage)</button>
 
       <div class="n-control">
-        <label for="n-input">@UiText.Get(UiTextKey.ChipN, _uiLanguage)</label>
+        <label for="n-input">@UiText.Get(UiTextKey.ChipN, UiLanguage)</label>
         <input id="n-input" type="number" class="n-input" min="@MinN" max="@MaxN"
                value="@_n" @onchange="OnNChanged"/>
       </div>
-      <button class="btn" @onclick="NewArray" title="@UiText.Get(UiTextKey.NewArrayTitle, _uiLanguage)">@UiText.Get(UiTextKey.NewArray, _uiLanguage)</button>
+      <button class="btn" @onclick="NewArray"
+              title="@UiText.Get(UiTextKey.NewArrayTitle, UiLanguage)">@UiText.Get(UiTextKey.NewArray, UiLanguage)</button>
 
       <div class="custom-control">
-        <input type="text" class="custom-input" placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
-               aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, _uiLanguage)"
+        <input type="text" class="custom-input"
+               placeholder="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, UiLanguage)"
+               aria-label="@UiText.Get(UiTextKey.CustomInputPlaceholderArray, UiLanguage)"
                value="@_customArrayText" @oninput="OnCustomArrayTextChanged" @onkeydown="OnCustomArrayKeyDown"/>
-        <button class="btn" @onclick="ApplyCustomArray">@UiText.Get(UiTextKey.CustomInputApply, _uiLanguage)</button>
+        <button class="btn" @onclick="ApplyCustomArray">@UiText.Get(UiTextKey.CustomInputApply, UiLanguage)</button>
       </div>
 
       <div class="speed-control">
-        <label for="speed-input">@UiText.Get(UiTextKey.SpeedLabel, _uiLanguage)</label>
+        <label for="speed-input">@UiText.Get(UiTextKey.SpeedLabel, UiLanguage)</label>
         <input id="speed-input" type="range"
                min="@PlaybackSpeeds.Min.ToString(CultureInfo.InvariantCulture)"
                max="@PlaybackSpeeds.Max.ToString(CultureInfo.InvariantCulture)"
@@ -145,13 +149,14 @@
       </div>
 
       <div class="n-control">
-        <label>@LearningText.Get("BreakAt", _uiLanguage)
+        <label>@LearningText.Get("BreakAt", UiLanguage)
           <input type="number" class="n-input" min="0" max="@_player.Steps.Count"
                  value="@(_player.BreakAtIndex + 1)" @onchange="OnBreakpointChanged"/>
         </label>
       </div>
       <div class="scrubber-control">
-        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)" title="@UiText.Get(UiTextKey.ScrubberLabel, _uiLanguage)"
+        <input type="range" class="scrubber" aria-label="@UiText.Get(UiTextKey.ScrubberLabel, UiLanguage)"
+               title="@UiText.Get(UiTextKey.ScrubberLabel, UiLanguage)"
                min="-1" max="@(_player.Steps.Count - 1)"
                value="@_player.State.CurrentIndex" @oninput="OnScrubberInput"/>
         <span class="scrubber-readout">@(_player.State.CurrentIndex + 1)/@_player.Steps.Count</span>
@@ -160,14 +165,15 @@
 
     @if (_customArrayError)
     {
-      <p class="custom-error" role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, _uiLanguage), MinN, MaxN)</p>
+      <p class="custom-error"
+         role="alert">@string.Format(UiText.Get(UiTextKey.CustomInputError, UiLanguage), MinN, MaxN)</p>
     }
 
-    <p class="hint-caption">@_algorithm.GetHintCaption(_uiLanguage)</p>
+    <p class="hint-caption">@_algorithm.GetHintCaption(UiLanguage)</p>
   </section>
 
   <StatusBar N="@_initial.Length" I="@Step.I" J="@Step.J" Swapped="@Step.Swapped"
-             Caption="@Step.Caption" History="@_history" Language="@_uiLanguage"/>
+             Caption="@Step.Caption" History="@_history" Language="@UiLanguage"/>
 
 </div>
 
@@ -192,7 +198,7 @@
   private int _lastLoggedIndex = -1;
   private SortStep _initialStep = new();
 
-  private UiLanguage _uiLanguage => LangState.Current;
+  private UiLanguage UiLanguage => LangState.Current;
 
   private SortStep Step => _player.Current ?? _initialStep;
 
@@ -234,10 +240,10 @@
       I = -1,
       J = -1,
       ActiveCodeLines = [1, 2],
-      Caption = UiText.Get(UiTextKey.InitialArrayCaption, _uiLanguage)
+      Caption = UiText.Get(UiTextKey.InitialArrayCaption, UiLanguage)
     };
 
-    _player.Load(_algorithm.Record(_initial, _uiLanguage));
+    _player.Load(_algorithm.Record(_initial, UiLanguage));
   }
 
   /// <summary>
@@ -281,7 +287,9 @@
     }
   }
 
-  private void OnBreakpointChanged(ChangeEventArgs e)
+  private void OnBreakpointChanged(
+    ChangeEventArgs e
+  )
   {
     if (int.TryParse(e.Value?.ToString(), out var step))
       _player.BreakAtIndex = Math.Clamp(step, 0, _player.Steps.Count) - 1;

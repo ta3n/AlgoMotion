@@ -25,7 +25,8 @@
       {
         var open = _openGroups.Contains(group.Id);
         <div class="nav-group">
-          <button type="button" class="nav-group-header" aria-expanded="@(open ? "true" : "false")" aria-controls="nav-group-@group.Id"
+          <button type="button" class="nav-group-header" aria-expanded="@(open ? "true" : "false")"
+                  aria-controls="nav-group-@group.Id"
                   @onclick="() => ToggleGroup(group.Id)">
             <span>@UiText.Get(group.Title, Lang)</span>
             <span class="nav-chevron @(open ? "is-open" : "")"><NavIcon Name="chevron" Size="16"/></span>
@@ -63,13 +64,15 @@
       <span class="topbar-tile"><NavIcon Name="@(_current?.Icon ?? "brand")" Size="20"/></span>
       <div class="topbar-titles">
         <span class="topbar-title">@(_current?.Label(Lang) ?? "AlgoMotion")</span>
-        <span class="topbar-subtitle">@(_current is null ? UiText.Get(UiTextKey.BrandTagline, Lang) : UiText.Get(_current.Subtitle, Lang))</span>
+        <span
+          class="topbar-subtitle">@(_current is null ? UiText.Get(UiTextKey.BrandTagline, Lang) : UiText.Get(_current.Subtitle, Lang))</span>
       </div>
 
       <div class="topbar-actions">
         <InstallAppButton Language="@Lang"/>
         <div class="lang-control @(_langMenuOpen ? "is-open" : "")">
-          <button type="button" class="topbar-btn" aria-haspopup="listbox" aria-expanded="@(_langMenuOpen ? "true" : "false")"
+          <button type="button" class="topbar-btn" aria-haspopup="listbox"
+                  aria-expanded="@(_langMenuOpen ? "true" : "false")"
                   aria-label="@UiText.Get(UiTextKey.UiLanguageLabel, Lang)" @onclick="ToggleLangMenu">
             <NavIcon Name="globe" Size="16"/>
             <span>@UiLanguages.Code(Lang)</span>
@@ -102,25 +105,40 @@
 
 @code {
 
-  private sealed record NavItem(string Href, string Icon, Func<UiLanguage, string> Label, UiTextKey Subtitle);
+  private sealed record NavItem(
+    string Href,
+    string Icon,
+    Func<UiLanguage, string> Label,
+    UiTextKey Subtitle
+  );
 
-  private sealed record NavGroup(string Id, UiTextKey Title, NavItem[] Items);
+  private sealed record NavGroup(
+    string Id,
+    UiTextKey Title,
+    NavItem[] Items
+  );
 
   private static readonly NavGroup[] Groups =
   [
-    new("visualizer", UiTextKey.NavGroupVisualizer,
-    [
-      new("/", "sort", l => UiText.Get(UiTextKey.NavSort, l), UiTextKey.SubSort),
-      new("/tree-search", "tree", l => UiText.Get(UiTextKey.NavTreeSearch, l), UiTextKey.SubTreeSearch),
-      new("/graphs", "graph", l => LearningText.Get("Graph", l), UiTextKey.SubGraphs),
-      new("/dynamic-programming", "grid", l => LearningText.Get("DP", l), UiTextKey.SubDp)
-    ]),
-    new("learn", UiTextKey.NavGroupLearn,
-    [
-      new("/complexity", "trend", l => LearningText.Get("Complexity", l), UiTextKey.SubComplexity),
-      new("/compare", "compare", l => LearningText.Get("Compare", l), UiTextKey.SubCompare),
-      new("/quiz", "quiz", l => LearningText.Get("Quiz", l), UiTextKey.SubQuiz)
-    ])
+    new(
+      "visualizer",
+      UiTextKey.NavGroupVisualizer,
+      [
+        new("/", "sort", l => UiText.Get(UiTextKey.NavSort, l), UiTextKey.SubSort),
+        new("/tree-search", "tree", l => UiText.Get(UiTextKey.NavTreeSearch, l), UiTextKey.SubTreeSearch),
+        new("/graphs", "graph", l => LearningText.Get("Graph", l), UiTextKey.SubGraphs),
+        new("/dynamic-programming", "grid", l => LearningText.Get("DP", l), UiTextKey.SubDp)
+      ]
+    ),
+    new(
+      "learn",
+      UiTextKey.NavGroupLearn,
+      [
+        new("/complexity", "trend", l => LearningText.Get("Complexity", l), UiTextKey.SubComplexity),
+        new("/compare", "compare", l => LearningText.Get("Compare", l), UiTextKey.SubCompare),
+        new("/quiz", "quiz", l => LearningText.Get("Quiz", l), UiTextKey.SubQuiz)
+      ]
+    )
   ];
 
   private readonly HashSet<string> _openGroups = [];
@@ -155,26 +173,45 @@
     _current = null;
   }
 
-  private void ToggleGroup(string id)
+  private void ToggleGroup(
+    string id
+  )
   {
     if (!_openGroups.Remove(id)) _openGroups.Add(id);
   }
 
-  private void OpenDrawer() => _drawerOpen = true;
+  private void OpenDrawer()
+  {
+    _drawerOpen = true;
+  }
 
-  private void CloseDrawer() => _drawerOpen = false;
+  private void CloseDrawer()
+  {
+    _drawerOpen = false;
+  }
 
-  private void ToggleLangMenu() => _langMenuOpen = !_langMenuOpen;
+  private void ToggleLangMenu()
+  {
+    _langMenuOpen = !_langMenuOpen;
+  }
 
-  private void CloseLangMenu() => _langMenuOpen = false;
+  private void CloseLangMenu()
+  {
+    _langMenuOpen = false;
+  }
 
-  private void SelectLanguage(UiLanguage language)
+  private void SelectLanguage(
+    UiLanguage language
+  )
   {
     LangState.Set(language);
     _langMenuOpen = false;
   }
 
-  private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+  private void OnLocationChanged(
+    object? sender,
+    LocationChangedEventArgs e
+  )
   {
     _drawerOpen = false;
     _langMenuOpen = false;

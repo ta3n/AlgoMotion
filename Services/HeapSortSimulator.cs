@@ -43,150 +43,151 @@ namespace AlgoMotion.Services;
 /// </summary>
 public static class HeapSortSimulator
 {
-  public static readonly IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage = new Dictionary<CodeLanguage, string[]>
-  {
-    [CodeLanguage.C] =
-    [
-      "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">heap_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
-      "{",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = (<span class=\"tok-type\">int</span>)n / 2 - 1; i &gt;= 0; i--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, n, i);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = (<span class=\"tok-type\">int</span>)n - 1; end &gt; 0; end--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[0], &amp;a[end]);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, end, 0);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}",
-      "",
-      "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">sift_down</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> size, <span class=\"tok-type\">int</span> root)",
-      "{",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (;;) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> left = 2 * root + 1, right = 2 * root + 2;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; (<span class=\"tok-type\">int</span>)size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; (<span class=\"tok-type\">int</span>)size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">break</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[root], &amp;a[largest]);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}"
-    ],
-    [CodeLanguage.CSharp] =
-    [
-      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">HeapSort</span>(<span class=\"tok-type\">int</span>[] a)",
-      "{",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> n = a.Length;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = n / 2 - 1; i &gt;= 0; i--) <span class=\"tok-fn\">SiftDown</span>(a, n, i);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = n - 1; end &gt; 0; end--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[0], a[end]) = (a[end], a[0]);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">SiftDown</span>(a, end, 0);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}",
-      "",
-      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">SiftDown</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> size, <span class=\"tok-type\">int</span> root)",
-      "{",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root, left = (2 * root) + 1, right = (2 * root) + 2;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">return</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[root], a[largest]) = (a[largest], a[root]);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}"
-    ],
-    [CodeLanguage.Java] =
-    [
-      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">heapSort</span>(<span class=\"tok-type\">int</span>[] a) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> n = a.length;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = n / 2 - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = n - 1; end &gt; 0; end--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[0]; a[0] = a[end]; a[end] = tmp;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}",
-      "",
-      "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">siftDown</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> size, <span class=\"tok-type\">int</span> root) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root, left = 2 * root + 1, right = 2 * root + 2;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">return</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[root]; a[root] = a[largest]; a[largest] = tmp;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}"
-    ],
-    [CodeLanguage.Python] =
-    [
-      "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">heap_sort</span>(a):",
-      "&nbsp;&nbsp;&nbsp;&nbsp;n = len(a)",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> i <span class=\"tok-kw\">in</span> range(n // 2 - 1, -1, -1):",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, n, i)",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> end <span class=\"tok-kw\">in</span> range(n - 1, 0, -1):",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[0], a[end] = a[end], a[0]",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, end, 0)",
-      "",
-      "",
-      "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">sift_down</span>(a, size, root):",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while True</span>:",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest, left, right = root, 2 * root + 1, 2 * root + 2",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> left &lt; size <span class=\"tok-kw\">and</span> a[left] &gt; a[largest]:",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest = left",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> right &lt; size <span class=\"tok-kw\">and</span> a[right] &gt; a[largest]:",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest = right",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> largest == root:",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">return</span>",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[root], a[largest] = a[largest], a[root]",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest"
-    ],
-    [CodeLanguage.TypeScript] =
-    [
-      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">heapSort</span>(a: <span class=\"tok-type\">number</span>[]): <span class=\"tok-type\">void</span> {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> n = a.length;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> i = Math.floor(n / 2) - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> end = n - 1; end &gt; 0; end--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[0], a[end]] = [a[end], a[0]];",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}",
-      "",
-      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">siftDown</span>(a: <span class=\"tok-type\">number</span>[], size: <span class=\"tok-type\">number</span>, root: <span class=\"tok-type\">number</span>): <span class=\"tok-type\">void</span> {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> largest = root;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> left = 2 * root + 1, right = 2 * root + 2;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest === root) <span class=\"tok-kw\">return</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[root], a[largest]] = [a[largest], a[root]];",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}"
-    ],
-    [CodeLanguage.JavaScript] =
-    [
-      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">heapSort</span>(a) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> n = a.length;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> i = Math.floor(n / 2) - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> end = n - 1; end &gt; 0; end--) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[0], a[end]] = [a[end], a[0]];",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}",
-      "",
-      "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">siftDown</span>(a, size, root) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> largest = root;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> left = 2 * root + 1, right = 2 * root + 2;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest === root) <span class=\"tok-kw\">return</span>;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[root], a[largest]] = [a[largest], a[root]];",
-      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
-      "&nbsp;&nbsp;&nbsp;&nbsp;}",
-      "}"
-    ]
-  };
+  public static readonly IReadOnlyDictionary<CodeLanguage, string[]> CodeByLanguage =
+    new Dictionary<CodeLanguage, string[]>
+    {
+      [CodeLanguage.C] =
+      [
+        "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">heap_sort</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> n)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = (<span class=\"tok-type\">int</span>)n / 2 - 1; i &gt;= 0; i--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, n, i);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = (<span class=\"tok-type\">int</span>)n - 1; end &gt; 0; end--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[0], &amp;a[end]);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, end, 0);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}",
+        "",
+        "<span class=\"tok-type\">void</span> <span class=\"tok-fn\">sift_down</span>(<span class=\"tok-type\">int</span> a[], <span class=\"tok-type\">size_t</span> size, <span class=\"tok-type\">int</span> root)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (;;) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> left = 2 * root + 1, right = 2 * root + 2;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; (<span class=\"tok-type\">int</span>)size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; (<span class=\"tok-type\">int</span>)size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">break</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(&amp;a[root], &amp;a[largest]);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+      ],
+      [CodeLanguage.CSharp] =
+      [
+        "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">HeapSort</span>(<span class=\"tok-type\">int</span>[] a)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> n = a.Length;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = n / 2 - 1; i &gt;= 0; i--) <span class=\"tok-fn\">SiftDown</span>(a, n, i);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = n - 1; end &gt; 0; end--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[0], a[end]) = (a[end], a[0]);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">SiftDown</span>(a, end, 0);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}",
+        "",
+        "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">SiftDown</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> size, <span class=\"tok-type\">int</span> root)",
+        "{",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root, left = (2 * root) + 1, right = (2 * root) + 2;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">return</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a[root], a[largest]) = (a[largest], a[root]);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+      ],
+      [CodeLanguage.Java] =
+      [
+        "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">heapSort</span>(<span class=\"tok-type\">int</span>[] a) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> n = a.length;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> i = n / 2 - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-type\">int</span> end = n - 1; end &gt; 0; end--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[0]; a[0] = a[end]; a[end] = tmp;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}",
+        "",
+        "<span class=\"tok-kw\">static void</span> <span class=\"tok-fn\">siftDown</span>(<span class=\"tok-type\">int</span>[] a, <span class=\"tok-type\">int</span> size, <span class=\"tok-type\">int</span> root) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> largest = root, left = 2 * root + 1, right = 2 * root + 2;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest == root) <span class=\"tok-kw\">return</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-type\">int</span> tmp = a[root]; a[root] = a[largest]; a[largest] = tmp;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+      ],
+      [CodeLanguage.Python] =
+      [
+        "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">heap_sort</span>(a):",
+        "&nbsp;&nbsp;&nbsp;&nbsp;n = len(a)",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> i <span class=\"tok-kw\">in</span> range(n // 2 - 1, -1, -1):",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, n, i)",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> end <span class=\"tok-kw\">in</span> range(n - 1, 0, -1):",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[0], a[end] = a[end], a[0]",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">sift_down</span>(a, end, 0)",
+        "",
+        "",
+        "<span class=\"tok-kw\">def</span> <span class=\"tok-fn\">sift_down</span>(a, size, root):",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while True</span>:",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest, left, right = root, 2 * root + 1, 2 * root + 2",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> left &lt; size <span class=\"tok-kw\">and</span> a[left] &gt; a[largest]:",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest = left",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> right &lt; size <span class=\"tok-kw\">and</span> a[right] &gt; a[largest]:",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;largest = right",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> largest == root:",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">return</span>",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[root], a[largest] = a[largest], a[root]",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest"
+      ],
+      [CodeLanguage.TypeScript] =
+      [
+        "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">heapSort</span>(a: <span class=\"tok-type\">number</span>[]): <span class=\"tok-type\">void</span> {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> n = a.length;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> i = Math.floor(n / 2) - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> end = n - 1; end &gt; 0; end--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[0], a[end]] = [a[end], a[0]];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}",
+        "",
+        "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">siftDown</span>(a: <span class=\"tok-type\">number</span>[], size: <span class=\"tok-type\">number</span>, root: <span class=\"tok-type\">number</span>): <span class=\"tok-type\">void</span> {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> largest = root;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> left = 2 * root + 1, right = 2 * root + 2;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest === root) <span class=\"tok-kw\">return</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[root], a[largest]] = [a[largest], a[root]];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+      ],
+      [CodeLanguage.JavaScript] =
+      [
+        "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">heapSort</span>(a) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> n = a.length;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> i = Math.floor(n / 2) - 1; i &gt;= 0; i--) <span class=\"tok-fn\">siftDown</span>(a, n, i);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">for</span> (<span class=\"tok-kw\">let</span> end = n - 1; end &gt; 0; end--) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[0], a[end]] = [a[end], a[0]];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-fn\">siftDown</span>(a, end, 0);",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}",
+        "",
+        "<span class=\"tok-kw\">function</span> <span class=\"tok-fn\">siftDown</span>(a, size, root) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">while</span> (<span class=\"tok-kw\">true</span>) {",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">let</span> largest = root;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">const</span> left = 2 * root + 1, right = 2 * root + 2;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (left &lt; size &amp;&amp; a[left] &gt; a[largest]) largest = left;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (right &lt; size &amp;&amp; a[right] &gt; a[largest]) largest = right;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tok-kw\">if</span> (largest === root) <span class=\"tok-kw\">return</span>;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[a[root], a[largest]] = [a[largest], a[root]];",
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root = largest;",
+        "&nbsp;&nbsp;&nbsp;&nbsp;}",
+        "}"
+      ]
+    };
 
   public static List<SortStep> Record(
     IReadOnlyList<int> input,
@@ -298,7 +299,10 @@ public static class HeapSortSimulator
             Caption = Res.Caption(
               leftBigger ? "Heap_CompareLeftBigger" : "Heap_CompareLeftNotBigger",
               language,
-              left, a[left], largest, a[largest]
+              left,
+              a[left],
+              largest,
+              a[largest]
             )
           }
         );
@@ -333,7 +337,10 @@ public static class HeapSortSimulator
             Caption = Res.Caption(
               rightBigger ? "Heap_CompareRightBigger" : "Heap_CompareRightNotBigger",
               language,
-              right, a[right], largest, a[largest]
+              right,
+              a[right],
+              largest,
+              a[largest]
             )
           }
         );

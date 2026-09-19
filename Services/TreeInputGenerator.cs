@@ -36,7 +36,7 @@ public static class TreeInputGenerator
     }
 
     var spineLength = Math.Clamp(minDepth, 0, n - 1) + 1;
-    var spineStart = (n - spineLength) + 1;
+    var spineStart = n - spineLength + 1;
     var spine = Enumerable.Range(spineStart, spineLength);
     var remainder = Enumerable.Range(1, spineStart - 1).OrderBy(_ => rng.Next());
 

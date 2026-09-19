@@ -30,7 +30,7 @@ public static class AvlBuilder
       rootId = Insert(nodes, heights, rootId, value);
     }
 
-    FixParentPointers(nodes, rootId, parentId: null, depth: 0);
+    FixParentPointers(nodes, rootId, null, 0);
     BstBuilder.AssignInorderIndices(nodes, rootId);
     return (nodes, rootId);
   }
@@ -53,7 +53,13 @@ public static class AvlBuilder
     if (id is null)
     {
       var newId = nodes.Count;
-      nodes.Add(new TreeNode { Id = newId, Value = value });
+      nodes.Add(
+        new TreeNode
+        {
+          Id = newId,
+          Value = value
+        }
+      );
       heights[newId] = 0;
       return newId;
     }
