@@ -216,7 +216,7 @@ public static class HeapSortSimulator
         new SortStep
         {
           Type = StepType.Swap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           J = end,
           CompareCount = compareCount,
           SwapCount = swapCount,
@@ -225,7 +225,7 @@ public static class HeapSortSimulator
           RangeStart = 0,
           RangeEnd = end,
           ActiveCodeLines = [6, 7],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Heap_ExtractSwap", language, end)
         }
       );
@@ -242,11 +242,11 @@ public static class HeapSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
@@ -283,7 +283,7 @@ public static class HeapSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = root,
             J = left,
             CompareCount = compareCount,
@@ -294,7 +294,7 @@ public static class HeapSortSimulator
             RangeStart = 0,
             RangeEnd = size - 1,
             ActiveCodeLines = [17],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               leftBigger ? "Heap_CompareLeftBigger" : "Heap_CompareLeftNotBigger",
               language,
@@ -318,7 +318,7 @@ public static class HeapSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = root,
             J = right,
             CompareCount = compareCount,
@@ -329,7 +329,7 @@ public static class HeapSortSimulator
             RangeStart = 0,
             RangeEnd = size - 1,
             ActiveCodeLines = [18],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               rightBigger ? "Heap_CompareRightBigger" : "Heap_CompareRightNotBigger",
               language,
@@ -350,7 +350,7 @@ public static class HeapSortSimulator
           new SortStep
           {
             Type = StepType.NoSwap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = root,
             CompareCount = compareCount,
             SwapCount = swapCount,
@@ -358,7 +358,7 @@ public static class HeapSortSimulator
             RangeStart = 0,
             RangeEnd = size - 1,
             ActiveCodeLines = [19],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Heap_NoSwapStop", language, root)
           }
         );
@@ -373,7 +373,7 @@ public static class HeapSortSimulator
         new SortStep
         {
           Type = StepType.Swap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = root,
           J = largest,
           CompareCount = compareCount,
@@ -384,7 +384,7 @@ public static class HeapSortSimulator
           RangeStart = 0,
           RangeEnd = size - 1,
           ActiveCodeLines = [20, 21],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Heap_SiftSwap", language, root, largest)
         }
       );

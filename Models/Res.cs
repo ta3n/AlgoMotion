@@ -40,6 +40,11 @@ public static class Res
   private static readonly ResourceManager CaptionsVi = Rm("Captions");
   private static readonly ResourceManager CaptionsEn = Rm("Captions.English");
 
+  // A simulator records tens of thousands of steps per run, each naming one of a few dozen caption
+  // keys. ResourceManager.GetString walks the culture chain and takes a lock on every call, which on
+  // the single-threaded WASM interpreter dominated recording time — so each template is resolved once.
+  private static readonly Dictionary<(UiLanguage Language, string Key), string> CaptionTemplates = [];
+
   private static string Lookup(
     ResourceManager vi,
     ResourceManager en,
@@ -84,7 +89,12 @@ public static class Res
     params object[] args
   )
   {
-    var template = Lookup(CaptionsVi, CaptionsEn, key, language);
+    if (!CaptionTemplates.TryGetValue((language, key), out var template))
+    {
+      template = Lookup(CaptionsVi, CaptionsEn, key, language);
+      CaptionTemplates[(language, key)] = template;
+    }
+
     return args.Length == 0 ? template : string.Format(template, args);
   }
 }

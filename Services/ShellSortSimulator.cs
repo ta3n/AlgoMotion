@@ -147,7 +147,7 @@ public static class ShellSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [3],
@@ -168,7 +168,7 @@ public static class ShellSortSimulator
             new SortStep
             {
               Type = StepType.Compare,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = i,
               J = j,
               CompareCount = compareCount,
@@ -196,7 +196,7 @@ public static class ShellSortSimulator
             new SortStep
             {
               Type = StepType.Swap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = i,
               J = j,
               CompareCount = compareCount,
@@ -216,7 +216,7 @@ public static class ShellSortSimulator
         new SortStep
         {
           Type = StepType.EndPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [12, 13],
@@ -235,7 +235,7 @@ public static class ShellSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],

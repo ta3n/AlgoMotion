@@ -272,12 +272,12 @@ public static class TreeSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           CompareCount = compareCount,
           SwapCount = writeCount,
           RightIndex = i,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [30, 31],
           Caption = Res.Caption("TreeSort_InsertStart", language, i, a[i])
         }
@@ -290,10 +290,10 @@ public static class TreeSortSimulator
       new SortStep
       {
         Type = StepType.EndPass,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = writeCount,
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         ActiveCodeLines = [33, 34],
         Caption = Res.Caption("TreeSort_TraverseStart", language)
       }
@@ -321,7 +321,7 @@ public static class TreeSortSimulator
           CompareCount = compareCount,
           SwapCount = writeCount,
           RightIndex = idx,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [23],
           Caption = Res.Caption("TreeSort_Place", language, visited[idx].Value, visited[idx].SourceIndex, idx)
         }
@@ -335,7 +335,7 @@ public static class TreeSortSimulator
         Snapshot = output,
         CompareCount = compareCount,
         SwapCount = writeCount,
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         ActiveCodeLines = [27, 28],
         Caption = Res.Caption("Common_SortCompleted", language)
       }
@@ -365,11 +365,11 @@ public static class TreeSortSimulator
         new SortStep
         {
           Type = StepType.NoSwap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = compareCount,
           SwapCount = writeCount,
           RightIndex = originalIndex,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [8, 9],
           Caption = Res.Caption("TreeSort_EmptySlot", language, value)
         }
@@ -385,12 +385,12 @@ public static class TreeSortSimulator
       new SortStep
       {
         Type = StepType.Compare,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = writeCount,
         LeftIndex = node.OriginalIndex,
         RightIndex = originalIndex,
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         ActiveCodeLines = goLeft ? [11, 12] : [11, 13, 14],
         Caption = Res.Caption(
           goLeft ? "TreeSort_CompareLeft" : "TreeSort_CompareRight",

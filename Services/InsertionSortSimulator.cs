@@ -131,14 +131,14 @@ public static class InsertionSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           J = j,
           CompareCount = compareCount,
           SwapCount = swapCount,
           LeftIndex = i,
           ActiveCodeLines = [3, 4],
-          SortedIndices = Range(0, i),
+          SortedIndices = StepArrays.Prefix(i),
           Caption = Res.Caption("Insertion_StartPass", language, i, a[i])
         }
       );
@@ -152,7 +152,7 @@ public static class InsertionSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = j,
             CompareCount = compareCount,
@@ -160,7 +160,7 @@ public static class InsertionSortSimulator
             LeftIndex = j - 1,
             RightIndex = j,
             ActiveCodeLines = [5],
-            SortedIndices = Range(0, i),
+            SortedIndices = StepArrays.Prefix(i),
             Caption = Res.Caption(
               outOfOrder ? "Insertion_CompareOutOfOrder" : "Insertion_CompareInOrder",
               language,
@@ -181,7 +181,7 @@ public static class InsertionSortSimulator
           new SortStep
           {
             Type = StepType.Swap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = j,
             CompareCount = compareCount,
@@ -189,7 +189,7 @@ public static class InsertionSortSimulator
             LeftIndex = j - 1,
             RightIndex = j,
             ActiveCodeLines = [6, 7, 8],
-            SortedIndices = Range(0, i),
+            SortedIndices = StepArrays.Prefix(i),
             Caption = Res.Caption("Insertion_Swap", language, j - 1, j)
           }
         );
@@ -201,12 +201,12 @@ public static class InsertionSortSimulator
         new SortStep
         {
           Type = StepType.EndPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [11],
-          SortedIndices = Range(0, i + 1),
+          SortedIndices = StepArrays.Prefix(i + 1),
           Caption = Res.Caption("Insertion_EndPass", language, i)
         }
       );
@@ -216,30 +216,16 @@ public static class InsertionSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         I = n - 1,
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [12],
-        SortedIndices = Range(0, n),
+        SortedIndices = StepArrays.Prefix(n),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
 
     return steps;
-  }
-
-  private static int[] Range(
-    int start,
-    int endExclusive
-  )
-  {
-    var result = new int[Math.Max(0, endExclusive - start)];
-    for (var k = 0; k < result.Length; k++)
-    {
-      result[k] = start + k;
-    }
-
-    return result;
   }
 }

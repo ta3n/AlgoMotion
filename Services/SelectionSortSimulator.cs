@@ -155,14 +155,14 @@ public static class SelectionSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           J = -1,
           CompareCount = compareCount,
           SwapCount = swapCount,
           PivotIndex = min,
           ActiveCodeLines = [3, 4],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Selection_StartPass", language, i + 1, i)
         }
       );
@@ -176,7 +176,7 @@ public static class SelectionSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = j,
             CompareCount = compareCount,
@@ -185,7 +185,7 @@ public static class SelectionSortSimulator
             RightIndex = j,
             PivotIndex = min,
             ActiveCodeLines = [5, 6],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               smaller ? "Selection_CompareSmaller" : "Selection_CompareNotSmaller",
               language,
@@ -201,7 +201,7 @@ public static class SelectionSortSimulator
             new SortStep
             {
               Type = StepType.NewCandidate,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = i,
               J = j,
               CompareCount = compareCount,
@@ -210,7 +210,7 @@ public static class SelectionSortSimulator
               RightIndex = min,
               PivotIndex = min,
               ActiveCodeLines = [7],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption("Selection_NewCandidate", language, j, a[j], j)
             }
           );
@@ -226,7 +226,7 @@ public static class SelectionSortSimulator
           new SortStep
           {
             Type = StepType.Swap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = min,
             CompareCount = compareCount,
@@ -234,7 +234,7 @@ public static class SelectionSortSimulator
             LeftIndex = i,
             RightIndex = min,
             ActiveCodeLines = [10, 11, 12, 13],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Selection_Swap", language, i, min)
           }
         );
@@ -245,14 +245,14 @@ public static class SelectionSortSimulator
           new SortStep
           {
             Type = StepType.NoSwap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = min,
             CompareCount = compareCount,
             SwapCount = swapCount,
             LeftIndex = i,
             ActiveCodeLines = [10],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Selection_NoSwap", language, i)
           }
         );
@@ -264,13 +264,13 @@ public static class SelectionSortSimulator
         new SortStep
         {
           Type = StepType.MarkSorted,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           CompareCount = compareCount,
           SwapCount = swapCount,
           RightIndex = i,
           ActiveCodeLines = [14, 15],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Selection_MarkSorted", language, i)
         }
       );
@@ -285,12 +285,12 @@ public static class SelectionSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         I = n - 1,
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [16],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );

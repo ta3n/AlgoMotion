@@ -172,6 +172,32 @@ sort.Reset(); tree.Reset();
 sort.BreakAtIndex = 0; tree.BreakAtIndex = 0;
 sort.Play(); tree.Play();
 Check(!sort.State.IsPlaying && !tree.State.IsPlaying && sort.State.CurrentIndex == 0 && tree.State.CurrentIndex == 0, "breakpoints pause both players");
+// Recording must stay cheap: it runs synchronously on Blazor WASM's single UI thread, so steps share
+// unchanged arrays instead of each carrying its own copy (this once froze the page for up to ~2 s).
+{
+  var live = new[] { 3, 1, 2 };
+  var first = StepArrays.Snapshot(live);
+  Check(ReferenceEquals(first, StepArrays.Snapshot(live)), "unchanged snapshot is shared");
+  live[0] = 9;
+  var second = StepArrays.Snapshot(live);
+  Check(!ReferenceEquals(first, second) && first.SequenceEqual(new[] { 3, 1, 2 }) && second.SequenceEqual(new[] { 9, 1, 2 }), "changed snapshot is copied and the earlier one is untouched");
+  var set = new SortedSet<int> { 4 };
+  var one = StepArrays.Sorted(set);
+  Check(ReferenceEquals(one, StepArrays.Sorted(set)), "unchanged sorted set is shared");
+  set.Add(2);
+  Check(StepArrays.Sorted(set).SequenceEqual(new[] { 2, 4 }) && one.SequenceEqual(new[] { 4 }), "grown sorted set is copied");
+  Check(StepArrays.Sorted(new SortedSet<int> { 4 }) is { Length: 1 } other && !ReferenceEquals(other, one) && StepArrays.Sorted(new SortedSet<int> { 7 })[0] == 7, "a different set never reuses another set's array");
+  Check(StepArrays.Prefix(3).SequenceEqual(new[] { 0, 1, 2 }) && StepArrays.Prefix(0).Length == 0 && StepArrays.Prefix(-2).Length == 0, "prefix indices");
+  foreach (var algorithm in SortAlgorithms.All)
+  {
+    var big = Enumerable.Range(1, 200).OrderBy(_ => random.Next()).ToArray();
+    var recorded = algorithm.Record(big, UiLanguage.En);
+    Check(recorded.All(s => s.Snapshot.Order().SequenceEqual(big.Order())), algorithm.Name + " snapshots stay permutations of the input");
+    Check(recorded.All(s => s.SortedIndices.SequenceEqual(s.SortedIndices.Distinct().Order())), algorithm.Name + " sorted indices stay ascending and unique");
+    var distinctSnapshots = recorded.Select(s => s.Snapshot).Distinct(ReferenceEqualityComparer.Instance).Count();
+    Check(recorded.Count < 400 || distinctSnapshots < recorded.Count * 0.9, algorithm.Name + " shares snapshots between steps");
+  }
+}
 Check(GraphSimulator.TryParse(3, 0, "0 1 1\n0 2 1\n1 2 1", out var triangle), "triangle");
 Check(GraphSimulator.Record(triangle, GraphAlgorithm.Dfs)[^1].Distances.SequenceEqual(new[] {0,1,2}), "DFS tree depth");
 Console.WriteLine($"PASS: {assertions} assertions across all simulator families, input, playback, experiments and quiz.");

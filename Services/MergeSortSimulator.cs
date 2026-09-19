@@ -204,11 +204,11 @@ public static class MergeSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );
@@ -239,13 +239,13 @@ public static class MergeSortSimulator
       new SortStep
       {
         Type = StepType.SplitRange,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = writeCount,
         RangeStart = lo,
         RangeEnd = hi,
         ActiveCodeLines = [4, 5, 6],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Merge_SplitRange", language, lo, hi, lo, mid, mid + 1, hi)
       }
     );
@@ -281,7 +281,7 @@ public static class MergeSortSimulator
         new SortStep
         {
           Type = StepType.MergeCompare,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = compareCount,
           SwapCount = writeCount,
           LeftIndex = i,
@@ -289,7 +289,7 @@ public static class MergeSortSimulator
           RangeStart = lo,
           RangeEnd = hi,
           ActiveCodeLines = [14, 15],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption(
             takeLeft ? "Merge_CompareTakeLeft" : "Merge_CompareTakeRight",
             language,
@@ -343,7 +343,7 @@ public static class MergeSortSimulator
           RangeStart = lo,
           RangeEnd = hi,
           ActiveCodeLines = [19],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Merge_Write", language, tmp[x], lo + x)
         }
       );
@@ -353,13 +353,13 @@ public static class MergeSortSimulator
       new SortStep
       {
         Type = StepType.RangeDone,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = writeCount,
         RangeStart = lo,
         RangeEnd = hi,
         ActiveCodeLines = [7],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Merge_RangeDone", language, lo, hi)
       }
     );

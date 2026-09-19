@@ -4,8 +4,10 @@
 
 @if (_isAvailable)
 {
-    <button type="button" class="btn btn-install" @onclick="PromptInstall">
-        @UiText.Get(UiTextKey.PwaInstall, Language)
+    var label = UiText.Get(UiTextKey.PwaInstall, Language);
+    <button type="button" class="btn btn-install" aria-label="@label" title="@label" @onclick="PromptInstall">
+        <NavIcon Name="download" Size="16"/>
+        <span class="btn-label">@label</span>
     </button>
 }
 

@@ -14,6 +14,18 @@
   </resheader>
   <data name="NavSort" xml:space="preserve"><value>Sắp xếp</value></data>
   <data name="NavTreeSearch" xml:space="preserve"><value>Tìm kiếm trên cây</value></data>
+  <data name="NavGroupVisualizer" xml:space="preserve"><value>Minh họa</value></data>
+  <data name="NavGroupLearn" xml:space="preserve"><value>Học tập</value></data>
+  <data name="NavMenuOpen" xml:space="preserve"><value>Mở menu</value></data>
+  <data name="NavMenuClose" xml:space="preserve"><value>Đóng menu</value></data>
+  <data name="BrandTagline" xml:space="preserve"><value>Trình minh họa thuật toán</value></data>
+  <data name="SubSort" xml:space="preserve"><value>Xem từng bước các thuật toán sắp xếp</value></data>
+  <data name="SubTreeSearch" xml:space="preserve"><value>Duyệt và tìm kiếm trên cây BST/AVL</value></data>
+  <data name="SubComplexity" xml:space="preserve"><value>Đo số phép so sánh và hoán đổi khi n tăng</value></data>
+  <data name="SubCompare" xml:space="preserve"><value>Chạy hai thuật toán cạnh nhau</value></data>
+  <data name="SubQuiz" xml:space="preserve"><value>Kiểm tra lại kiến thức của bạn</value></data>
+  <data name="SubGraphs" xml:space="preserve"><value>Xem từng bước các thuật toán trên đồ thị</value></data>
+  <data name="SubDp" xml:space="preserve"><value>Xem từng bước bảng quy hoạch động</value></data>
   <data name="AlgorithmLabel" xml:space="preserve"><value>Thuật toán</value></data>
   <data name="CodeLanguageLabel" xml:space="preserve"><value>Ngôn ngữ code</value></data>
   <data name="UiLanguageLabel" xml:space="preserve"><value>Giao diện</value></data>
@@ -55,7 +67,7 @@
   <data name="ChipFound" xml:space="preserve"><value>tìm thấy</value></data>
   <data name="True" xml:space="preserve"><value>đúng</value></data>
   <data name="False" xml:space="preserve"><value>sai</value></data>
-  <data name="PwaInstall" xml:space="preserve"><value>📲 Cài đặt ứng dụng</value></data>
+  <data name="PwaInstall" xml:space="preserve"><value>Cài đặt ứng dụng</value></data>
   <data name="PwaUpdateAvailable" xml:space="preserve"><value>Có bản cập nhật mới.</value></data>
   <data name="PwaUpdateAction" xml:space="preserve"><value>Tải lại</value></data>
 </root>

@@ -177,12 +177,12 @@ public static class CycleSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = start,
           CompareCount = compareCount,
           SwapCount = swapCount,
           LeftIndex = start,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [3, 4],
           Caption = Res.Caption("Cycle_StartPass", language, start, start, a[start])
         }
@@ -198,12 +198,12 @@ public static class CycleSortSimulator
           new SortStep
           {
             Type = StepType.NoSwap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = start,
             CompareCount = compareCount,
             SwapCount = swapCount,
             LeftIndex = start,
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             ActiveCodeLines = [8],
             Caption = Res.Caption("Cycle_AlreadyPlaced", language, start)
           }
@@ -221,14 +221,14 @@ public static class CycleSortSimulator
         new SortStep
         {
           Type = StepType.Swap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = start,
           J = pos,
           CompareCount = compareCount,
           SwapCount = swapCount,
           LeftIndex = start,
           RightIndex = pos,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [9],
           Caption = Res.Caption("Cycle_SwapFinal", language, start, pos, a[pos])
         }
@@ -249,14 +249,14 @@ public static class CycleSortSimulator
             new SortStep
             {
               Type = StepType.Swap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = start,
               J = pos,
               CompareCount = compareCount,
               SwapCount = swapCount,
               LeftIndex = start,
               RightIndex = pos,
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               ActiveCodeLines = [15, 16],
               Caption = Res.Caption("Cycle_SwapFinal", language, start, pos, a[pos])
             }
@@ -270,12 +270,12 @@ public static class CycleSortSimulator
         new SortStep
         {
           Type = StepType.MarkSorted,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = start,
           CompareCount = compareCount,
           SwapCount = swapCount,
           RightIndex = start,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [10],
           Caption = Res.Caption("Cycle_CycleClosed", language, start, a[start])
         }
@@ -291,10 +291,10 @@ public static class CycleSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         ActiveCodeLines = [1, 2],
         Caption = Res.Caption("Common_SortCompleted", language)
       }
@@ -328,14 +328,14 @@ public static class CycleSortSimulator
         new SortStep
         {
           Type = StepType.Compare,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = start,
           J = i,
           CompareCount = compareCount,
           SwapCount = swapCount,
           LeftIndex = start,
           RightIndex = i,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = activeCodeLines,
           Caption = Res.Caption(
             lessThanStart ? "Cycle_ScanLess" : "Cycle_ScanNotLess",

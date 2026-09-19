@@ -221,13 +221,13 @@ public static class CocktailShakerSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = lo,
           J = hi,
           CompareCount = compareCount,
           SwapCount = swapCount,
           ActiveCodeLines = [5, 6],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Cocktail_ForwardPass", language, lo, hi)
         }
       );
@@ -241,7 +241,7 @@ public static class CocktailShakerSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = lo,
             J = j,
             CompareCount = compareCount,
@@ -250,7 +250,7 @@ public static class CocktailShakerSortSimulator
             LeftIndex = j,
             RightIndex = j + 1,
             ActiveCodeLines = [7],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
               language,
@@ -269,7 +269,7 @@ public static class CocktailShakerSortSimulator
             new SortStep
             {
               Type = StepType.Swap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = lo,
               J = j,
               CompareCount = compareCount,
@@ -278,7 +278,7 @@ public static class CocktailShakerSortSimulator
               LeftIndex = j,
               RightIndex = j + 1,
               ActiveCodeLines = [8, 9, 10, 11],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption("Bubble_Swap", language, j, j + 1)
             }
           );
@@ -289,7 +289,7 @@ public static class CocktailShakerSortSimulator
             new SortStep
             {
               Type = StepType.NoSwap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = lo,
               J = j,
               CompareCount = compareCount,
@@ -298,7 +298,7 @@ public static class CocktailShakerSortSimulator
               LeftIndex = j,
               RightIndex = j + 1,
               ActiveCodeLines = [7],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption("Bubble_NoSwap", language)
             }
           );
@@ -311,7 +311,7 @@ public static class CocktailShakerSortSimulator
         new SortStep
         {
           Type = StepType.MarkSorted,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = lo,
           J = hi,
           CompareCount = compareCount,
@@ -319,7 +319,7 @@ public static class CocktailShakerSortSimulator
           Swapped = swapped,
           RightIndex = hi,
           ActiveCodeLines = [14],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Cocktail_MarkSortedMax", language, hi)
         }
       );
@@ -332,13 +332,13 @@ public static class CocktailShakerSortSimulator
           new SortStep
           {
             Type = StepType.StartPass,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = lo,
             J = hi,
             CompareCount = compareCount,
             SwapCount = swapCount,
             ActiveCodeLines = [15],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Cocktail_BackwardPass", language, hi, lo)
           }
         );
@@ -352,7 +352,7 @@ public static class CocktailShakerSortSimulator
             new SortStep
             {
               Type = StepType.Compare,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = lo,
               J = j,
               CompareCount = compareCount,
@@ -361,7 +361,7 @@ public static class CocktailShakerSortSimulator
               LeftIndex = j - 1,
               RightIndex = j,
               ActiveCodeLines = [16],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption(
                 willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
                 language,
@@ -380,7 +380,7 @@ public static class CocktailShakerSortSimulator
               new SortStep
               {
                 Type = StepType.Swap,
-                Snapshot = [.. a],
+                Snapshot = StepArrays.Snapshot(a),
                 I = lo,
                 J = j,
                 CompareCount = compareCount,
@@ -389,7 +389,7 @@ public static class CocktailShakerSortSimulator
                 LeftIndex = j - 1,
                 RightIndex = j,
                 ActiveCodeLines = [17, 18, 19, 20],
-                SortedIndices = [.. sorted],
+                SortedIndices = StepArrays.Sorted(sorted),
                 Caption = Res.Caption("Bubble_Swap", language, j - 1, j)
               }
             );
@@ -400,7 +400,7 @@ public static class CocktailShakerSortSimulator
               new SortStep
               {
                 Type = StepType.NoSwap,
-                Snapshot = [.. a],
+                Snapshot = StepArrays.Snapshot(a),
                 I = lo,
                 J = j,
                 CompareCount = compareCount,
@@ -409,7 +409,7 @@ public static class CocktailShakerSortSimulator
                 LeftIndex = j - 1,
                 RightIndex = j,
                 ActiveCodeLines = [16],
-                SortedIndices = [.. sorted],
+                SortedIndices = StepArrays.Sorted(sorted),
                 Caption = Res.Caption("Bubble_NoSwap", language)
               }
             );
@@ -422,7 +422,7 @@ public static class CocktailShakerSortSimulator
           new SortStep
           {
             Type = StepType.MarkSorted,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = lo,
             J = hi,
             CompareCount = compareCount,
@@ -430,7 +430,7 @@ public static class CocktailShakerSortSimulator
             Swapped = swapped,
             LeftIndex = lo,
             ActiveCodeLines = [23],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Cocktail_MarkSortedMin", language, lo)
           }
         );
@@ -449,11 +449,11 @@ public static class CocktailShakerSortSimulator
           new SortStep
           {
             Type = StepType.Completed,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             CompareCount = compareCount,
             SwapCount = swapCount,
             ActiveCodeLines = [24, 26],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Bubble_EarlyStop", language)
           }
         );
@@ -471,11 +471,11 @@ public static class CocktailShakerSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [26],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );

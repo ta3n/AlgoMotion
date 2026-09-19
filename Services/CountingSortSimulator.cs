@@ -235,13 +235,13 @@ public static class CountingSortSimulator
         new SortStep
         {
           Type = StepType.CountTally,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           CompareCount = tallyCount,
           SwapCount = writeCount,
           LeftIndex = i,
           ActiveCodeLines = [12, 13],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Counting_Tally", language, i, a[i], a[i] - min, count[a[i] - min])
         }
       );
@@ -256,11 +256,11 @@ public static class CountingSortSimulator
       new SortStep
       {
         Type = StepType.EndPass,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = tallyCount,
         SwapCount = writeCount,
         ActiveCodeLines = [16, 17],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Counting_Prefix", language)
       }
     );
@@ -289,7 +289,7 @@ public static class CountingSortSimulator
           SwapCount = writeCount,
           RightIndex = target,
           ActiveCodeLines = [21, 22],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Counting_Place", language, value, sourceIndex, target)
         }
       );
@@ -308,7 +308,7 @@ public static class CountingSortSimulator
         CompareCount = tallyCount,
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );

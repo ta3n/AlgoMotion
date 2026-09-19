@@ -10,6 +10,18 @@ public enum UiTextKey
 {
   NavSort,
   NavTreeSearch,
+  NavGroupVisualizer,
+  NavGroupLearn,
+  NavMenuOpen,
+  NavMenuClose,
+  BrandTagline,
+  SubSort,
+  SubTreeSearch,
+  SubComplexity,
+  SubCompare,
+  SubQuiz,
+  SubGraphs,
+  SubDp,
 
   AlgorithmLabel,
   CodeLanguageLabel,
@@ -76,6 +88,18 @@ public static class UiText
   {
     [UiTextKey.NavSort] = ("Sắp xếp", "Sort"),
     [UiTextKey.NavTreeSearch] = ("Tìm kiếm trên cây", "Tree Search"),
+    [UiTextKey.NavGroupVisualizer] = ("Minh họa", "Visualizer"),
+    [UiTextKey.NavGroupLearn] = ("Học tập", "Learn"),
+    [UiTextKey.NavMenuOpen] = ("Mở menu", "Open menu"),
+    [UiTextKey.NavMenuClose] = ("Đóng menu", "Close menu"),
+    [UiTextKey.BrandTagline] = ("Trình minh họa thuật toán", "Algorithm visualizer"),
+    [UiTextKey.SubSort] = ("Xem từng bước các thuật toán sắp xếp", "Step through sorting algorithms"),
+    [UiTextKey.SubTreeSearch] = ("Duyệt và tìm kiếm trên cây BST/AVL", "Traverse and search BST/AVL trees"),
+    [UiTextKey.SubComplexity] = ("Đo số phép so sánh và hoán đổi khi n tăng", "Measure comparisons and swaps as n grows"),
+    [UiTextKey.SubCompare] = ("Chạy hai thuật toán cạnh nhau", "Run two algorithms side by side"),
+    [UiTextKey.SubQuiz] = ("Kiểm tra lại kiến thức của bạn", "Test what you have learned"),
+    [UiTextKey.SubGraphs] = ("Xem từng bước các thuật toán trên đồ thị", "Step through graph algorithms"),
+    [UiTextKey.SubDp] = ("Xem từng bước bảng quy hoạch động", "Step through dynamic-programming tables"),
 
     [UiTextKey.AlgorithmLabel] = ("Thuật toán", "Algorithm"),
     [UiTextKey.CodeLanguageLabel] = ("Ngôn ngữ code", "Code language"),
@@ -131,7 +155,7 @@ public static class UiText
     [UiTextKey.InitialArrayCaption] = ("Dãy ban đầu. Nhấn Play để bắt đầu sắp xếp.", "Initial array. Press Play to start sorting."),
     [UiTextKey.InitialTreeCaption] = ("Cây ban đầu. Nhấn Play để bắt đầu tìm kiếm.", "Initial tree. Press Play to start the search."),
 
-    [UiTextKey.PwaInstall] = ("📲 Cài đặt ứng dụng", "📲 Install app"),
+    [UiTextKey.PwaInstall] = ("Cài đặt ứng dụng", "Install app"),
     [UiTextKey.PwaUpdateAvailable] = ("Có bản cập nhật mới.", "A new version is available."),
     [UiTextKey.PwaUpdateAction] = ("Tải lại", "Reload")
   };

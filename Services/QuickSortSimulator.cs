@@ -187,7 +187,7 @@ public static class QuickSortSimulator
         new SortStep
         {
           Type = StepType.SetPivot,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = lo,
           J = hi,
           CompareCount = compareCount,
@@ -196,7 +196,7 @@ public static class QuickSortSimulator
           RangeStart = lo,
           RangeEnd = hi,
           ActiveCodeLines = [3, 4, 5],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Quick_SetPivot", language, lo, hi, hi, pivotValue)
         }
       );
@@ -212,7 +212,7 @@ public static class QuickSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = lo,
             J = j,
             CompareCount = compareCount,
@@ -223,7 +223,7 @@ public static class QuickSortSimulator
             RangeStart = lo,
             RangeEnd = hi,
             ActiveCodeLines = [6, 7],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               smaller ? "Quick_CompareSmaller" : "Quick_CompareNotSmaller",
               language,
@@ -244,7 +244,7 @@ public static class QuickSortSimulator
               new SortStep
               {
                 Type = StepType.Swap,
-                Snapshot = [.. a],
+                Snapshot = StepArrays.Snapshot(a),
                 I = lo,
                 J = j,
                 CompareCount = compareCount,
@@ -255,7 +255,7 @@ public static class QuickSortSimulator
                 RangeStart = lo,
                 RangeEnd = hi,
                 ActiveCodeLines = [8, 9],
-                SortedIndices = [.. sorted],
+                SortedIndices = StepArrays.Sorted(sorted),
                 Caption = Res.Caption("Quick_SwapToLeft", language, j, i, j)
               }
             );
@@ -266,7 +266,7 @@ public static class QuickSortSimulator
               new SortStep
               {
                 Type = StepType.NoSwap,
-                Snapshot = [.. a],
+                Snapshot = StepArrays.Snapshot(a),
                 I = lo,
                 J = j,
                 CompareCount = compareCount,
@@ -277,7 +277,7 @@ public static class QuickSortSimulator
                 RangeStart = lo,
                 RangeEnd = hi,
                 ActiveCodeLines = [8, 9],
-                SortedIndices = [.. sorted],
+                SortedIndices = StepArrays.Sorted(sorted),
                 Caption = Res.Caption("Quick_NoSwapInPlace", language, j)
               }
             );
@@ -293,7 +293,7 @@ public static class QuickSortSimulator
         new SortStep
         {
           Type = StepType.Swap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = lo,
           J = hi,
           CompareCount = compareCount,
@@ -304,7 +304,7 @@ public static class QuickSortSimulator
           RangeStart = lo,
           RangeEnd = hi,
           ActiveCodeLines = [12, 13],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Quick_PlacePivot", language, p, hi)
         }
       );
@@ -315,7 +315,7 @@ public static class QuickSortSimulator
         new SortStep
         {
           Type = StepType.RangeDone,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = lo,
           J = hi,
           CompareCount = compareCount,
@@ -324,7 +324,7 @@ public static class QuickSortSimulator
           RangeStart = lo,
           RangeEnd = hi,
           ActiveCodeLines = [14, 15],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Quick_RangeDone", language, p, lo, p - 1, p + 1, hi)
         }
       );
@@ -343,11 +343,11 @@ public static class QuickSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );

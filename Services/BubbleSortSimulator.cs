@@ -155,14 +155,14 @@ public static class BubbleSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           J = -1,
           CompareCount = compareCount,
           SwapCount = swapCount,
           Swapped = false,
           ActiveCodeLines = [3, 4],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Bubble_StartPass", language, i + 1)
         }
       );
@@ -176,7 +176,7 @@ public static class BubbleSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = j,
             CompareCount = compareCount,
@@ -185,7 +185,7 @@ public static class BubbleSortSimulator
             LeftIndex = j,
             RightIndex = j + 1,
             ActiveCodeLines = [5, 6],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption(
               willSwap ? "Bubble_CompareOutOfOrder" : "Bubble_CompareInOrder",
               language,
@@ -204,7 +204,7 @@ public static class BubbleSortSimulator
             new SortStep
             {
               Type = StepType.Swap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = i,
               J = j,
               CompareCount = compareCount,
@@ -213,7 +213,7 @@ public static class BubbleSortSimulator
               LeftIndex = j,
               RightIndex = j + 1,
               ActiveCodeLines = [7, 8, 9, 10],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption("Bubble_Swap", language, j, j + 1)
             }
           );
@@ -224,7 +224,7 @@ public static class BubbleSortSimulator
             new SortStep
             {
               Type = StepType.NoSwap,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = i,
               J = j,
               CompareCount = compareCount,
@@ -233,7 +233,7 @@ public static class BubbleSortSimulator
               LeftIndex = j,
               RightIndex = j + 1,
               ActiveCodeLines = [6],
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               Caption = Res.Caption("Bubble_NoSwap", language)
             }
           );
@@ -247,7 +247,7 @@ public static class BubbleSortSimulator
         new SortStep
         {
           Type = StepType.MarkSorted,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           J = settledIndex,
           CompareCount = compareCount,
@@ -255,7 +255,7 @@ public static class BubbleSortSimulator
           Swapped = swapped,
           RightIndex = settledIndex,
           ActiveCodeLines = [12, 13],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Bubble_MarkSorted", language, settledIndex)
         }
       );
@@ -271,14 +271,14 @@ public static class BubbleSortSimulator
           new SortStep
           {
             Type = StepType.Completed,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             J = -1,
             CompareCount = compareCount,
             SwapCount = swapCount,
             Swapped = false,
             ActiveCodeLines = [13, 15],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Bubble_EarlyStop", language)
           }
         );
@@ -289,14 +289,14 @@ public static class BubbleSortSimulator
         new SortStep
         {
           Type = StepType.EndPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           J = -1,
           CompareCount = compareCount,
           SwapCount = swapCount,
           Swapped = swapped,
           ActiveCodeLines = [14],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Bubble_EndPass", language, i + 1)
         }
       );
@@ -311,14 +311,14 @@ public static class BubbleSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         I = n - 1,
         J = -1,
         CompareCount = compareCount,
         SwapCount = swapCount,
         Swapped = false,
         ActiveCodeLines = [15],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Bubble_Completed", language)
       }
     );

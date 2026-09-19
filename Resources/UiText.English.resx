@@ -14,6 +14,18 @@
   </resheader>
   <data name="NavSort" xml:space="preserve"><value>Sort</value></data>
   <data name="NavTreeSearch" xml:space="preserve"><value>Tree Search</value></data>
+  <data name="NavGroupVisualizer" xml:space="preserve"><value>Visualizer</value></data>
+  <data name="NavGroupLearn" xml:space="preserve"><value>Learn</value></data>
+  <data name="NavMenuOpen" xml:space="preserve"><value>Open menu</value></data>
+  <data name="NavMenuClose" xml:space="preserve"><value>Close menu</value></data>
+  <data name="BrandTagline" xml:space="preserve"><value>Algorithm visualizer</value></data>
+  <data name="SubSort" xml:space="preserve"><value>Step through sorting algorithms</value></data>
+  <data name="SubTreeSearch" xml:space="preserve"><value>Traverse and search BST/AVL trees</value></data>
+  <data name="SubComplexity" xml:space="preserve"><value>Measure comparisons and swaps as n grows</value></data>
+  <data name="SubCompare" xml:space="preserve"><value>Run two algorithms side by side</value></data>
+  <data name="SubQuiz" xml:space="preserve"><value>Test what you have learned</value></data>
+  <data name="SubGraphs" xml:space="preserve"><value>Step through graph algorithms</value></data>
+  <data name="SubDp" xml:space="preserve"><value>Step through dynamic-programming tables</value></data>
   <data name="AlgorithmLabel" xml:space="preserve"><value>Algorithm</value></data>
   <data name="CodeLanguageLabel" xml:space="preserve"><value>Code language</value></data>
   <data name="UiLanguageLabel" xml:space="preserve"><value>Interface</value></data>
@@ -55,7 +67,7 @@
   <data name="ChipFound" xml:space="preserve"><value>found</value></data>
   <data name="True" xml:space="preserve"><value>true</value></data>
   <data name="False" xml:space="preserve"><value>false</value></data>
-  <data name="PwaInstall" xml:space="preserve"><value>📲 Install app</value></data>
+  <data name="PwaInstall" xml:space="preserve"><value>Install app</value></data>
   <data name="PwaUpdateAvailable" xml:space="preserve"><value>A new version is available.</value></data>
   <data name="PwaUpdateAction" xml:space="preserve"><value>Reload</value></data>
 </root>

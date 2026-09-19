@@ -144,7 +144,7 @@ public static class GnomeSortSimulator
           new SortStep
           {
             Type = StepType.NoSwap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             CompareCount = compareCount,
             SwapCount = swapCount,
@@ -165,7 +165,7 @@ public static class GnomeSortSimulator
         new SortStep
         {
           Type = StepType.Compare,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = i,
           CompareCount = compareCount,
           SwapCount = swapCount,
@@ -193,7 +193,7 @@ public static class GnomeSortSimulator
           new SortStep
           {
             Type = StepType.Swap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             CompareCount = compareCount,
             SwapCount = swapCount,
@@ -218,7 +218,7 @@ public static class GnomeSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
         ActiveCodeLines = [1, 2],

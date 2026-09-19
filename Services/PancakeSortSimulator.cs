@@ -200,14 +200,14 @@ public static class PancakeSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = size - 1,
           CompareCount = compareCount,
           SwapCount = swapCount,
           PivotIndex = maxIdx,
           RangeStart = 0,
           RangeEnd = size - 1,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [3, 4],
           Caption = Res.Caption("Pancake_StartPass", language, size - 1)
         }
@@ -222,7 +222,7 @@ public static class PancakeSortSimulator
           new SortStep
           {
             Type = StepType.Compare,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = size - 1,
             J = i,
             CompareCount = compareCount,
@@ -232,7 +232,7 @@ public static class PancakeSortSimulator
             PivotIndex = maxIdx,
             RangeStart = 0,
             RangeEnd = size - 1,
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             ActiveCodeLines = [5, 6],
             Caption = Res.Caption(
               bigger ? "Pancake_CompareBigger" : "Pancake_CompareNotBigger",
@@ -250,7 +250,7 @@ public static class PancakeSortSimulator
             new SortStep
             {
               Type = StepType.NewCandidate,
-              Snapshot = [.. a],
+              Snapshot = StepArrays.Snapshot(a),
               I = size - 1,
               J = i,
               CompareCount = compareCount,
@@ -260,7 +260,7 @@ public static class PancakeSortSimulator
               PivotIndex = maxIdx,
               RangeStart = 0,
               RangeEnd = size - 1,
-              SortedIndices = [.. sorted],
+              SortedIndices = StepArrays.Sorted(sorted),
               ActiveCodeLines = [6],
               Caption = Res.Caption("Pancake_NewCandidate", language, i, a[i], i)
             }
@@ -283,13 +283,13 @@ public static class PancakeSortSimulator
           new SortStep
           {
             Type = StepType.NoSwap,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = size - 1,
             CompareCount = compareCount,
             SwapCount = swapCount,
             RangeStart = 0,
             RangeEnd = size - 1,
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             ActiveCodeLines = [8],
             Caption = Res.Caption("Pancake_NoFlipNeeded", language, size - 1)
           }
@@ -302,12 +302,12 @@ public static class PancakeSortSimulator
         new SortStep
         {
           Type = StepType.MarkSorted,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           I = size - 1,
           CompareCount = compareCount,
           SwapCount = swapCount,
           RightIndex = size - 1,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [10],
           Caption = Res.Caption("Pancake_MarkSorted", language, size - 1)
         }
@@ -323,10 +323,10 @@ public static class PancakeSortSimulator
       new SortStep
       {
         Type = StepType.Completed,
-        Snapshot = [.. a],
+        Snapshot = StepArrays.Snapshot(a),
         CompareCount = compareCount,
         SwapCount = swapCount,
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         ActiveCodeLines = [1, 2],
         Caption = Res.Caption("Common_SortCompleted", language)
       }
@@ -360,13 +360,13 @@ public static class PancakeSortSimulator
         new SortStep
         {
           Type = StepType.Swap,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           SwapCount = swapCount,
           LeftIndex = lo,
           RightIndex = hi,
           RangeStart = 0,
           RangeEnd = size - 1,
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           ActiveCodeLines = [17, 18, 19, 20],
           Caption = Res.Caption("Pancake_FlipSwap", language, label, lo, hi)
         }

@@ -254,11 +254,11 @@ public static class RadixSortSimulator
         new SortStep
         {
           Type = StepType.StartPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = tallyCount,
           SwapCount = writeCount,
           ActiveCodeLines = [7],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Radix_StartPass", language, DigitPlaceName(exp, language), exp)
         }
       );
@@ -275,13 +275,13 @@ public static class RadixSortSimulator
           new SortStep
           {
             Type = StepType.CountTally,
-            Snapshot = [.. a],
+            Snapshot = StepArrays.Snapshot(a),
             I = i,
             CompareCount = tallyCount,
             SwapCount = writeCount,
             LeftIndex = i,
             ActiveCodeLines = [16, 17],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Radix_Tally", language, i, a[i], digit, count[digit])
           }
         );
@@ -296,11 +296,11 @@ public static class RadixSortSimulator
         new SortStep
         {
           Type = StepType.EndPass,
-          Snapshot = [.. a],
+          Snapshot = StepArrays.Snapshot(a),
           CompareCount = tallyCount,
           SwapCount = writeCount,
           ActiveCodeLines = [19, 20],
-          SortedIndices = [.. sorted],
+          SortedIndices = StepArrays.Sorted(sorted),
           Caption = Res.Caption("Radix_Prefix", language)
         }
       );
@@ -329,7 +329,7 @@ public static class RadixSortSimulator
             SwapCount = writeCount,
             RightIndex = target,
             ActiveCodeLines = [22, 23],
-            SortedIndices = [.. sorted],
+            SortedIndices = StepArrays.Sorted(sorted),
             Caption = Res.Caption("Radix_Place", language, value, sourceIndex, target)
           }
         );
@@ -351,7 +351,7 @@ public static class RadixSortSimulator
         CompareCount = tallyCount,
         SwapCount = writeCount,
         ActiveCodeLines = [1, 2],
-        SortedIndices = [.. sorted],
+        SortedIndices = StepArrays.Sorted(sorted),
         Caption = Res.Caption("Common_SortCompleted", language)
       }
     );

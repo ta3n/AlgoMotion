@@ -3,36 +3,183 @@
 @using AlgoMotion.Models
 @using AlgoMotion.Services
 @inject UiLanguageState LangState
+@inject NavigationManager Navigation
 @implements IDisposable
 
-<main class="app-shell">
-  <div class="page-shell">
-    <UpdateBanner Language="@LangState.Current"/>
-    <nav class="top-nav">
-      <NavLink href="/" Match="NavLinkMatch.All" class="top-nav-link">@UiText.Get(UiTextKey.NavSort, LangState.Current)</NavLink>
-      <NavLink href="/tree-search" class="top-nav-link">@UiText.Get(UiTextKey.NavTreeSearch, LangState.Current)</NavLink>
-      <NavLink href="/complexity" class="top-nav-link">@LearningText.Get("Complexity", LangState.Current)</NavLink>
-      <NavLink href="/compare" class="top-nav-link">@LearningText.Get("Compare", LangState.Current)</NavLink>
-      <NavLink href="/quiz" class="top-nav-link">@LearningText.Get("Quiz", LangState.Current)</NavLink>
-      <NavLink href="/graphs" class="top-nav-link">@LearningText.Get("Graph", LangState.Current)</NavLink>
-      <NavLink href="/dynamic-programming" class="top-nav-link">@LearningText.Get("DP", LangState.Current)</NavLink>
-      <select aria-label="Language" value="@LangState.Current" @onchange="ChangeLanguage"><option value="Vi">Tiếng Việt</option><option value="En">English</option></select>
-      <InstallAppButton Language="@LangState.Current"/>
+<div class="app-shell">
+  <aside id="app-sidebar" class="sidebar @(_drawerOpen ? "is-open" : "")">
+    <div class="sidebar-brand">
+      <span class="brand-tile"><NavIcon Name="brand" Size="20"/></span>
+      <div class="brand-text">
+        <span class="brand-name">AlgoMotion</span>
+        <span class="brand-tagline">@UiText.Get(UiTextKey.BrandTagline, Lang)</span>
+      </div>
+      <button type="button" class="icon-btn sidebar-close" aria-label="@UiText.Get(UiTextKey.NavMenuClose, Lang)"
+              @onclick="CloseDrawer">
+        <NavIcon Name="close"/>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Primary navigation">
+      @foreach (var group in Groups)
+      {
+        var open = _openGroups.Contains(group.Id);
+        <div class="nav-group">
+          <button type="button" class="nav-group-header" aria-expanded="@(open ? "true" : "false")" aria-controls="nav-group-@group.Id"
+                  @onclick="() => ToggleGroup(group.Id)">
+            <span>@UiText.Get(group.Title, Lang)</span>
+            <span class="nav-chevron @(open ? "is-open" : "")"><NavIcon Name="chevron" Size="16"/></span>
+          </button>
+          @if (open)
+          {
+            <ul id="nav-group-@group.Id" class="nav-group-list">
+              @foreach (var item in group.Items)
+              {
+                <li>
+                  <NavLink href="@item.Href" Match="NavLinkMatch.All" class="sidebar-link">
+                    <NavIcon Name="@item.Icon"/>
+                    <span>@item.Label(Lang)</span>
+                  </NavLink>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      }
     </nav>
-    @Body
+  </aside>
+
+  @if (_drawerOpen)
+  {
+    <div class="sidebar-scrim" @onclick="CloseDrawer"></div>
+  }
+
+  <div class="main-column">
+    <header class="topbar">
+      <button type="button" class="icon-btn topbar-menu-btn" aria-label="@UiText.Get(UiTextKey.NavMenuOpen, Lang)"
+              aria-controls="app-sidebar" aria-expanded="@(_drawerOpen ? "true" : "false")" @onclick="OpenDrawer">
+        <NavIcon Name="menu" Size="20"/>
+      </button>
+      <span class="topbar-tile"><NavIcon Name="@(_current?.Icon ?? "brand")" Size="20"/></span>
+      <div class="topbar-titles">
+        <span class="topbar-title">@(_current?.Label(Lang) ?? "AlgoMotion")</span>
+        <span class="topbar-subtitle">@(_current is null ? UiText.Get(UiTextKey.BrandTagline, Lang) : UiText.Get(_current.Subtitle, Lang))</span>
+      </div>
+
+      <div class="topbar-actions">
+        <InstallAppButton Language="@Lang"/>
+        <div class="lang-control @(_langMenuOpen ? "is-open" : "")">
+          <button type="button" class="topbar-btn" aria-haspopup="listbox" aria-expanded="@(_langMenuOpen ? "true" : "false")"
+                  aria-label="@UiText.Get(UiTextKey.UiLanguageLabel, Lang)" @onclick="ToggleLangMenu">
+            <NavIcon Name="globe" Size="16"/>
+            <span>@UiLanguages.Code(Lang)</span>
+            <span class="nav-chevron @(_langMenuOpen ? "is-open" : "")"><NavIcon Name="chevron" Size="14"/></span>
+          </button>
+          @if (_langMenuOpen)
+          {
+            <div class="menu-scrim" @onclick="CloseLangMenu"></div>
+            <ul class="algo-menu lang-menu" role="listbox">
+              @foreach (var lang in UiLanguages.All)
+              {
+                <li role="option" aria-selected="@(lang == Lang ? "true" : "false")"
+                    class="algo-menu-item @(lang == Lang ? "is-selected" : "")"
+                    @onclick="() => SelectLanguage(lang)">
+                  @UiLanguages.Label(lang)
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <UpdateBanner Language="@Lang"/>
+      @Body
+    </div>
   </div>
-</main>
+</div>
 
 @code {
 
-  private void ChangeLanguage(ChangeEventArgs args)
-  {
-    if (Enum.TryParse<UiLanguage>(args.Value?.ToString(), out var language)) LangState.Set(language);
-  }
+  private sealed record NavItem(string Href, string Icon, Func<UiLanguage, string> Label, UiTextKey Subtitle);
+
+  private sealed record NavGroup(string Id, UiTextKey Title, NavItem[] Items);
+
+  private static readonly NavGroup[] Groups =
+  [
+    new("visualizer", UiTextKey.NavGroupVisualizer,
+    [
+      new("/", "sort", l => UiText.Get(UiTextKey.NavSort, l), UiTextKey.SubSort),
+      new("/tree-search", "tree", l => UiText.Get(UiTextKey.NavTreeSearch, l), UiTextKey.SubTreeSearch),
+      new("/graphs", "graph", l => LearningText.Get("Graph", l), UiTextKey.SubGraphs),
+      new("/dynamic-programming", "grid", l => LearningText.Get("DP", l), UiTextKey.SubDp)
+    ]),
+    new("learn", UiTextKey.NavGroupLearn,
+    [
+      new("/complexity", "trend", l => LearningText.Get("Complexity", l), UiTextKey.SubComplexity),
+      new("/compare", "compare", l => LearningText.Get("Compare", l), UiTextKey.SubCompare),
+      new("/quiz", "quiz", l => LearningText.Get("Quiz", l), UiTextKey.SubQuiz)
+    ])
+  ];
+
+  private readonly HashSet<string> _openGroups = [];
+  private NavItem? _current;
+  private bool _drawerOpen;
+  private bool _langMenuOpen;
+
+  private UiLanguage Lang => LangState.Current;
 
   protected override void OnInitialized()
   {
     LangState.Changed += OnLanguageChanged;
+    Navigation.LocationChanged += OnLocationChanged;
+    SyncCurrent();
+  }
+
+  // The group holding the current page always opens itself; the user can still collapse it.
+  private void SyncCurrent()
+  {
+    var relative = Navigation.ToBaseRelativePath(Navigation.Uri);
+    var end = relative.IndexOfAny(['?', '#']);
+    var path = "/" + (end >= 0 ? relative[..end] : relative).TrimEnd('/');
+    foreach (var group in Groups)
+    {
+      var match = group.Items.FirstOrDefault(i => i.Href == path);
+      if (match is null) continue;
+      _current = match;
+      _openGroups.Add(group.Id);
+      return;
+    }
+
+    _current = null;
+  }
+
+  private void ToggleGroup(string id)
+  {
+    if (!_openGroups.Remove(id)) _openGroups.Add(id);
+  }
+
+  private void OpenDrawer() => _drawerOpen = true;
+
+  private void CloseDrawer() => _drawerOpen = false;
+
+  private void ToggleLangMenu() => _langMenuOpen = !_langMenuOpen;
+
+  private void CloseLangMenu() => _langMenuOpen = false;
+
+  private void SelectLanguage(UiLanguage language)
+  {
+    LangState.Set(language);
+    _langMenuOpen = false;
+  }
+
+  private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+  {
+    _drawerOpen = false;
+    _langMenuOpen = false;
+    SyncCurrent();
+    InvokeAsync(StateHasChanged);
   }
 
   private void OnLanguageChanged()
@@ -43,6 +190,7 @@
   public void Dispose()
   {
     LangState.Changed -= OnLanguageChanged;
+    Navigation.LocationChanged -= OnLocationChanged;
   }
 
 }
